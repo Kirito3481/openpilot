@@ -1,4 +1,3 @@
-import collections
 from math import cos, sin
 from cereal import car
 from opendbc.can.parser import CANParser
@@ -13,7 +12,6 @@ DELPHI_MRR_RADAR_START_ADDR = 0x120
 DELPHI_MRR_RADAR_MSG_COUNT = 64
 
 STEER_ASSIST_DATA_MSGS = 0x3d7
-
 
 def _create_delphi_esr_radar_can_parser(CP) -> CANParser:
   msg_n = len(DELPHI_ESR_RADAR_MSGS)
@@ -31,11 +29,9 @@ def _create_delphi_mrr_radar_can_parser(CP) -> CANParser:
 
   return CANParser(RADAR.DELPHI_MRR, messages, CanBus(CP).radar)
 
-
 def _create_steer_assist_data(CP) -> CANParser:
   messages = [("Steer_Assist_Data", 20)]
   return CANParser(RADAR.STEER_ASSIST_DATA, messages, CanBus(CP).camera)
-
 
 class RadarInterface(RadarInterfaceBase):
   def __init__(self, CP):
@@ -44,7 +40,6 @@ class RadarInterface(RadarInterfaceBase):
     self.updated_messages = set()
     self.track_id = 0
     self.radar = DBC[CP.carFingerprint]['radar']
-    self.vRelCol = {}
     if self.radar is None or CP.radarUnavailable:
       self.rcp = None
     elif self.radar == RADAR.DELPHI_ESR:
@@ -57,6 +52,7 @@ class RadarInterface(RadarInterfaceBase):
     elif self.radar == RADAR.STEER_ASSIST_DATA:
       self.rcp = _create_steer_assist_data(CP)
       self.trigger_msg = STEER_ASSIST_DATA_MSGS
+
     else:
       raise ValueError(f"Unsupported radar: {self.radar}")
 
@@ -139,6 +135,7 @@ class RadarInterface(RadarInterfaceBase):
       if 0 in self.pts:
         del self.pts[0]
         del self.vRelCol[0]
+
 
   def _update_delphi_esr(self):
     for ii in sorted(self.updated_messages):

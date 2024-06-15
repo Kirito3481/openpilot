@@ -96,7 +96,6 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     fanMalfunction @91;
     cameraMalfunction @92;
     cameraFrameRate @110;
-    gpsMalfunction @94;
     processNotRunning @95;
     dashcamMode @96;
     controlsInitializing @98;
@@ -116,26 +115,27 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     locationdPermanentError @118;
     paramsdTemporaryError @50;
     paramsdPermanentError @119;
-    manualSteeringRequired @120;
-    manualLongitudinalRequired @121;
-    silentPedalPressed @122;
-    silentButtonEnable @123;
-    silentBrakeHold @124;
-    silentWrongGear @125;
-    spReverseGear @126;
-    preKeepHandsOnWheel @127;
-    promptKeepHandsOnWheel @128;
-    keepHandsOnWheel @129;
-    speedLimitActive @130;
-    speedLimitValueChange @131;
-    e2eLongStop @132;
-    e2eLongStart @133;
-    controlsMismatchLong @134;
-    cruiseEngageBlocked @135;
-    laneChangeRoadEdge @136;
-    speedLimitPreActive @137;
-    speedLimitConfirmed @138;
-    torqueNNLoad @139;
+    actuatorsApiUnavailable @120;
+    manualSteeringRequired @121;
+    manualLongitudinalRequired @122;
+    silentPedalPressed @123;
+    silentButtonEnable @124;
+    silentBrakeHold @125;
+    silentWrongGear @126;
+    spReverseGear @127;
+    preKeepHandsOnWheel @128;
+    promptKeepHandsOnWheel @129;
+    keepHandsOnWheel @130;
+    speedLimitActive @131;
+    speedLimitValueChange @132;
+    e2eLongStop @133;
+    e2eLongStart @134;
+    controlsMismatchLong @135;
+    cruiseEngageBlocked @136;
+    laneChangeRoadEdge @137;
+    speedLimitPreActive @138;
+    speedLimitConfirmed @139;
+    torqueNNLoad @140;
 
     radarCanErrorDEPRECATED @15;
     communityFeatureDisallowedDEPRECATED @62;
@@ -162,6 +162,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     noTargetDEPRECATED @25;
     brakeUnavailableDEPRECATED @2;
     plannerErrorDEPRECATED @32;
+    gpsMalfunctionDEPRECATED @94;
   }
 }
 
@@ -174,6 +175,7 @@ struct CarState {
   # CAN health
   canValid @26 :Bool;       # invalid counter/checksums
   canTimeout @40 :Bool;     # CAN bus dropped out
+  canErrorCounter @48 :UInt32;
 
   # car speed
   vEgo @1 :Float32;          # best estimate of speed
@@ -232,16 +234,16 @@ struct CarState {
   # clutch (manual transmission only)
   clutchPressed @28 :Bool;
 
-  madsEnabled @48 :Bool;
-  leftBlinkerOn @49 :Bool;
-  rightBlinkerOn @50 :Bool;
-  disengageByBrake @51 :Bool;
-  belowLaneChangeSpeed @52 :Bool;
-  accEnabled @53 :Bool;
-  latActive @54 :Bool;
-  gapAdjustCruiseTr @55 :Int32;
-  endToEndLong @56 :Bool;
-  customStockLong @57 :CustomStockLong;
+  madsEnabled @51 :Bool;
+  leftBlinkerOn @52 :Bool;
+  rightBlinkerOn @53 :Bool;
+  disengageByBrake @54 :Bool;
+  belowLaneChangeSpeed @55 :Bool;
+  accEnabled @56 :Bool;
+  latActive @57 :Bool;
+  gapAdjustCruiseTr @58 :Int32;
+  endToEndLong @59 :Bool;
+  customStockLong @60 :CustomStockLong;
 
   struct CustomStockLong {
     cruiseButton @0 :Int16;
@@ -259,6 +261,9 @@ struct CarState {
 
   fuelGauge @41 :Float32; # battery or fuel tank level from 0.0 to 1.0
   charging @43 :Bool;
+
+  # process meta
+  cumLagMs @50 :Float32;
 
   struct WheelSpeeds {
     # optional wheel speeds
@@ -318,6 +323,7 @@ struct CarState {
   brakeLightsDEPRECATED @19 :Bool;
   steeringRateLimitedDEPRECATED @29 :Bool;
   canMonoTimesDEPRECATED @12: List(UInt64);
+  canRcvTimeoutDEPRECATED @49 :Bool;
 }
 
 # ******* radar state @ 20hz *******
@@ -366,13 +372,11 @@ struct CarControl {
   # Actuator commands as computed by controlsd
   actuators @6 :Actuators;
 
+  # moved to CarOutput
+  actuatorsOutputDEPRECATED @10 :Actuators;
+
   leftBlinker @15: Bool;
   rightBlinker @16: Bool;
-
-  # Any car specific rate limits or quirks applied by
-  # the CarController are reflected in actuatorsOutput
-  # and matches what is sent to the car
-  actuatorsOutput @10 :Actuators;
 
   orientationNED @13 :List(Float32);
   angularVelocity @14 :List(Float32);
@@ -423,6 +427,7 @@ struct CarControl {
     leftLaneVisible @7: Bool;
     rightLaneDepart @8: Bool;
     leftLaneDepart @9: Bool;
+    leadDistanceBars @10: Int8;  # 1-3: 1 is closest, 3 is farthest. some ports may utilize 2-4 bars instead
 
     enum VisualAlert {
       # these are the choices from the Honda
@@ -464,6 +469,13 @@ struct CarControl {
   pitchDEPRECATED @9 :Float32;
 }
 
+struct CarOutput {
+  # Any car specific rate limits or quirks applied by
+  # the CarController are reflected in actuatorsOutput
+  # and matches what is sent to the car
+  actuatorsOutput @0 :CarControl.Actuators;
+}
+
 # ****** car param ******
 
 struct CarParams {
@@ -473,7 +485,6 @@ struct CarParams {
 
   notCar @66 :Bool;  # flag for non-car robotics platforms
 
-  enableGasInterceptor @2 :Bool;
   pcmCruise @3 :Bool;        # is openpilot's state tied to the PCM's cruise state?
   enableDsu @5 :Bool;        # driving support unit
   enableBsm @56 :Bool;       # blind spot monitoring
@@ -648,6 +659,7 @@ struct CarParams {
     hyundaiCanfd @28;
     volkswagenMqbEvo @29;
     chryslerCusw @30;
+    psa @31;
   }
 
   enum SteerControlType {
@@ -722,6 +734,7 @@ struct CarParams {
     gateway @1;    # Integration at vehicle's CAN gateway
   }
 
+  enableGasInterceptorDEPRECATED @2 :Bool;
   enableCameraDEPRECATED @4 :Bool;
   enableApgsDEPRECATED @6 :Bool;
   steerRateCostDEPRECATED @33 :Float32;

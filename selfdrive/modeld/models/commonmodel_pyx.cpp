@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [
-            "cereal/visionipc/visionbuf.h",
-            "cereal/visionipc/visionipc.h",
-            "cereal/visionipc/visionipc_client.h",
-            "cereal/visionipc/visionipc_server.h",
             "common/clutil.h",
             "common/mat.h",
+            "msgq/visionipc/visionbuf.h",
+            "msgq/visionipc/visionipc.h",
+            "msgq/visionipc/visionipc_client.h",
+            "msgq/visionipc/visionipc_server.h",
             "selfdrive/modeld/models/commonmodel.h"
         ],
         "language": "c++",
@@ -1240,10 +1240,10 @@ static CYTHON_INLINE float __PYX_NAN() {
     
 #include <set>
 #include <stdint.h>
-#include "cereal/visionipc/visionbuf.h"
-#include "cereal/visionipc/visionipc.h"
-#include "cereal/visionipc/visionipc_server.h"
-#include "cereal/visionipc/visionipc_client.h"
+#include "msgq/visionipc/visionbuf.h"
+#include "msgq/visionipc/visionipc.h"
+#include "msgq/visionipc/visionipc_server.h"
+#include "msgq/visionipc/visionipc_client.h"
 #include <stdio.h>
 
     /* Using NumPy API declarations from "numpy/__init__.cython-30.pxd" */
@@ -1548,7 +1548,7 @@ static const char *__pyx_f[] = {
   "<stringsource>",
   "selfdrive/modeld/models/commonmodel_pyx.pyx",
   "__init__.cython-30.pxd",
-  "cereal/visionipc/visionipc_pyx.pxd",
+  "msgq/visionipc/visionipc_pyx.pxd",
   "type.pxd",
 };
 /* #### Code section: utility_code_proto_before_types ### */
@@ -1893,8 +1893,8 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 /* #### Code section: type_declarations ### */
 
 /*--- Type declarations ---*/
-struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_CLContext;
-struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionBuf;
+struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_CLContext;
+struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_VisionBuf;
 struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext;
 struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLMem;
 struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame;
@@ -1939,43 +1939,43 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
 
-/* "cereal/visionipc/visionipc_pyx.pxd":7
+/* "msgq/visionipc/visionipc_pyx.pxd":7
  * from .visionipc cimport cl_device_id, cl_context
  * 
  * cdef class CLContext:             # <<<<<<<<<<<<<<
  *   cdef cl_device_id device_id
  *   cdef cl_context context
  */
-struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_CLContext {
+struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_CLContext {
   PyObject_HEAD
   cl_device_id device_id;
   cl_context context;
 };
 
 
-/* "cereal/visionipc/visionipc_pyx.pxd":11
+/* "msgq/visionipc/visionipc_pyx.pxd":11
  *   cdef cl_context context
  * 
  * cdef class VisionBuf:             # <<<<<<<<<<<<<<
  *   cdef cppVisionBuf * buf
  * 
  */
-struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionBuf {
+struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_VisionBuf {
   PyObject_HEAD
-  struct __pyx_vtabstruct_6cereal_9visionipc_13visionipc_pyx_VisionBuf *__pyx_vtab;
+  struct __pyx_vtabstruct_4msgq_9visionipc_13visionipc_pyx_VisionBuf *__pyx_vtab;
   VisionBuf *buf;
 };
 
 
 /* "selfdrive/modeld/models/commonmodel_pyx.pxd":6
- * from cereal.visionipc.visionipc_pyx cimport CLContext as BaseCLContext
+ * from msgq.visionipc.visionipc_pyx cimport CLContext as BaseCLContext
  * 
  * cdef class CLContext(BaseCLContext):             # <<<<<<<<<<<<<<
  *   pass
  * 
  */
 struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext {
-  struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_CLContext __pyx_base;
+  struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_CLContext __pyx_base;
 };
 
 
@@ -2083,7 +2083,7 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "cereal/visionipc/visionipc_pyx.pxd":11
+/* "msgq/visionipc/visionipc_pyx.pxd":11
  *   cdef cl_context context
  * 
  * cdef class VisionBuf:             # <<<<<<<<<<<<<<
@@ -2091,10 +2091,10 @@ struct __pyx_memoryviewslice_obj {
  * 
  */
 
-struct __pyx_vtabstruct_6cereal_9visionipc_13visionipc_pyx_VisionBuf {
+struct __pyx_vtabstruct_4msgq_9visionipc_13visionipc_pyx_VisionBuf {
   PyObject *(*create)(VisionBuf *);
 };
-static struct __pyx_vtabstruct_6cereal_9visionipc_13visionipc_pyx_VisionBuf *__pyx_vtabptr_6cereal_9visionipc_13visionipc_pyx_VisionBuf;
+static struct __pyx_vtabstruct_4msgq_9visionipc_13visionipc_pyx_VisionBuf *__pyx_vtabptr_4msgq_9visionipc_13visionipc_pyx_VisionBuf;
 
 
 /* "selfdrive/modeld/models/commonmodel_pyx.pyx":21
@@ -3304,9 +3304,9 @@ static PyObject *__pyx_f_9selfdrive_6modeld_6models_15commonmodel_pyx_5CLMem_cre
 
 /* Module declarations from "libcpp" */
 
-/* Module declarations from "cereal.visionipc.visionipc" */
+/* Module declarations from "msgq.visionipc.visionipc" */
 
-/* Module declarations from "cereal.visionipc.visionipc_pyx" */
+/* Module declarations from "msgq.visionipc.visionipc_pyx" */
 
 /* Module declarations from "libc.stdio" */
 
@@ -3598,7 +3598,7 @@ static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_5CLMem___
 static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_5CLMem_2__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLMem *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFrame___cinit__(struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame *__pyx_v_self, struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext *__pyx_v_context); /* proto */
 static void __pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFrame_2__dealloc__(struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFrame_4prepare(struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame *__pyx_v_self, struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionBuf *__pyx_v_buf, __Pyx_memviewslice __pyx_v_projection, struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLMem *__pyx_v_output); /* proto */
+static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFrame_4prepare(struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame *__pyx_v_self, struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_VisionBuf *__pyx_v_buf, __Pyx_memviewslice __pyx_v_projection, struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLMem *__pyx_v_output); /* proto */
 static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFrame_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFrame_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -3653,8 +3653,8 @@ typedef struct {
   #endif
   #if CYTHON_USE_MODULE_STATE
   #endif
-  PyTypeObject *__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext;
-  PyTypeObject *__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionBuf;
+  PyTypeObject *__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext;
+  PyTypeObject *__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_VisionBuf;
   #if CYTHON_USE_MODULE_STATE
   #endif
   #if CYTHON_USE_MODULE_STATE
@@ -3940,8 +3940,8 @@ static int __pyx_m_clear(PyObject *m) {
   #ifdef __Pyx_FusedFunction_USED
   Py_CLEAR(clear_module_state->__pyx_FusedFunctionType);
   #endif
-  Py_CLEAR(clear_module_state->__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext);
-  Py_CLEAR(clear_module_state->__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionBuf);
+  Py_CLEAR(clear_module_state->__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext);
+  Py_CLEAR(clear_module_state->__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_VisionBuf);
   Py_CLEAR(clear_module_state->__pyx_ptype_7cpython_4type_type);
   Py_CLEAR(clear_module_state->__pyx_ptype_5numpy_dtype);
   Py_CLEAR(clear_module_state->__pyx_ptype_5numpy_flatiter);
@@ -4185,8 +4185,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   #ifdef __Pyx_FusedFunction_USED
   Py_VISIT(traverse_module_state->__pyx_FusedFunctionType);
   #endif
-  Py_VISIT(traverse_module_state->__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext);
-  Py_VISIT(traverse_module_state->__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionBuf);
+  Py_VISIT(traverse_module_state->__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext);
+  Py_VISIT(traverse_module_state->__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_VisionBuf);
   Py_VISIT(traverse_module_state->__pyx_ptype_7cpython_4type_type);
   Py_VISIT(traverse_module_state->__pyx_ptype_5numpy_dtype);
   Py_VISIT(traverse_module_state->__pyx_ptype_5numpy_flatiter);
@@ -4456,8 +4456,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #endif
 #if CYTHON_USE_MODULE_STATE
 #endif
-#define __pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext __pyx_mstate_global->__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext
-#define __pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionBuf __pyx_mstate_global->__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionBuf
+#define __pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext __pyx_mstate_global->__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext
+#define __pyx_ptype_4msgq_9visionipc_13visionipc_pyx_VisionBuf __pyx_mstate_global->__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_VisionBuf
 #if CYTHON_USE_MODULE_STATE
 #endif
 #if CYTHON_USE_MODULE_STATE
@@ -20859,7 +20859,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ) {
-  struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionBuf *__pyx_v_buf = 0;
+  struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_VisionBuf *__pyx_v_buf = 0;
   __Pyx_memviewslice __pyx_v_projection = { 0, 0, { 0 }, { 0 }, { 0 } };
   struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLMem *__pyx_v_output = 0;
   #if !CYTHON_METH_FASTCALL
@@ -20936,7 +20936,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
       values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
     }
-    __pyx_v_buf = ((struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionBuf *)values[0]);
+    __pyx_v_buf = ((struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_VisionBuf *)values[0]);
     __pyx_v_projection = __Pyx_PyObject_to_MemoryviewSlice_ds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_projection.memview)) __PYX_ERR(1, 37, __pyx_L3_error)
     __pyx_v_output = ((struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLMem *)values[2]);
   }
@@ -20957,7 +20957,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_buf), __pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionBuf, 1, "buf", 0))) __PYX_ERR(1, 37, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_buf), __pyx_ptype_4msgq_9visionipc_13visionipc_pyx_VisionBuf, 1, "buf", 0))) __PYX_ERR(1, 37, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_output), __pyx_ptype_9selfdrive_6modeld_6models_15commonmodel_pyx_CLMem, 1, "output", 0))) __PYX_ERR(1, 37, __pyx_L1_error)
   __pyx_r = __pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFrame_4prepare(((struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame *)__pyx_v_self), __pyx_v_buf, __pyx_v_projection, __pyx_v_output);
 
@@ -20977,15 +20977,15 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFrame_4prepare(struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame *__pyx_v_self, struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionBuf *__pyx_v_buf, __Pyx_memviewslice __pyx_v_projection, struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLMem *__pyx_v_output) {
+static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFrame_4prepare(struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_ModelFrame *__pyx_v_self, struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_VisionBuf *__pyx_v_buf, __Pyx_memviewslice __pyx_v_projection, struct __pyx_obj_9selfdrive_6modeld_6models_15commonmodel_pyx_CLMem *__pyx_v_output) {
   struct mat3 __pyx_v_cprojection;
   float *__pyx_v_data;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   Py_ssize_t __pyx_t_1;
   int __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  int __pyx_t_4;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
   int __pyx_t_6;
   int __pyx_t_7;
@@ -21002,8 +21002,8 @@ static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFr
  *   def prepare(self, VisionBuf buf, float[:] projection, CLMem output):
  *     cdef mat3 cprojection
  *     memcpy(cprojection.v, &projection[0], 9*sizeof(float))             # <<<<<<<<<<<<<<
- *     cdef float * data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)
- *     if not data:
+ *     cdef float * data
+ *     if output is None:
  */
   __pyx_t_1 = 0;
   __pyx_t_2 = -1;
@@ -21017,43 +21017,91 @@ static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFr
   }
   (void)(memcpy(__pyx_v_cprojection.v, (&(*((float *) ( /* dim=0 */ (__pyx_v_projection.data + __pyx_t_1 * __pyx_v_projection.strides[0]) )))), (9 * (sizeof(float)))));
 
-  /* "selfdrive/modeld/models/commonmodel_pyx.pyx":40
- *     cdef mat3 cprojection
+  /* "selfdrive/modeld/models/commonmodel_pyx.pyx":41
  *     memcpy(cprojection.v, &projection[0], 9*sizeof(float))
- *     cdef float * data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)             # <<<<<<<<<<<<<<
+ *     cdef float * data
+ *     if output is None:             # <<<<<<<<<<<<<<
+ *       data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, NULL)
+ *     else:
+ */
+  __pyx_t_3 = (((PyObject *)__pyx_v_output) == Py_None);
+  if (__pyx_t_3) {
+
+    /* "selfdrive/modeld/models/commonmodel_pyx.pyx":42
+ *     cdef float * data
+ *     if output is None:
+ *       data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, NULL)             # <<<<<<<<<<<<<<
+ *     else:
+ *       data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)
+ */
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_width); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 42, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 42, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_height); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 42, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 42, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_stride); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 42, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 42, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_uv_offset); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 42, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 42, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_v_data = __pyx_v_self->frame->prepare(__pyx_v_buf->buf->buf_cl, __pyx_t_2, __pyx_t_5, __pyx_t_6, __pyx_t_7, __pyx_v_cprojection, NULL);
+
+    /* "selfdrive/modeld/models/commonmodel_pyx.pyx":41
+ *     memcpy(cprojection.v, &projection[0], 9*sizeof(float))
+ *     cdef float * data
+ *     if output is None:             # <<<<<<<<<<<<<<
+ *       data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, NULL)
+ *     else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "selfdrive/modeld/models/commonmodel_pyx.pyx":44
+ *       data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, NULL)
+ *     else:
+ *       data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)             # <<<<<<<<<<<<<<
  *     if not data:
  *       return None
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_width); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 40, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_height); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 40, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_stride); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 40, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_uv_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 40, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_v_data = __pyx_v_self->frame->prepare(__pyx_v_buf->buf->buf_cl, __pyx_t_2, __pyx_t_4, __pyx_t_5, __pyx_t_6, __pyx_v_cprojection, __pyx_v_output->mem);
+  /*else*/ {
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_width); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 44, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 44, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_height); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 44, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 44, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_stride); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 44, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 44, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_buf), __pyx_n_s_uv_offset); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 44, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 44, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_v_data = __pyx_v_self->frame->prepare(__pyx_v_buf->buf->buf_cl, __pyx_t_7, __pyx_t_6, __pyx_t_5, __pyx_t_2, __pyx_v_cprojection, __pyx_v_output->mem);
+  }
+  __pyx_L3:;
 
-  /* "selfdrive/modeld/models/commonmodel_pyx.pyx":41
- *     memcpy(cprojection.v, &projection[0], 9*sizeof(float))
- *     cdef float * data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)
+  /* "selfdrive/modeld/models/commonmodel_pyx.pyx":45
+ *     else:
+ *       data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)
  *     if not data:             # <<<<<<<<<<<<<<
  *       return None
  *     return np.asarray(<cnp.float32_t[:self.frame.buf_size]> data)
  */
-  __pyx_t_7 = (!(__pyx_v_data != 0));
-  if (__pyx_t_7) {
+  __pyx_t_3 = (!(__pyx_v_data != 0));
+  if (__pyx_t_3) {
 
-    /* "selfdrive/modeld/models/commonmodel_pyx.pyx":42
- *     cdef float * data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)
+    /* "selfdrive/modeld/models/commonmodel_pyx.pyx":46
+ *       data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)
  *     if not data:
  *       return None             # <<<<<<<<<<<<<<
  *     return np.asarray(<cnp.float32_t[:self.frame.buf_size]> data)
@@ -21062,40 +21110,40 @@ static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFr
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "selfdrive/modeld/models/commonmodel_pyx.pyx":41
- *     memcpy(cprojection.v, &projection[0], 9*sizeof(float))
- *     cdef float * data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)
+    /* "selfdrive/modeld/models/commonmodel_pyx.pyx":45
+ *     else:
+ *       data = self.frame.prepare(buf.buf.buf_cl, buf.width, buf.height, buf.stride, buf.uv_offset, cprojection, output.mem)
  *     if not data:             # <<<<<<<<<<<<<<
  *       return None
  *     return np.asarray(<cnp.float32_t[:self.frame.buf_size]> data)
  */
   }
 
-  /* "selfdrive/modeld/models/commonmodel_pyx.pyx":43
+  /* "selfdrive/modeld/models/commonmodel_pyx.pyx":47
  *     if not data:
  *       return None
  *     return np.asarray(<cnp.float32_t[:self.frame.buf_size]> data)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 43, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_asarray); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 43, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_asarray); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   if (!__pyx_v_data) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(1, 43, __pyx_L1_error)
+    __PYX_ERR(1, 47, __pyx_L1_error)
   }
-  __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_float32_t); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 43, __pyx_L1_error)
+  __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_float32_t); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_8 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->frame->buf_size)); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 43, __pyx_L1_error)
+  __pyx_t_8 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->frame->buf_size)); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __pyx_array_new(__pyx_t_8, sizeof(__pyx_t_5numpy_float32_t), PyBytes_AS_STRING(__pyx_t_11), (char *) "c", (char *) __pyx_v_data); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 43, __pyx_L1_error)
+  __pyx_t_10 = __pyx_array_new(__pyx_t_8, sizeof(__pyx_t_5numpy_float32_t), PyBytes_AS_STRING(__pyx_t_11), (char *) "c", (char *) __pyx_v_data); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_GOTREF((PyObject *)__pyx_t_10);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __pyx_t_11 = NULL;
-  __pyx_t_6 = 0;
+  __pyx_t_2 = 0;
   #if CYTHON_UNPACK_METHODS
   if (unlikely(PyMethod_Check(__pyx_t_9))) {
     __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_9);
@@ -21104,21 +21152,21 @@ static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFr
       __Pyx_INCREF(__pyx_t_11);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_9, function);
-      __pyx_t_6 = 1;
+      __pyx_t_2 = 1;
     }
   }
   #endif
   {
     PyObject *__pyx_callargs[2] = {__pyx_t_11, ((PyObject *)__pyx_t_10)};
-    __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_9, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
+    __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_9, __pyx_callargs+1-__pyx_t_2, 1+__pyx_t_2);
     __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF((PyObject *)__pyx_t_10); __pyx_t_10 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 43, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 47, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   }
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_4;
+  __pyx_t_4 = 0;
   goto __pyx_L0;
 
   /* "selfdrive/modeld/models/commonmodel_pyx.pyx":37
@@ -21131,7 +21179,7 @@ static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFr
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF((PyObject *)__pyx_t_10);
@@ -21359,7 +21407,7 @@ static PyObject *__pyx_pf_9selfdrive_6modeld_6models_15commonmodel_pyx_10ModelFr
 }
 
 static PyObject *__pyx_tp_new_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext(PyTypeObject *t, PyObject *a, PyObject *k) {
-  PyObject *o = __Pyx_PyType_GetSlot(__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext, tp_new, newfunc)(t, a, k);
+  PyObject *o = __Pyx_PyType_GetSlot(__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext, tp_new, newfunc)(t, a, k);
   if (unlikely(!o)) return 0;
   if (unlikely(__pyx_pw_9selfdrive_6modeld_6models_15commonmodel_pyx_9CLContext_1__cinit__(o, __pyx_empty_tuple, NULL) < 0)) goto bad;
   return o;
@@ -23244,11 +23292,11 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  __pyx_t_1 = PyImport_ImportModule("cereal.visionipc.visionipc_pyx"); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("msgq.visionipc.visionipc_pyx"); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext = __Pyx_ImportType_3_0_8(__pyx_t_1, "cereal.visionipc.visionipc_pyx", "CLContext", sizeof(struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_CLContext), __PYX_GET_STRUCT_ALIGNMENT_3_0_8(struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_CLContext),__Pyx_ImportType_CheckSize_Warn_3_0_8); if (!__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext = __Pyx_ImportType_3_0_8(__pyx_t_1, "msgq.visionipc.visionipc_pyx", "CLContext", sizeof(struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_CLContext), __PYX_GET_STRUCT_ALIGNMENT_3_0_8(struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_CLContext),__Pyx_ImportType_CheckSize_Warn_3_0_8); if (!__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext) __PYX_ERR(1, 1, __pyx_L1_error)
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_t_2 = PyTuple_Pack(1, (PyObject *)__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 16, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_Pack(1, (PyObject *)__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_ptype_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext_spec, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -23258,8 +23306,8 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_ptype_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext = &__pyx_type_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  __pyx_ptype_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext->tp_dealloc = __pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext->tp_dealloc;
-  __pyx_ptype_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext->tp_base = __pyx_ptype_6cereal_9visionipc_13visionipc_pyx_CLContext;
+  __pyx_ptype_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext->tp_dealloc = __pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext->tp_dealloc;
+  __pyx_ptype_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext->tp_base = __pyx_ptype_4msgq_9visionipc_13visionipc_pyx_CLContext;
   #endif
   #if !CYTHON_USE_TYPE_SPECS
   if (__Pyx_PyType_Ready(__pyx_ptype_9selfdrive_6modeld_6models_15commonmodel_pyx_CLContext) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
@@ -23486,10 +23534,10 @@ static int __Pyx_modinit_type_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("cereal.visionipc.visionipc_pyx"); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 11, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("msgq.visionipc.visionipc_pyx"); if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionBuf = __Pyx_ImportType_3_0_8(__pyx_t_1, "cereal.visionipc.visionipc_pyx", "VisionBuf", sizeof(struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionBuf), __PYX_GET_STRUCT_ALIGNMENT_3_0_8(struct __pyx_obj_6cereal_9visionipc_13visionipc_pyx_VisionBuf),__Pyx_ImportType_CheckSize_Warn_3_0_8); if (!__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionBuf) __PYX_ERR(3, 11, __pyx_L1_error)
-  __pyx_vtabptr_6cereal_9visionipc_13visionipc_pyx_VisionBuf = (struct __pyx_vtabstruct_6cereal_9visionipc_13visionipc_pyx_VisionBuf*)__Pyx_GetVtable(__pyx_ptype_6cereal_9visionipc_13visionipc_pyx_VisionBuf); if (unlikely(!__pyx_vtabptr_6cereal_9visionipc_13visionipc_pyx_VisionBuf)) __PYX_ERR(3, 11, __pyx_L1_error)
+  __pyx_ptype_4msgq_9visionipc_13visionipc_pyx_VisionBuf = __Pyx_ImportType_3_0_8(__pyx_t_1, "msgq.visionipc.visionipc_pyx", "VisionBuf", sizeof(struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_VisionBuf), __PYX_GET_STRUCT_ALIGNMENT_3_0_8(struct __pyx_obj_4msgq_9visionipc_13visionipc_pyx_VisionBuf),__Pyx_ImportType_CheckSize_Warn_3_0_8); if (!__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_VisionBuf) __PYX_ERR(3, 11, __pyx_L1_error)
+  __pyx_vtabptr_4msgq_9visionipc_13visionipc_pyx_VisionBuf = (struct __pyx_vtabstruct_4msgq_9visionipc_13visionipc_pyx_VisionBuf*)__Pyx_GetVtable(__pyx_ptype_4msgq_9visionipc_13visionipc_pyx_VisionBuf); if (unlikely(!__pyx_vtabptr_4msgq_9visionipc_13visionipc_pyx_VisionBuf)) __PYX_ERR(3, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyImport_ImportModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);

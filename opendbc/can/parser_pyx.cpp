@@ -1236,8 +1236,8 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <string.h>
 #include <string>
 #include <vector>
-#include <unordered_set>
 #include <stdint.h>
+#include <unordered_map>
 #include "common_dbc.h"
 #include "common.h"
 #ifdef _OPENMP
@@ -1522,7 +1522,7 @@ static const char *__pyx_f[] = {
 struct __pyx_obj_7opendbc_3can_10parser_pyx_CANParser;
 struct __pyx_obj_7opendbc_3can_10parser_pyx_CANDefine;
 
-/* "common.pxd":11
+/* "common.pxd":12
  * 
  * 
  * ctypedef unsigned int (*calc_checksum_type)(uint32_t, const Signal&, const vector[uint8_t] &)             # <<<<<<<<<<<<<<
@@ -1531,7 +1531,7 @@ struct __pyx_obj_7opendbc_3can_10parser_pyx_CANDefine;
  */
 typedef unsigned int (*__pyx_t_7opendbc_3can_6common_calc_checksum_type)(uint32_t, struct Signal const &, std::vector<uint8_t>  const &);
 
-/* "opendbc/can/parser_pyx.pyx":18
+/* "opendbc/can/parser_pyx.pyx":17
  * 
  * 
  * cdef class CANParser:             # <<<<<<<<<<<<<<
@@ -1543,6 +1543,7 @@ struct __pyx_obj_7opendbc_3can_10parser_pyx_CANParser {
   CANParser *can;
   struct DBC const *dbc;
   std::vector<struct SignalValue>  can_values;
+  std::vector<uint32_t>  addresses;
   PyObject *vl;
   PyObject *vl_all;
   PyObject *ts_nanos;
@@ -1550,7 +1551,7 @@ struct __pyx_obj_7opendbc_3can_10parser_pyx_CANParser {
 };
 
 
-/* "opendbc/can/parser_pyx.pyx":105
+/* "opendbc/can/parser_pyx.pyx":111
  * 
  * 
  * cdef class CANDefine():             # <<<<<<<<<<<<<<
@@ -1886,38 +1887,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
-/* IncludeCppStringH.proto */
-#include <string>
-
-/* decode_c_string_utf16.proto */
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 0;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16LE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = -1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16BE(const char *s, Py_ssize_t size, const char *errors) {
-    int byteorder = 1;
-    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
-}
-
-/* decode_c_bytes.proto */
-static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
-         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
-
-/* decode_cpp_string.proto */
-static CYTHON_INLINE PyObject* __Pyx_decode_cpp_string(
-         std::string cppstring, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
-    return __Pyx_decode_c_bytes(
-        cppstring.data(), cppstring.size(), start, stop, encoding, errors, decode_func);
-}
-
 /* GetItemInt.proto */
 #define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
     (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
@@ -1987,43 +1956,65 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
-/* dict_getitem_default.proto */
-static PyObject* __Pyx_PyDict_GetItemDefault(PyObject* d, PyObject* key, PyObject* default_value);
-
-/* UnpackUnboundCMethod.proto */
-typedef struct {
-    PyObject *type;
-    PyObject **method_name;
-    PyCFunction func;
-    PyObject *method;
-    int flag;
-} __Pyx_CachedCFunction;
-
-/* CallUnboundCMethod1.proto */
-static PyObject* __Pyx__CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg);
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg);
-#else
-#define __Pyx_CallUnboundCMethod1(cfunc, self, arg)  __Pyx__CallUnboundCMethod1(cfunc, self, arg)
+/* GetTopmostException.proto */
+#if CYTHON_USE_EXC_INFO_STACK && CYTHON_FAST_THREAD_STATE
+static _PyErr_StackItem * __Pyx_PyErr_GetTopmostException(PyThreadState *tstate);
 #endif
 
-/* CallUnboundCMethod2.proto */
-static PyObject* __Pyx__CallUnboundCMethod2(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg1, PyObject* arg2);
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030600B1
-static CYTHON_INLINE PyObject *__Pyx_CallUnboundCMethod2(__Pyx_CachedCFunction *cfunc, PyObject *self, PyObject *arg1, PyObject *arg2);
+/* SaveResetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_ExceptionSave(type, value, tb)  __Pyx__ExceptionSave(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#define __Pyx_ExceptionReset(type, value, tb)  __Pyx__ExceptionReset(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
 #else
-#define __Pyx_CallUnboundCMethod2(cfunc, self, arg1, arg2)  __Pyx__CallUnboundCMethod2(cfunc, self, arg1, arg2)
+#define __Pyx_ExceptionSave(type, value, tb)   PyErr_GetExcInfo(type, value, tb)
+#define __Pyx_ExceptionReset(type, value, tb)  PyErr_SetExcInfo(type, value, tb)
 #endif
 
-/* PyDictContains.proto */
-static CYTHON_INLINE int __Pyx_PyDict_ContainsTF(PyObject* item, PyObject* dict, int eq) {
-    int result = PyDict_Contains(dict, item);
-    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
-}
+/* GetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_GetException(type, value, tb)  __Pyx__GetException(__pyx_tstate, type, value, tb)
+static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#else
+static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb);
+#endif
 
 /* JoinPyUnicode.proto */
 static PyObject* __Pyx_PyUnicode_Join(PyObject* value_tuple, Py_ssize_t value_count, Py_ssize_t result_ulength,
                                       Py_UCS4 max_char);
+
+/* IncludeCppStringH.proto */
+#include <string>
+
+/* decode_c_string_utf16.proto */
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = 0;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16LE(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = -1;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+static CYTHON_INLINE PyObject *__Pyx_PyUnicode_DecodeUTF16BE(const char *s, Py_ssize_t size, const char *errors) {
+    int byteorder = 1;
+    return PyUnicode_DecodeUTF16(s, size, errors, &byteorder);
+}
+
+/* decode_c_bytes.proto */
+static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
+         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
+
+/* decode_cpp_string.proto */
+static CYTHON_INLINE PyObject* __Pyx_decode_cpp_string(
+         std::string cppstring, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
+    return __Pyx_decode_c_bytes(
+        cppstring.data(), cppstring.size(), start, stop, encoding, errors, decode_func);
+}
 
 /* DictGetItem.proto */
 #if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
@@ -2035,39 +2026,6 @@ static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key);
 #define __Pyx_PyDict_GetItem(d, key) PyObject_GetItem(d, key)
 #define __Pyx_PyObject_Dict_GetItem(obj, name)  PyObject_GetItem(obj, name)
 #endif
-
-/* PyObjectCallNoArg.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
-
-/* PyObjectGetMethod.proto */
-static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method);
-
-/* PyObjectCallMethod0.proto */
-static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name);
-
-/* RaiseNoneIterError.proto */
-static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void);
-
-/* UnpackTupleError.proto */
-static void __Pyx_UnpackTupleError(PyObject *, Py_ssize_t index);
-
-/* UnpackTuple2.proto */
-#define __Pyx_unpack_tuple2(tuple, value1, value2, is_tuple, has_known_size, decref_tuple)\
-    (likely(is_tuple || PyTuple_Check(tuple)) ?\
-        (likely(has_known_size || PyTuple_GET_SIZE(tuple) == 2) ?\
-            __Pyx_unpack_tuple2_exact(tuple, value1, value2, decref_tuple) :\
-            (__Pyx_UnpackTupleError(tuple, 2), -1)) :\
-        __Pyx_unpack_tuple2_generic(tuple, value1, value2, has_known_size, decref_tuple))
-static CYTHON_INLINE int __Pyx_unpack_tuple2_exact(
-    PyObject* tuple, PyObject** value1, PyObject** value2, int decref_tuple);
-static int __Pyx_unpack_tuple2_generic(
-    PyObject* tuple, PyObject** value1, PyObject** value2, int has_known_size, int decref_tuple);
-
-/* dict_iter.proto */
-static CYTHON_INLINE PyObject* __Pyx_dict_iterator(PyObject* dict, int is_dict, PyObject* method_name,
-                                                   Py_ssize_t* p_orig_length, int* p_is_dict);
-static CYTHON_INLINE int __Pyx_dict_iter_next(PyObject* dict_or_iter, Py_ssize_t orig_length, Py_ssize_t* ppos,
-                                              PyObject** pkey, PyObject** pvalue, PyObject** pitem, int is_dict);
 
 /* KeywordStringCheck.proto */
 static int __Pyx_CheckKeywordStrings(PyObject *kw, const char* function_name, int kw_allowed);
@@ -2110,6 +2068,15 @@ static int __Pyx_RaiseUnexpectedTypeError(const char *expected, PyObject *obj);
 #if CYTHON_USE_TYPE_SPECS
 static int __Pyx_fix_up_extension_type_from_spec(PyType_Spec *spec, PyTypeObject *type);
 #endif
+
+/* PyObjectCallNoArg.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
+
+/* PyObjectGetMethod.proto */
+static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method);
+
+/* PyObjectCallMethod0.proto */
+static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name);
 
 /* ValidateBasesTuple.proto */
 #if CYTHON_COMPILING_IN_CPYTHON || CYTHON_COMPILING_IN_LIMITED_API || CYTHON_USE_TYPE_SPECS
@@ -2368,23 +2335,23 @@ static void __Pyx_CppExn2PyErr() {
 #define __Pyx_HAS_GCC_DIAGNOSTIC
 #endif
 
-/* CIntFromPy.proto */
-static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
-
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE uint32_t __Pyx_PyInt_As_uint32_t(PyObject *);
 
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
+
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint64_t(uint64_t value);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
 
 /* FormatTypeName.proto */
 #if CYTHON_COMPILING_IN_LIMITED_API
@@ -2438,11 +2405,11 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from "libcpp.vector" */
 
-/* Module declarations from "libcpp.unordered_set" */
-
 /* Module declarations from "libc.stdint" */
 
 /* Module declarations from "libcpp" */
+
+/* Module declarations from "libcpp.unordered_map" */
 
 /* Module declarations from "opendbc.can.common" */
 
@@ -2456,7 +2423,6 @@ static CYTHON_INLINE PyObject *__pyx_convert_PyByteArray_string_to_py_std__in_st
 static std::pair<uint32_t,int>  __pyx_convert_pair_from_py_uint32_t__and_int(PyObject *); /*proto*/
 static std::vector<std::string>  __pyx_convert_vector_from_py_std_3a__3a_string(PyObject *); /*proto*/
 static PyObject *__pyx_convert_vector_to_py_double(std::vector<double>  const &); /*proto*/
-static PyObject *__pyx_convert_unordered_set_to_py_uint32_t(std::unordered_set<uint32_t>  const &); /*proto*/
 /* #### Code section: typeinfo ### */
 /* #### Code section: before_global_var ### */
 #define __Pyx_MODULE_NAME "opendbc.can.parser_pyx"
@@ -2467,21 +2433,21 @@ int __pyx_module_is_main_opendbc__can__parser_pyx = 0;
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_range;
+static PyObject *__pyx_builtin_IndexError;
 static PyObject *__pyx_builtin_TypeError;
+static PyObject *__pyx_builtin_KeyError;
 static PyObject *__pyx_builtin_zip;
 static PyObject *__pyx_builtin_MemoryError;
 /* #### Code section: string_decls ### */
 static const char __pyx_k_[] = "'";
-static const char __pyx_k_l[] = "l";
-static const char __pyx_k_v[] = "v";
 static const char __pyx_k__4[] = "*";
 static const char __pyx_k__5[] = ".";
 static const char __pyx_k_cv[] = "cv";
 static const char __pyx_k_gc[] = "gc";
 static const char __pyx_k_it[] = "it";
+static const char __pyx_k_vl[] = "vl";
 static const char __pyx_k__15[] = "?";
 static const char __pyx_k_bus[] = "bus";
-static const char __pyx_k_get[] = "get";
 static const char __pyx_k_zip[] = "zip";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
@@ -2496,25 +2462,30 @@ static const char __pyx_k_enable[] = "enable";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_in_DBC[] = " in DBC ";
 static const char __pyx_k_reduce[] = "__reduce__";
-static const char __pyx_k_values[] = "values";
+static const char __pyx_k_vl_all[] = "vl_all";
+static const char __pyx_k_address[] = "address";
 static const char __pyx_k_cv_name[] = "cv_name";
 static const char __pyx_k_disable[] = "disable";
 static const char __pyx_k_numbers[] = "numbers";
 static const char __pyx_k_sendcan[] = "sendcan";
 static const char __pyx_k_strings[] = "strings";
+static const char __pyx_k_KeyError[] = "KeyError";
 static const char __pyx_k_dbc_name[] = "dbc_name";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_messages[] = "messages";
 static const char __pyx_k_new_vals[] = "new_vals";
 static const char __pyx_k_setstate[] = "__setstate__";
+static const char __pyx_k_ts_nanos[] = "ts_nanos";
 static const char __pyx_k_CANDefine[] = "CANDefine";
 static const char __pyx_k_CANParser[] = "CANParser";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_isenabled[] = "isenabled";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
+static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_collections[] = "collections";
+static const char __pyx_k_cur_address[] = "cur_address";
 static const char __pyx_k_defaultdict[] = "defaultdict";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
 static const char __pyx_k_initializing[] = "_initializing";
@@ -2561,7 +2532,6 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine_2__reduce_cython
 static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_7opendbc_3can_10parser_pyx_CANDefine *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_7opendbc_3can_10parser_pyx_CANParser(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_7opendbc_3can_10parser_pyx_CANDefine(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_get = {0, 0, 0, 0, 0};
 /* #### Code section: late_includes ### */
 /* #### Code section: module_state ### */
 typedef struct {
@@ -2623,6 +2593,8 @@ typedef struct {
   PyObject *__pyx_n_s_CANParser_update_strings;
   PyObject *__pyx_kp_u_Can_t_find_DBC;
   PyObject *__pyx_kp_u_Can_t_find_DBC_2;
+  PyObject *__pyx_n_s_IndexError;
+  PyObject *__pyx_n_s_KeyError;
   PyObject *__pyx_n_s_MemoryError;
   PyObject *__pyx_n_s_Number;
   PyObject *__pyx_n_s_RuntimeError;
@@ -2630,6 +2602,7 @@ typedef struct {
   PyObject *__pyx_n_s__15;
   PyObject *__pyx_n_s__4;
   PyObject *__pyx_kp_u__5;
+  PyObject *__pyx_n_s_address;
   PyObject *__pyx_n_s_asyncio_coroutines;
   PyObject *__pyx_n_s_bus;
   PyObject *__pyx_n_s_class_getitem;
@@ -2637,6 +2610,7 @@ typedef struct {
   PyObject *__pyx_n_s_cline_in_traceback;
   PyObject *__pyx_n_s_collections;
   PyObject *__pyx_kp_u_could_not_find_message;
+  PyObject *__pyx_n_s_cur_address;
   PyObject *__pyx_n_s_cv;
   PyObject *__pyx_n_s_cv_name;
   PyObject *__pyx_n_s_dbc_name;
@@ -2644,7 +2618,6 @@ typedef struct {
   PyObject *__pyx_kp_u_disable;
   PyObject *__pyx_kp_u_enable;
   PyObject *__pyx_kp_u_gc;
-  PyObject *__pyx_n_s_get;
   PyObject *__pyx_n_s_getstate;
   PyObject *__pyx_n_s_import;
   PyObject *__pyx_kp_u_in_DBC;
@@ -2652,7 +2625,6 @@ typedef struct {
   PyObject *__pyx_n_s_is_coroutine;
   PyObject *__pyx_kp_u_isenabled;
   PyObject *__pyx_n_s_it;
-  PyObject *__pyx_n_s_l;
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_messages;
   PyObject *__pyx_n_s_name;
@@ -2676,10 +2648,11 @@ typedef struct {
   PyObject *__pyx_n_s_strings;
   PyObject *__pyx_kp_s_stringsource;
   PyObject *__pyx_n_s_test;
+  PyObject *__pyx_n_s_ts_nanos;
   PyObject *__pyx_n_s_update_strings;
   PyObject *__pyx_n_s_updated_addrs;
-  PyObject *__pyx_n_s_v;
-  PyObject *__pyx_n_s_values;
+  PyObject *__pyx_n_s_vl;
+  PyObject *__pyx_n_s_vl_all;
   PyObject *__pyx_n_s_zip;
   PyObject *__pyx_int_0;
   PyObject *__pyx_int_1;
@@ -2751,6 +2724,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_CANParser_update_strings);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Can_t_find_DBC);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Can_t_find_DBC_2);
+  Py_CLEAR(clear_module_state->__pyx_n_s_IndexError);
+  Py_CLEAR(clear_module_state->__pyx_n_s_KeyError);
   Py_CLEAR(clear_module_state->__pyx_n_s_MemoryError);
   Py_CLEAR(clear_module_state->__pyx_n_s_Number);
   Py_CLEAR(clear_module_state->__pyx_n_s_RuntimeError);
@@ -2758,6 +2733,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s__15);
   Py_CLEAR(clear_module_state->__pyx_n_s__4);
   Py_CLEAR(clear_module_state->__pyx_kp_u__5);
+  Py_CLEAR(clear_module_state->__pyx_n_s_address);
   Py_CLEAR(clear_module_state->__pyx_n_s_asyncio_coroutines);
   Py_CLEAR(clear_module_state->__pyx_n_s_bus);
   Py_CLEAR(clear_module_state->__pyx_n_s_class_getitem);
@@ -2765,6 +2741,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_cline_in_traceback);
   Py_CLEAR(clear_module_state->__pyx_n_s_collections);
   Py_CLEAR(clear_module_state->__pyx_kp_u_could_not_find_message);
+  Py_CLEAR(clear_module_state->__pyx_n_s_cur_address);
   Py_CLEAR(clear_module_state->__pyx_n_s_cv);
   Py_CLEAR(clear_module_state->__pyx_n_s_cv_name);
   Py_CLEAR(clear_module_state->__pyx_n_s_dbc_name);
@@ -2772,7 +2749,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_u_disable);
   Py_CLEAR(clear_module_state->__pyx_kp_u_enable);
   Py_CLEAR(clear_module_state->__pyx_kp_u_gc);
-  Py_CLEAR(clear_module_state->__pyx_n_s_get);
   Py_CLEAR(clear_module_state->__pyx_n_s_getstate);
   Py_CLEAR(clear_module_state->__pyx_n_s_import);
   Py_CLEAR(clear_module_state->__pyx_kp_u_in_DBC);
@@ -2780,7 +2756,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_is_coroutine);
   Py_CLEAR(clear_module_state->__pyx_kp_u_isenabled);
   Py_CLEAR(clear_module_state->__pyx_n_s_it);
-  Py_CLEAR(clear_module_state->__pyx_n_s_l);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_messages);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
@@ -2804,10 +2779,11 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_strings);
   Py_CLEAR(clear_module_state->__pyx_kp_s_stringsource);
   Py_CLEAR(clear_module_state->__pyx_n_s_test);
+  Py_CLEAR(clear_module_state->__pyx_n_s_ts_nanos);
   Py_CLEAR(clear_module_state->__pyx_n_s_update_strings);
   Py_CLEAR(clear_module_state->__pyx_n_s_updated_addrs);
-  Py_CLEAR(clear_module_state->__pyx_n_s_v);
-  Py_CLEAR(clear_module_state->__pyx_n_s_values);
+  Py_CLEAR(clear_module_state->__pyx_n_s_vl);
+  Py_CLEAR(clear_module_state->__pyx_n_s_vl_all);
   Py_CLEAR(clear_module_state->__pyx_n_s_zip);
   Py_CLEAR(clear_module_state->__pyx_int_0);
   Py_CLEAR(clear_module_state->__pyx_int_1);
@@ -2857,6 +2833,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_CANParser_update_strings);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Can_t_find_DBC);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Can_t_find_DBC_2);
+  Py_VISIT(traverse_module_state->__pyx_n_s_IndexError);
+  Py_VISIT(traverse_module_state->__pyx_n_s_KeyError);
   Py_VISIT(traverse_module_state->__pyx_n_s_MemoryError);
   Py_VISIT(traverse_module_state->__pyx_n_s_Number);
   Py_VISIT(traverse_module_state->__pyx_n_s_RuntimeError);
@@ -2864,6 +2842,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s__15);
   Py_VISIT(traverse_module_state->__pyx_n_s__4);
   Py_VISIT(traverse_module_state->__pyx_kp_u__5);
+  Py_VISIT(traverse_module_state->__pyx_n_s_address);
   Py_VISIT(traverse_module_state->__pyx_n_s_asyncio_coroutines);
   Py_VISIT(traverse_module_state->__pyx_n_s_bus);
   Py_VISIT(traverse_module_state->__pyx_n_s_class_getitem);
@@ -2871,6 +2850,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_cline_in_traceback);
   Py_VISIT(traverse_module_state->__pyx_n_s_collections);
   Py_VISIT(traverse_module_state->__pyx_kp_u_could_not_find_message);
+  Py_VISIT(traverse_module_state->__pyx_n_s_cur_address);
   Py_VISIT(traverse_module_state->__pyx_n_s_cv);
   Py_VISIT(traverse_module_state->__pyx_n_s_cv_name);
   Py_VISIT(traverse_module_state->__pyx_n_s_dbc_name);
@@ -2878,7 +2858,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_u_disable);
   Py_VISIT(traverse_module_state->__pyx_kp_u_enable);
   Py_VISIT(traverse_module_state->__pyx_kp_u_gc);
-  Py_VISIT(traverse_module_state->__pyx_n_s_get);
   Py_VISIT(traverse_module_state->__pyx_n_s_getstate);
   Py_VISIT(traverse_module_state->__pyx_n_s_import);
   Py_VISIT(traverse_module_state->__pyx_kp_u_in_DBC);
@@ -2886,7 +2865,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_is_coroutine);
   Py_VISIT(traverse_module_state->__pyx_kp_u_isenabled);
   Py_VISIT(traverse_module_state->__pyx_n_s_it);
-  Py_VISIT(traverse_module_state->__pyx_n_s_l);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_messages);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
@@ -2910,10 +2888,11 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_strings);
   Py_VISIT(traverse_module_state->__pyx_kp_s_stringsource);
   Py_VISIT(traverse_module_state->__pyx_n_s_test);
+  Py_VISIT(traverse_module_state->__pyx_n_s_ts_nanos);
   Py_VISIT(traverse_module_state->__pyx_n_s_update_strings);
   Py_VISIT(traverse_module_state->__pyx_n_s_updated_addrs);
-  Py_VISIT(traverse_module_state->__pyx_n_s_v);
-  Py_VISIT(traverse_module_state->__pyx_n_s_values);
+  Py_VISIT(traverse_module_state->__pyx_n_s_vl);
+  Py_VISIT(traverse_module_state->__pyx_n_s_vl_all);
   Py_VISIT(traverse_module_state->__pyx_n_s_zip);
   Py_VISIT(traverse_module_state->__pyx_int_0);
   Py_VISIT(traverse_module_state->__pyx_int_1);
@@ -2991,6 +2970,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_CANParser_update_strings __pyx_mstate_global->__pyx_n_s_CANParser_update_strings
 #define __pyx_kp_u_Can_t_find_DBC __pyx_mstate_global->__pyx_kp_u_Can_t_find_DBC
 #define __pyx_kp_u_Can_t_find_DBC_2 __pyx_mstate_global->__pyx_kp_u_Can_t_find_DBC_2
+#define __pyx_n_s_IndexError __pyx_mstate_global->__pyx_n_s_IndexError
+#define __pyx_n_s_KeyError __pyx_mstate_global->__pyx_n_s_KeyError
 #define __pyx_n_s_MemoryError __pyx_mstate_global->__pyx_n_s_MemoryError
 #define __pyx_n_s_Number __pyx_mstate_global->__pyx_n_s_Number
 #define __pyx_n_s_RuntimeError __pyx_mstate_global->__pyx_n_s_RuntimeError
@@ -2998,6 +2979,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s__15 __pyx_mstate_global->__pyx_n_s__15
 #define __pyx_n_s__4 __pyx_mstate_global->__pyx_n_s__4
 #define __pyx_kp_u__5 __pyx_mstate_global->__pyx_kp_u__5
+#define __pyx_n_s_address __pyx_mstate_global->__pyx_n_s_address
 #define __pyx_n_s_asyncio_coroutines __pyx_mstate_global->__pyx_n_s_asyncio_coroutines
 #define __pyx_n_s_bus __pyx_mstate_global->__pyx_n_s_bus
 #define __pyx_n_s_class_getitem __pyx_mstate_global->__pyx_n_s_class_getitem
@@ -3005,6 +2987,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_cline_in_traceback __pyx_mstate_global->__pyx_n_s_cline_in_traceback
 #define __pyx_n_s_collections __pyx_mstate_global->__pyx_n_s_collections
 #define __pyx_kp_u_could_not_find_message __pyx_mstate_global->__pyx_kp_u_could_not_find_message
+#define __pyx_n_s_cur_address __pyx_mstate_global->__pyx_n_s_cur_address
 #define __pyx_n_s_cv __pyx_mstate_global->__pyx_n_s_cv
 #define __pyx_n_s_cv_name __pyx_mstate_global->__pyx_n_s_cv_name
 #define __pyx_n_s_dbc_name __pyx_mstate_global->__pyx_n_s_dbc_name
@@ -3012,7 +2995,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_u_disable __pyx_mstate_global->__pyx_kp_u_disable
 #define __pyx_kp_u_enable __pyx_mstate_global->__pyx_kp_u_enable
 #define __pyx_kp_u_gc __pyx_mstate_global->__pyx_kp_u_gc
-#define __pyx_n_s_get __pyx_mstate_global->__pyx_n_s_get
 #define __pyx_n_s_getstate __pyx_mstate_global->__pyx_n_s_getstate
 #define __pyx_n_s_import __pyx_mstate_global->__pyx_n_s_import
 #define __pyx_kp_u_in_DBC __pyx_mstate_global->__pyx_kp_u_in_DBC
@@ -3020,7 +3002,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_is_coroutine __pyx_mstate_global->__pyx_n_s_is_coroutine
 #define __pyx_kp_u_isenabled __pyx_mstate_global->__pyx_kp_u_isenabled
 #define __pyx_n_s_it __pyx_mstate_global->__pyx_n_s_it
-#define __pyx_n_s_l __pyx_mstate_global->__pyx_n_s_l
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_messages __pyx_mstate_global->__pyx_n_s_messages
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
@@ -3044,10 +3025,11 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_strings __pyx_mstate_global->__pyx_n_s_strings
 #define __pyx_kp_s_stringsource __pyx_mstate_global->__pyx_kp_s_stringsource
 #define __pyx_n_s_test __pyx_mstate_global->__pyx_n_s_test
+#define __pyx_n_s_ts_nanos __pyx_mstate_global->__pyx_n_s_ts_nanos
 #define __pyx_n_s_update_strings __pyx_mstate_global->__pyx_n_s_update_strings
 #define __pyx_n_s_updated_addrs __pyx_mstate_global->__pyx_n_s_updated_addrs
-#define __pyx_n_s_v __pyx_mstate_global->__pyx_n_s_v
-#define __pyx_n_s_values __pyx_mstate_global->__pyx_n_s_values
+#define __pyx_n_s_vl __pyx_mstate_global->__pyx_n_s_vl
+#define __pyx_n_s_vl_all __pyx_mstate_global->__pyx_n_s_vl_all
 #define __pyx_n_s_zip __pyx_mstate_global->__pyx_n_s_zip
 #define __pyx_int_0 __pyx_mstate_global->__pyx_int_0
 #define __pyx_int_1 __pyx_mstate_global->__pyx_int_1
@@ -3793,73 +3775,6 @@ static PyObject *__pyx_convert_vector_to_py_double(std::vector<double>  const &_
   return __pyx_r;
 }
 
-/* "set.to_py":166
- * 
- * @cname("__pyx_convert_unordered_set_to_py_uint32_t")
- * cdef object __pyx_convert_unordered_set_to_py_uint32_t(const cpp_set[X]& s):             # <<<<<<<<<<<<<<
- *     return {v for v in s}
- * 
- */
-
-static PyObject *__pyx_convert_unordered_set_to_py_uint32_t(std::unordered_set<uint32_t>  const &__pyx_v_s) {
-  uint32_t __pyx_7genexpr__pyx_v_v;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  std::unordered_set<uint32_t> ::const_iterator __pyx_t_2;
-  uint32_t __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__pyx_convert_unordered_set_to_py_uint32_t", 1);
-
-  /* "set.to_py":167
- * @cname("__pyx_convert_unordered_set_to_py_uint32_t")
- * cdef object __pyx_convert_unordered_set_to_py_uint32_t(const cpp_set[X]& s):
- *     return {v for v in s}             # <<<<<<<<<<<<<<
- * 
- */
-  __Pyx_XDECREF(__pyx_r);
-  { /* enter inner scope */
-    __pyx_t_1 = PySet_New(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 167, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __pyx_v_s.begin();
-    for (;;) {
-      if (!(__pyx_t_2 != __pyx_v_s.end())) break;
-      __pyx_t_3 = *__pyx_t_2;
-      ++__pyx_t_2;
-      __pyx_7genexpr__pyx_v_v = __pyx_t_3;
-      __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_7genexpr__pyx_v_v); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 167, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      if (unlikely(PySet_Add(__pyx_t_1, (PyObject*)__pyx_t_4))) __PYX_ERR(1, 167, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    }
-  } /* exit inner scope */
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "set.to_py":166
- * 
- * @cname("__pyx_convert_unordered_set_to_py_uint32_t")
- * cdef object __pyx_convert_unordered_set_to_py_uint32_t(const cpp_set[X]& s):             # <<<<<<<<<<<<<<
- *     return {v for v in s}
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("set.to_py.__pyx_convert_unordered_set_to_py_uint32_t", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
 /* "opendbc/can/parser_pyx.pyx":30
  *     string dbc_name
  * 
@@ -3979,14 +3894,12 @@ static int __pyx_pw_7opendbc_3can_10parser_pyx_9CANParser_1__init__(PyObject *__
 }
 
 static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser___init__(struct __pyx_obj_7opendbc_3can_10parser_pyx_CANParser *__pyx_v_self, PyObject *__pyx_v_dbc_name, PyObject *__pyx_v_messages, PyObject *__pyx_v_bus) {
-  PyObject *__pyx_v_msg_name_to_address = NULL;
-  PyObject *__pyx_v_address_to_msg_name = NULL;
-  std::vector<struct Msg> ::size_type __pyx_v_i;
-  struct Msg __pyx_v_msg;
-  PyObject *__pyx_v_name = NULL;
   std::vector<std::pair<uint32_t,int> >  __pyx_v_message_v;
+  Py_ssize_t __pyx_v_i;
   PyObject *__pyx_v_c = NULL;
-  PyObject *__pyx_v_address = NULL;
+  struct Msg const *__pyx_v_m;
+  uint32_t __pyx_v_address;
+  PyObject *__pyx_v_name = NULL;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   std::string __pyx_t_1;
@@ -3994,18 +3907,25 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser___init__(struct __pyx_
   int __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  std::vector<struct Msg> ::size_type __pyx_t_6;
-  std::vector<struct Msg> ::size_type __pyx_t_7;
-  std::vector<struct Msg> ::size_type __pyx_t_8;
-  Py_ssize_t __pyx_t_9;
-  Py_ssize_t __pyx_t_10;
+  Py_ssize_t __pyx_t_6;
+  Py_ssize_t __pyx_t_7;
+  Py_ssize_t __pyx_t_8;
+  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
-  PyObject *__pyx_t_12 = NULL;
-  Py_ssize_t __pyx_t_13;
-  Py_UCS4 __pyx_t_14;
-  std::pair<uint32_t,int>  __pyx_t_15;
-  int __pyx_t_16;
-  CANParser *__pyx_t_17;
+  __Pyx_FakeReference<struct Msg const *> __pyx_t_12;
+  PyObject *__pyx_t_13 = NULL;
+  uint32_t __pyx_t_14;
+  __Pyx_FakeReference<struct Msg const *> __pyx_t_15;
+  __Pyx_FakeReference<struct Msg const *> __pyx_t_16;
+  int __pyx_t_17;
+  PyObject *__pyx_t_18 = NULL;
+  Py_ssize_t __pyx_t_19;
+  Py_UCS4 __pyx_t_20;
+  PyObject *__pyx_t_21 = NULL;
+  PyObject *__pyx_t_22 = NULL;
+  std::pair<uint32_t,int>  __pyx_t_23;
+  CANParser *__pyx_t_24;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4095,7 +4015,7 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser___init__(struct __pyx_
  *     self.vl = {}
  *     self.vl_all = {}             # <<<<<<<<<<<<<<
  *     self.ts_nanos = {}
- *     msg_name_to_address = {}
+ * 
  */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -4109,8 +4029,8 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser___init__(struct __pyx_
  *     self.vl = {}
  *     self.vl_all = {}
  *     self.ts_nanos = {}             # <<<<<<<<<<<<<<
- *     msg_name_to_address = {}
- *     address_to_msg_name = {}
+ * 
+ *     # Convert message names into addresses and check existence in DBC
  */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -4120,344 +4040,382 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser___init__(struct __pyx_
   __pyx_v_self->ts_nanos = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "opendbc/can/parser_pyx.pyx":39
- *     self.vl_all = {}
- *     self.ts_nanos = {}
- *     msg_name_to_address = {}             # <<<<<<<<<<<<<<
- *     address_to_msg_name = {}
- * 
- */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 39, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_v_msg_name_to_address = ((PyObject*)__pyx_t_4);
-  __pyx_t_4 = 0;
-
-  /* "opendbc/can/parser_pyx.pyx":40
- *     self.ts_nanos = {}
- *     msg_name_to_address = {}
- *     address_to_msg_name = {}             # <<<<<<<<<<<<<<
- * 
- *     for i in range(self.dbc[0].msgs.size()):
- */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_v_address_to_msg_name = ((PyObject*)__pyx_t_4);
-  __pyx_t_4 = 0;
-
   /* "opendbc/can/parser_pyx.pyx":42
- *     address_to_msg_name = {}
- * 
- *     for i in range(self.dbc[0].msgs.size()):             # <<<<<<<<<<<<<<
- *       msg = self.dbc[0].msgs[i]
- *       name = msg.name.decode("utf8")
+ *     # Convert message names into addresses and check existence in DBC
+ *     cdef vector[pair[uint32_t, int]] message_v
+ *     for i in range(len(messages)):             # <<<<<<<<<<<<<<
+ *       c = messages[i]
+ *       try:
  */
-  __pyx_t_6 = (__pyx_v_self->dbc[0]).msgs.size();
+  __pyx_t_6 = PyObject_Length(__pyx_v_messages); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 42, __pyx_L1_error)
   __pyx_t_7 = __pyx_t_6;
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
     /* "opendbc/can/parser_pyx.pyx":43
- * 
- *     for i in range(self.dbc[0].msgs.size()):
- *       msg = self.dbc[0].msgs[i]             # <<<<<<<<<<<<<<
- *       name = msg.name.decode("utf8")
- * 
- */
-    __pyx_v_msg = ((__pyx_v_self->dbc[0]).msgs[__pyx_v_i]);
-
-    /* "opendbc/can/parser_pyx.pyx":44
- *     for i in range(self.dbc[0].msgs.size()):
- *       msg = self.dbc[0].msgs[i]
- *       name = msg.name.decode("utf8")             # <<<<<<<<<<<<<<
- * 
- *       msg_name_to_address[name] = msg.address
- */
-    __pyx_t_4 = __Pyx_decode_cpp_string(__pyx_v_msg.name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 44, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_4);
-    __pyx_t_4 = 0;
-
-    /* "opendbc/can/parser_pyx.pyx":46
- *       name = msg.name.decode("utf8")
- * 
- *       msg_name_to_address[name] = msg.address             # <<<<<<<<<<<<<<
- *       address_to_msg_name[msg.address] = name
- * 
- */
-    __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_v_msg.address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely((PyDict_SetItem(__pyx_v_msg_name_to_address, __pyx_v_name, __pyx_t_4) < 0))) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-    /* "opendbc/can/parser_pyx.pyx":47
- * 
- *       msg_name_to_address[name] = msg.address
- *       address_to_msg_name[msg.address] = name             # <<<<<<<<<<<<<<
- * 
- *     # Convert message names into addresses and check existence in DBC
- */
-    __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_v_msg.address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely((PyDict_SetItem(__pyx_v_address_to_msg_name, __pyx_t_4, __pyx_v_name) < 0))) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  }
-
-  /* "opendbc/can/parser_pyx.pyx":51
- *     # Convert message names into addresses and check existence in DBC
- *     cdef vector[pair[uint32_t, int]] message_v
- *     for i in range(len(messages)):             # <<<<<<<<<<<<<<
- *       c = messages[i]
- *       address = c[0] if isinstance(c[0], numbers.Number) else msg_name_to_address.get(c[0])
- */
-  __pyx_t_9 = PyObject_Length(__pyx_v_messages); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 51, __pyx_L1_error)
-  __pyx_t_10 = __pyx_t_9;
-  for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_10; __pyx_t_6+=1) {
-    __pyx_v_i = __pyx_t_6;
-
-    /* "opendbc/can/parser_pyx.pyx":52
  *     cdef vector[pair[uint32_t, int]] message_v
  *     for i in range(len(messages)):
  *       c = messages[i]             # <<<<<<<<<<<<<<
- *       address = c[0] if isinstance(c[0], numbers.Number) else msg_name_to_address.get(c[0])
- *       if address not in address_to_msg_name:
+ *       try:
+ *         m = self.dbc.addr_to_msg.at(c[0]) if isinstance(c[0], numbers.Number) else self.dbc.name_to_msg.at(c[0])
  */
-    __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_messages, __pyx_v_i, std::vector<struct Msg> ::size_type, 0, __Pyx_PyInt_FromSize_t, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_messages, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 43, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_XDECREF_SET(__pyx_v_c, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":53
+    /* "opendbc/can/parser_pyx.pyx":44
  *     for i in range(len(messages)):
  *       c = messages[i]
- *       address = c[0] if isinstance(c[0], numbers.Number) else msg_name_to_address.get(c[0])             # <<<<<<<<<<<<<<
- *       if address not in address_to_msg_name:
- *         raise RuntimeError(f"could not find message {repr(c[0])} in DBC {self.dbc_name}")
+ *       try:             # <<<<<<<<<<<<<<
+ *         m = self.dbc.addr_to_msg.at(c[0]) if isinstance(c[0], numbers.Number) else self.dbc.name_to_msg.at(c[0])
+ *       except IndexError:
  */
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_c, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_numbers); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 53, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_Number); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 53, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_3 = PyObject_IsInstance(__pyx_t_5, __pyx_t_12); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 53, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (__pyx_t_3) {
-      __pyx_t_12 = __Pyx_GetItemInt(__pyx_v_c, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 53, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_4 = __pyx_t_12;
-      __pyx_t_12 = 0;
-    } else {
-      __pyx_t_12 = __Pyx_GetItemInt(__pyx_v_c, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 53, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_5 = __Pyx_PyDict_GetItemDefault(__pyx_v_msg_name_to_address, __pyx_t_12, Py_None); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_4 = __pyx_t_5;
-      __pyx_t_5 = 0;
-    }
-    __Pyx_XDECREF_SET(__pyx_v_address, __pyx_t_4);
-    __pyx_t_4 = 0;
+    {
+      __Pyx_PyThreadState_declare
+      __Pyx_PyThreadState_assign
+      __Pyx_ExceptionSave(&__pyx_t_9, &__pyx_t_10, &__pyx_t_11);
+      __Pyx_XGOTREF(__pyx_t_9);
+      __Pyx_XGOTREF(__pyx_t_10);
+      __Pyx_XGOTREF(__pyx_t_11);
+      /*try:*/ {
 
-    /* "opendbc/can/parser_pyx.pyx":54
+        /* "opendbc/can/parser_pyx.pyx":45
  *       c = messages[i]
- *       address = c[0] if isinstance(c[0], numbers.Number) else msg_name_to_address.get(c[0])
- *       if address not in address_to_msg_name:             # <<<<<<<<<<<<<<
+ *       try:
+ *         m = self.dbc.addr_to_msg.at(c[0]) if isinstance(c[0], numbers.Number) else self.dbc.name_to_msg.at(c[0])             # <<<<<<<<<<<<<<
+ *       except IndexError:
  *         raise RuntimeError(f"could not find message {repr(c[0])} in DBC {self.dbc_name}")
- *       message_v.push_back((address, c[1]))
  */
-    __pyx_t_3 = (__Pyx_PyDict_ContainsTF(__pyx_v_address, __pyx_v_address_to_msg_name, Py_NE)); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(0, 54, __pyx_L1_error)
-    if (unlikely(__pyx_t_3)) {
+        __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_c, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 45, __pyx_L6_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_numbers); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 45, __pyx_L6_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_Number); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 45, __pyx_L6_error)
+        __Pyx_GOTREF(__pyx_t_13);
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __pyx_t_3 = PyObject_IsInstance(__pyx_t_4, __pyx_t_13); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 45, __pyx_L6_error)
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+        if (__pyx_t_3) {
+          __pyx_t_13 = __Pyx_GetItemInt(__pyx_v_c, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 45, __pyx_L6_error)
+          __Pyx_GOTREF(__pyx_t_13);
+          __pyx_t_14 = __Pyx_PyInt_As_uint32_t(__pyx_t_13); if (unlikely((__pyx_t_14 == ((uint32_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L6_error)
+          __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+          try {
+            __pyx_t_15 = __pyx_v_self->dbc->addr_to_msg.at(__pyx_t_14);
+          } catch(...) {
+            __Pyx_CppExn2PyErr();
+            __PYX_ERR(0, 45, __pyx_L6_error)
+          }
+          __pyx_t_12 = __pyx_t_15;
+        } else {
+          __pyx_t_13 = __Pyx_GetItemInt(__pyx_v_c, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 45, __pyx_L6_error)
+          __Pyx_GOTREF(__pyx_t_13);
+          __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_t_13); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L6_error)
+          __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+          try {
+            __pyx_t_16 = __pyx_v_self->dbc->name_to_msg.at(__pyx_t_1);
+          } catch(...) {
+            __Pyx_CppExn2PyErr();
+            __PYX_ERR(0, 45, __pyx_L6_error)
+          }
+          __pyx_t_12 = __pyx_t_16;
+        }
+        __pyx_v_m = __pyx_t_12;
 
-      /* "opendbc/can/parser_pyx.pyx":55
- *       address = c[0] if isinstance(c[0], numbers.Number) else msg_name_to_address.get(c[0])
- *       if address not in address_to_msg_name:
+        /* "opendbc/can/parser_pyx.pyx":44
+ *     for i in range(len(messages)):
+ *       c = messages[i]
+ *       try:             # <<<<<<<<<<<<<<
+ *         m = self.dbc.addr_to_msg.at(c[0]) if isinstance(c[0], numbers.Number) else self.dbc.name_to_msg.at(c[0])
+ *       except IndexError:
+ */
+      }
+      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+      goto __pyx_L13_try_end;
+      __pyx_L6_error:;
+      __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+
+      /* "opendbc/can/parser_pyx.pyx":46
+ *       try:
+ *         m = self.dbc.addr_to_msg.at(c[0]) if isinstance(c[0], numbers.Number) else self.dbc.name_to_msg.at(c[0])
+ *       except IndexError:             # <<<<<<<<<<<<<<
+ *         raise RuntimeError(f"could not find message {repr(c[0])} in DBC {self.dbc_name}")
+ * 
+ */
+      __pyx_t_17 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
+      if (__pyx_t_17) {
+        __Pyx_AddTraceback("opendbc.can.parser_pyx.CANParser.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+        if (__Pyx_GetException(&__pyx_t_13, &__pyx_t_4, &__pyx_t_5) < 0) __PYX_ERR(0, 46, __pyx_L8_except_error)
+        __Pyx_XGOTREF(__pyx_t_13);
+        __Pyx_XGOTREF(__pyx_t_4);
+        __Pyx_XGOTREF(__pyx_t_5);
+
+        /* "opendbc/can/parser_pyx.pyx":47
+ *         m = self.dbc.addr_to_msg.at(c[0]) if isinstance(c[0], numbers.Number) else self.dbc.name_to_msg.at(c[0])
+ *       except IndexError:
  *         raise RuntimeError(f"could not find message {repr(c[0])} in DBC {self.dbc_name}")             # <<<<<<<<<<<<<<
- *       message_v.push_back((address, c[1]))
  * 
+ *       address = m.address
  */
-      __pyx_t_4 = PyTuple_New(4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_13 = 0;
-      __pyx_t_14 = 127;
-      __Pyx_INCREF(__pyx_kp_u_could_not_find_message);
-      __pyx_t_13 += 23;
-      __Pyx_GIVEREF(__pyx_kp_u_could_not_find_message);
-      PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_kp_u_could_not_find_message);
-      __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_c, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_12 = PyObject_Repr(__pyx_t_5); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_PyObject_FormatSimple(__pyx_t_12, __pyx_empty_unicode); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_14 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) > __pyx_t_14) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) : __pyx_t_14;
-      __pyx_t_13 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_5);
-      __Pyx_GIVEREF(__pyx_t_5);
-      PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_5);
-      __pyx_t_5 = 0;
-      __Pyx_INCREF(__pyx_kp_u_in_DBC);
-      __pyx_t_13 += 8;
-      __Pyx_GIVEREF(__pyx_kp_u_in_DBC);
-      PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_kp_u_in_DBC);
-      __pyx_t_5 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->dbc_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_12 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_14 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) > __pyx_t_14) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_12) : __pyx_t_14;
-      __pyx_t_13 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_12);
-      __Pyx_GIVEREF(__pyx_t_12);
-      PyTuple_SET_ITEM(__pyx_t_4, 3, __pyx_t_12);
-      __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyUnicode_Join(__pyx_t_4, 4, __pyx_t_13, __pyx_t_14); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_RuntimeError, __pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __Pyx_Raise(__pyx_t_4, 0, 0, 0);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __PYX_ERR(0, 55, __pyx_L1_error)
+        __pyx_t_18 = PyTuple_New(4); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 47, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_18);
+        __pyx_t_19 = 0;
+        __pyx_t_20 = 127;
+        __Pyx_INCREF(__pyx_kp_u_could_not_find_message);
+        __pyx_t_19 += 23;
+        __Pyx_GIVEREF(__pyx_kp_u_could_not_find_message);
+        PyTuple_SET_ITEM(__pyx_t_18, 0, __pyx_kp_u_could_not_find_message);
+        __pyx_t_21 = __Pyx_GetItemInt(__pyx_v_c, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 47, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_21);
+        __pyx_t_22 = PyObject_Repr(__pyx_t_21); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 47, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_22);
+        __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+        __pyx_t_21 = __Pyx_PyObject_FormatSimple(__pyx_t_22, __pyx_empty_unicode); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 47, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_21);
+        __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+        __pyx_t_20 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_21) > __pyx_t_20) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_21) : __pyx_t_20;
+        __pyx_t_19 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_21);
+        __Pyx_GIVEREF(__pyx_t_21);
+        PyTuple_SET_ITEM(__pyx_t_18, 1, __pyx_t_21);
+        __pyx_t_21 = 0;
+        __Pyx_INCREF(__pyx_kp_u_in_DBC);
+        __pyx_t_19 += 8;
+        __Pyx_GIVEREF(__pyx_kp_u_in_DBC);
+        PyTuple_SET_ITEM(__pyx_t_18, 2, __pyx_kp_u_in_DBC);
+        __pyx_t_21 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->dbc_name); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 47, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_21);
+        __pyx_t_22 = __Pyx_PyObject_FormatSimple(__pyx_t_21, __pyx_empty_unicode); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 47, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_22);
+        __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+        __pyx_t_20 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_22) > __pyx_t_20) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_22) : __pyx_t_20;
+        __pyx_t_19 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_22);
+        __Pyx_GIVEREF(__pyx_t_22);
+        PyTuple_SET_ITEM(__pyx_t_18, 3, __pyx_t_22);
+        __pyx_t_22 = 0;
+        __pyx_t_22 = __Pyx_PyUnicode_Join(__pyx_t_18, 4, __pyx_t_19, __pyx_t_20); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 47, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_22);
+        __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+        __pyx_t_18 = __Pyx_PyObject_CallOneArg(__pyx_builtin_RuntimeError, __pyx_t_22); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 47, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_18);
+        __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+        __Pyx_Raise(__pyx_t_18, 0, 0, 0);
+        __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+        __PYX_ERR(0, 47, __pyx_L8_except_error)
+      }
+      goto __pyx_L8_except_error;
 
-      /* "opendbc/can/parser_pyx.pyx":54
+      /* "opendbc/can/parser_pyx.pyx":44
+ *     for i in range(len(messages)):
  *       c = messages[i]
- *       address = c[0] if isinstance(c[0], numbers.Number) else msg_name_to_address.get(c[0])
- *       if address not in address_to_msg_name:             # <<<<<<<<<<<<<<
- *         raise RuntimeError(f"could not find message {repr(c[0])} in DBC {self.dbc_name}")
- *       message_v.push_back((address, c[1]))
+ *       try:             # <<<<<<<<<<<<<<
+ *         m = self.dbc.addr_to_msg.at(c[0]) if isinstance(c[0], numbers.Number) else self.dbc.name_to_msg.at(c[0])
+ *       except IndexError:
  */
+      __pyx_L8_except_error:;
+      __Pyx_XGIVEREF(__pyx_t_9);
+      __Pyx_XGIVEREF(__pyx_t_10);
+      __Pyx_XGIVEREF(__pyx_t_11);
+      __Pyx_ExceptionReset(__pyx_t_9, __pyx_t_10, __pyx_t_11);
+      goto __pyx_L1_error;
+      __pyx_L13_try_end:;
     }
 
-    /* "opendbc/can/parser_pyx.pyx":56
- *       if address not in address_to_msg_name:
+    /* "opendbc/can/parser_pyx.pyx":49
  *         raise RuntimeError(f"could not find message {repr(c[0])} in DBC {self.dbc_name}")
- *       message_v.push_back((address, c[1]))             # <<<<<<<<<<<<<<
  * 
- *       name = address_to_msg_name[address]
+ *       address = m.address             # <<<<<<<<<<<<<<
+ *       message_v.push_back((address, c[1]))
+ *       self.addresses.push_back(address)
  */
-    __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_c, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __pyx_t_14 = __pyx_v_m->address;
+    __pyx_v_address = __pyx_t_14;
+
+    /* "opendbc/can/parser_pyx.pyx":50
+ * 
+ *       address = m.address
+ *       message_v.push_back((address, c[1]))             # <<<<<<<<<<<<<<
+ *       self.addresses.push_back(address)
+ * 
+ */
+    __pyx_t_5 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 50, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_c, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 56, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_INCREF(__pyx_v_address);
-    __Pyx_GIVEREF(__pyx_v_address);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_v_address)) __PYX_ERR(0, 56, __pyx_L1_error);
+    __pyx_t_13 = PyTuple_New(2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 50, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __Pyx_GIVEREF(__pyx_t_5);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_5)) __PYX_ERR(0, 50, __pyx_L1_error);
     __Pyx_GIVEREF(__pyx_t_4);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_13, 1, __pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error);
+    __pyx_t_5 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_15 = __pyx_convert_pair_from_py_uint32_t__and_int(__pyx_t_12); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __pyx_t_23 = __pyx_convert_pair_from_py_uint32_t__and_int(__pyx_t_13); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     try {
-      __pyx_v_message_v.push_back(__pyx_t_15);
+      __pyx_v_message_v.push_back(__pyx_t_23);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 56, __pyx_L1_error)
+      __PYX_ERR(0, 50, __pyx_L1_error)
     }
 
-    /* "opendbc/can/parser_pyx.pyx":58
+    /* "opendbc/can/parser_pyx.pyx":51
+ *       address = m.address
  *       message_v.push_back((address, c[1]))
+ *       self.addresses.push_back(address)             # <<<<<<<<<<<<<<
  * 
- *       name = address_to_msg_name[address]             # <<<<<<<<<<<<<<
+ *       name = m.name.decode("utf8")
+ */
+    try {
+      __pyx_v_self->addresses.push_back(__pyx_v_address);
+    } catch(...) {
+      __Pyx_CppExn2PyErr();
+      __PYX_ERR(0, 51, __pyx_L1_error)
+    }
+
+    /* "opendbc/can/parser_pyx.pyx":53
+ *       self.addresses.push_back(address)
+ * 
+ *       name = m.name.decode("utf8")             # <<<<<<<<<<<<<<
  *       self.vl[address] = {}
  *       self.vl[name] = self.vl[address]
  */
-    __pyx_t_12 = __Pyx_PyDict_GetItem(__pyx_v_address_to_msg_name, __pyx_v_address); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 58, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_12);
-    __pyx_t_12 = 0;
+    __pyx_t_13 = __Pyx_decode_cpp_string(__pyx_v_m->name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 53, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_13);
+    __pyx_t_13 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":59
+    /* "opendbc/can/parser_pyx.pyx":54
  * 
- *       name = address_to_msg_name[address]
+ *       name = m.name.decode("utf8")
  *       self.vl[address] = {}             # <<<<<<<<<<<<<<
  *       self.vl[name] = self.vl[address]
- *       self.vl_all[address] = {}
+ *       self.vl_all[address] = defaultdict(list)
  */
-    __pyx_t_12 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 59, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_13 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
     if (unlikely(__pyx_v_self->vl == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 59, __pyx_L1_error)
+      __PYX_ERR(0, 54, __pyx_L1_error)
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_self->vl, __pyx_v_address, __pyx_t_12) < 0))) __PYX_ERR(0, 59, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    if (unlikely((PyDict_SetItem(__pyx_v_self->vl, __pyx_t_4, __pyx_t_13) < 0))) __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":60
- *       name = address_to_msg_name[address]
+    /* "opendbc/can/parser_pyx.pyx":55
+ *       name = m.name.decode("utf8")
  *       self.vl[address] = {}
  *       self.vl[name] = self.vl[address]             # <<<<<<<<<<<<<<
- *       self.vl_all[address] = {}
+ *       self.vl_all[address] = defaultdict(list)
  *       self.vl_all[name] = self.vl_all[address]
  */
     if (unlikely(__pyx_v_self->vl == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 60, __pyx_L1_error)
+      __PYX_ERR(0, 55, __pyx_L1_error)
     }
-    __pyx_t_12 = __Pyx_PyDict_GetItem(__pyx_v_self->vl, __pyx_v_address); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 60, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_13 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __pyx_t_4 = __Pyx_PyDict_GetItem(__pyx_v_self->vl, __pyx_t_13); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     if (unlikely(__pyx_v_self->vl == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 60, __pyx_L1_error)
+      __PYX_ERR(0, 55, __pyx_L1_error)
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_self->vl, __pyx_v_name, __pyx_t_12) < 0))) __PYX_ERR(0, 60, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    if (unlikely((PyDict_SetItem(__pyx_v_self->vl, __pyx_v_name, __pyx_t_4) < 0))) __PYX_ERR(0, 55, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":61
+    /* "opendbc/can/parser_pyx.pyx":56
  *       self.vl[address] = {}
  *       self.vl[name] = self.vl[address]
- *       self.vl_all[address] = {}             # <<<<<<<<<<<<<<
+ *       self.vl_all[address] = defaultdict(list)             # <<<<<<<<<<<<<<
  *       self.vl_all[name] = self.vl_all[address]
  *       self.ts_nanos[address] = {}
  */
-    __pyx_t_12 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 61, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_defaultdict); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __pyx_t_5 = NULL;
+    __pyx_t_17 = 0;
+    #if CYTHON_UNPACK_METHODS
+    if (unlikely(PyMethod_Check(__pyx_t_13))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_13);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_13, function);
+        __pyx_t_17 = 1;
+      }
+    }
+    #endif
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_5, ((PyObject *)(&PyList_Type))};
+      __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_13, __pyx_callargs+1-__pyx_t_17, 1+__pyx_t_17);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+    }
     if (unlikely(__pyx_v_self->vl_all == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 61, __pyx_L1_error)
+      __PYX_ERR(0, 56, __pyx_L1_error)
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_self->vl_all, __pyx_v_address, __pyx_t_12) < 0))) __PYX_ERR(0, 61, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __pyx_t_13 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    if (unlikely((PyDict_SetItem(__pyx_v_self->vl_all, __pyx_t_13, __pyx_t_4) < 0))) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":62
+    /* "opendbc/can/parser_pyx.pyx":57
  *       self.vl[name] = self.vl[address]
- *       self.vl_all[address] = {}
+ *       self.vl_all[address] = defaultdict(list)
  *       self.vl_all[name] = self.vl_all[address]             # <<<<<<<<<<<<<<
  *       self.ts_nanos[address] = {}
  *       self.ts_nanos[name] = self.ts_nanos[address]
  */
     if (unlikely(__pyx_v_self->vl_all == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 62, __pyx_L1_error)
+      __PYX_ERR(0, 57, __pyx_L1_error)
     }
-    __pyx_t_12 = __Pyx_PyDict_GetItem(__pyx_v_self->vl_all, __pyx_v_address); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 62, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_13 = __Pyx_PyDict_GetItem(__pyx_v_self->vl_all, __pyx_t_4); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 57, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (unlikely(__pyx_v_self->vl_all == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 62, __pyx_L1_error)
+      __PYX_ERR(0, 57, __pyx_L1_error)
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_self->vl_all, __pyx_v_name, __pyx_t_12) < 0))) __PYX_ERR(0, 62, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    if (unlikely((PyDict_SetItem(__pyx_v_self->vl_all, __pyx_v_name, __pyx_t_13) < 0))) __PYX_ERR(0, 57, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":63
- *       self.vl_all[address] = {}
+    /* "opendbc/can/parser_pyx.pyx":58
+ *       self.vl_all[address] = defaultdict(list)
  *       self.vl_all[name] = self.vl_all[address]
  *       self.ts_nanos[address] = {}             # <<<<<<<<<<<<<<
  *       self.ts_nanos[name] = self.ts_nanos[address]
  * 
  */
-    __pyx_t_12 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 63, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_13 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
     if (unlikely(__pyx_v_self->ts_nanos == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 63, __pyx_L1_error)
+      __PYX_ERR(0, 58, __pyx_L1_error)
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_self->ts_nanos, __pyx_v_address, __pyx_t_12) < 0))) __PYX_ERR(0, 63, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    if (unlikely((PyDict_SetItem(__pyx_v_self->ts_nanos, __pyx_t_4, __pyx_t_13) < 0))) __PYX_ERR(0, 58, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":64
+    /* "opendbc/can/parser_pyx.pyx":59
  *       self.vl_all[name] = self.vl_all[address]
  *       self.ts_nanos[address] = {}
  *       self.ts_nanos[name] = self.ts_nanos[address]             # <<<<<<<<<<<<<<
@@ -4466,70 +4424,73 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser___init__(struct __pyx_
  */
     if (unlikely(__pyx_v_self->ts_nanos == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 64, __pyx_L1_error)
+      __PYX_ERR(0, 59, __pyx_L1_error)
     }
-    __pyx_t_12 = __Pyx_PyDict_GetItem(__pyx_v_self->ts_nanos, __pyx_v_address); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_13 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __pyx_t_4 = __Pyx_PyDict_GetItem(__pyx_v_self->ts_nanos, __pyx_t_13); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     if (unlikely(__pyx_v_self->ts_nanos == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 64, __pyx_L1_error)
+      __PYX_ERR(0, 59, __pyx_L1_error)
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_self->ts_nanos, __pyx_v_name, __pyx_t_12) < 0))) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    if (unlikely((PyDict_SetItem(__pyx_v_self->ts_nanos, __pyx_v_name, __pyx_t_4) < 0))) __PYX_ERR(0, 59, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
 
-  /* "opendbc/can/parser_pyx.pyx":66
+  /* "opendbc/can/parser_pyx.pyx":61
  *       self.ts_nanos[name] = self.ts_nanos[address]
  * 
  *     self.can = new cpp_CANParser(bus, dbc_name, message_v)             # <<<<<<<<<<<<<<
  *     self.update_strings([])
  * 
  */
-  __pyx_t_16 = __Pyx_PyInt_As_int(__pyx_v_bus); if (unlikely((__pyx_t_16 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L1_error)
-  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_dbc_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_17 = __Pyx_PyInt_As_int(__pyx_v_bus); if (unlikely((__pyx_t_17 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_dbc_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L1_error)
   try {
-    __pyx_t_17 = new CANParser(__pyx_t_16, __pyx_t_1, __pyx_v_message_v);
+    __pyx_t_24 = new CANParser(__pyx_t_17, __pyx_t_1, __pyx_v_message_v);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 66, __pyx_L1_error)
+    __PYX_ERR(0, 61, __pyx_L1_error)
   }
-  __pyx_v_self->can = __pyx_t_17;
+  __pyx_v_self->can = __pyx_t_24;
 
-  /* "opendbc/can/parser_pyx.pyx":67
+  /* "opendbc/can/parser_pyx.pyx":62
  * 
  *     self.can = new cpp_CANParser(bus, dbc_name, message_v)
  *     self.update_strings([])             # <<<<<<<<<<<<<<
  * 
  *   def __dealloc__(self):
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_strings); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_strings); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_11 = NULL;
-  __pyx_t_16 = 0;
+  __pyx_t_18 = NULL;
+  __pyx_t_17 = 0;
   #if CYTHON_UNPACK_METHODS
-  if (likely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_4);
-    if (likely(__pyx_t_11)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-      __Pyx_INCREF(__pyx_t_11);
+  if (likely(PyMethod_Check(__pyx_t_13))) {
+    __pyx_t_18 = PyMethod_GET_SELF(__pyx_t_13);
+    if (likely(__pyx_t_18)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
+      __Pyx_INCREF(__pyx_t_18);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
-      __pyx_t_16 = 1;
+      __Pyx_DECREF_SET(__pyx_t_13, function);
+      __pyx_t_17 = 1;
     }
   }
   #endif
   {
-    PyObject *__pyx_callargs[2] = {__pyx_t_11, __pyx_t_5};
-    __pyx_t_12 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_16, 1+__pyx_t_16);
-    __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+    PyObject *__pyx_callargs[2] = {__pyx_t_18, __pyx_t_5};
+    __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_13, __pyx_callargs+1-__pyx_t_17, 1+__pyx_t_17);
+    __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 67, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   }
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "opendbc/can/parser_pyx.pyx":30
  *     string dbc_name
@@ -4545,21 +4506,20 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser___init__(struct __pyx_
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_13);
+  __Pyx_XDECREF(__pyx_t_18);
+  __Pyx_XDECREF(__pyx_t_21);
+  __Pyx_XDECREF(__pyx_t_22);
   __Pyx_AddTraceback("opendbc.can.parser_pyx.CANParser.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_msg_name_to_address);
-  __Pyx_XDECREF(__pyx_v_address_to_msg_name);
-  __Pyx_XDECREF(__pyx_v_name);
   __Pyx_XDECREF(__pyx_v_c);
-  __Pyx_XDECREF(__pyx_v_address);
+  __Pyx_XDECREF(__pyx_v_name);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "opendbc/can/parser_pyx.pyx":69
+/* "opendbc/can/parser_pyx.pyx":64
  *     self.update_strings([])
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -4583,7 +4543,7 @@ static void __pyx_pw_7opendbc_3can_10parser_pyx_9CANParser_3__dealloc__(PyObject
 static void __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_2__dealloc__(struct __pyx_obj_7opendbc_3can_10parser_pyx_CANParser *__pyx_v_self) {
   int __pyx_t_1;
 
-  /* "opendbc/can/parser_pyx.pyx":70
+  /* "opendbc/can/parser_pyx.pyx":65
  * 
  *   def __dealloc__(self):
  *     if self.can:             # <<<<<<<<<<<<<<
@@ -4593,7 +4553,7 @@ static void __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_2__dealloc__(struct _
   __pyx_t_1 = (__pyx_v_self->can != 0);
   if (__pyx_t_1) {
 
-    /* "opendbc/can/parser_pyx.pyx":71
+    /* "opendbc/can/parser_pyx.pyx":66
  *   def __dealloc__(self):
  *     if self.can:
  *       del self.can             # <<<<<<<<<<<<<<
@@ -4602,7 +4562,7 @@ static void __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_2__dealloc__(struct _
  */
     delete __pyx_v_self->can;
 
-    /* "opendbc/can/parser_pyx.pyx":70
+    /* "opendbc/can/parser_pyx.pyx":65
  * 
  *   def __dealloc__(self):
  *     if self.can:             # <<<<<<<<<<<<<<
@@ -4611,7 +4571,7 @@ static void __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_2__dealloc__(struct _
  */
   }
 
-  /* "opendbc/can/parser_pyx.pyx":69
+  /* "opendbc/can/parser_pyx.pyx":64
  *     self.update_strings([])
  * 
  *   def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -4622,12 +4582,12 @@ static void __pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_2__dealloc__(struct _
   /* function exit code */
 }
 
-/* "opendbc/can/parser_pyx.pyx":73
+/* "opendbc/can/parser_pyx.pyx":68
  *       del self.can
  * 
  *   def update_strings(self, strings, sendcan=False):             # <<<<<<<<<<<<<<
- *     for v in self.vl_all.values():
- *       for l in v.values():  # no-cython-lint
+ *     for address in self.addresses:
+ *       self.vl_all[address].clear()
  */
 
 /* Python wrapper */
@@ -4687,19 +4647,19 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 73, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_sendcan);
           if (value) { values[1] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 73, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "update_strings") < 0)) __PYX_ERR(0, 73, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "update_strings") < 0)) __PYX_ERR(0, 68, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -4715,7 +4675,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("update_strings", 0, 1, 2, __pyx_nargs); __PYX_ERR(0, 73, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("update_strings", 0, 1, 2, __pyx_nargs); __PYX_ERR(0, 68, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4743,139 +4703,173 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 }
 
 static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_4update_strings(struct __pyx_obj_7opendbc_3can_10parser_pyx_CANParser *__pyx_v_self, PyObject *__pyx_v_strings, PyObject *__pyx_v_sendcan) {
-  PyObject *__pyx_v_v = NULL;
-  PyObject *__pyx_v_l = NULL;
+  uint32_t __pyx_v_address;
   std::vector<struct SignalValue>  __pyx_v_new_vals;
-  std::unordered_set<uint32_t>  __pyx_v_updated_addrs;
+  long __pyx_v_cur_address;
+  PyObject *__pyx_v_vl = NULL;
+  PyObject *__pyx_v_vl_all = NULL;
+  PyObject *__pyx_v_ts_nanos = NULL;
+  PyObject *__pyx_v_updated_addrs = NULL;
   std::vector<struct SignalValue> ::iterator __pyx_v_it;
   struct SignalValue *__pyx_v_cv;
   PyObject *__pyx_v_cv_name = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  Py_ssize_t __pyx_t_2;
-  Py_ssize_t __pyx_t_3;
-  int __pyx_t_4;
+  std::vector<uint32_t> ::iterator __pyx_t_1;
+  uint32_t __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   int __pyx_t_6;
-  Py_ssize_t __pyx_t_7;
-  Py_ssize_t __pyx_t_8;
-  PyObject *__pyx_t_9 = NULL;
+  std::vector<std::string>  __pyx_t_7;
+  bool __pyx_t_8;
+  int __pyx_t_9;
   int __pyx_t_10;
-  PyObject *__pyx_t_11 = NULL;
-  PyObject *__pyx_t_12 = NULL;
-  std::vector<std::string>  __pyx_t_13;
-  bool __pyx_t_14;
-  int __pyx_t_15;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("update_strings", 1);
 
-  /* "opendbc/can/parser_pyx.pyx":74
+  /* "opendbc/can/parser_pyx.pyx":69
  * 
  *   def update_strings(self, strings, sendcan=False):
- *     for v in self.vl_all.values():             # <<<<<<<<<<<<<<
- *       for l in v.values():  # no-cython-lint
- *         l.clear()
- */
-  __pyx_t_2 = 0;
-  if (unlikely(__pyx_v_self->vl_all == Py_None)) {
-    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "values");
-    __PYX_ERR(0, 74, __pyx_L1_error)
-  }
-  __pyx_t_5 = __Pyx_dict_iterator(__pyx_v_self->vl_all, 1, __pyx_n_s_values, (&__pyx_t_3), (&__pyx_t_4)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 74, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_1);
-  __pyx_t_1 = __pyx_t_5;
-  __pyx_t_5 = 0;
-  while (1) {
-    __pyx_t_6 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_3, &__pyx_t_2, NULL, &__pyx_t_5, NULL, __pyx_t_4);
-    if (unlikely(__pyx_t_6 == 0)) break;
-    if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(0, 74, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_5);
-    __pyx_t_5 = 0;
-
-    /* "opendbc/can/parser_pyx.pyx":75
- *   def update_strings(self, strings, sendcan=False):
- *     for v in self.vl_all.values():
- *       for l in v.values():  # no-cython-lint             # <<<<<<<<<<<<<<
- *         l.clear()
+ *     for address in self.addresses:             # <<<<<<<<<<<<<<
+ *       self.vl_all[address].clear()
  * 
  */
-    __pyx_t_7 = 0;
-    if (unlikely(__pyx_v_v == Py_None)) {
-      PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "values");
-      __PYX_ERR(0, 75, __pyx_L1_error)
-    }
-    __pyx_t_9 = __Pyx_dict_iterator(__pyx_v_v, 0, __pyx_n_s_values, (&__pyx_t_8), (&__pyx_t_6)); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 75, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_XDECREF(__pyx_t_5);
-    __pyx_t_5 = __pyx_t_9;
-    __pyx_t_9 = 0;
-    while (1) {
-      __pyx_t_10 = __Pyx_dict_iter_next(__pyx_t_5, __pyx_t_8, &__pyx_t_7, NULL, &__pyx_t_9, NULL, __pyx_t_6);
-      if (unlikely(__pyx_t_10 == 0)) break;
-      if (unlikely(__pyx_t_10 == -1)) __PYX_ERR(0, 75, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_XDECREF_SET(__pyx_v_l, __pyx_t_9);
-      __pyx_t_9 = 0;
+  __pyx_t_1 = __pyx_v_self->addresses.begin();
+  for (;;) {
+    if (!(__pyx_t_1 != __pyx_v_self->addresses.end())) break;
+    __pyx_t_2 = *__pyx_t_1;
+    ++__pyx_t_1;
+    __pyx_v_address = __pyx_t_2;
 
-      /* "opendbc/can/parser_pyx.pyx":76
- *     for v in self.vl_all.values():
- *       for l in v.values():  # no-cython-lint
- *         l.clear()             # <<<<<<<<<<<<<<
+    /* "opendbc/can/parser_pyx.pyx":70
+ *   def update_strings(self, strings, sendcan=False):
+ *     for address in self.addresses:
+ *       self.vl_all[address].clear()             # <<<<<<<<<<<<<<
  * 
  *     cdef vector[SignalValue] new_vals
  */
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_l, __pyx_n_s_clear); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 76, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = NULL;
-      __pyx_t_10 = 0;
-      #if CYTHON_UNPACK_METHODS
-      if (likely(PyMethod_Check(__pyx_t_11))) {
-        __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_11);
-        if (likely(__pyx_t_12)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-          __Pyx_INCREF(__pyx_t_12);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_11, function);
-          __pyx_t_10 = 1;
-        }
-      }
-      #endif
-      {
-        PyObject *__pyx_callargs[2] = {__pyx_t_12, NULL};
-        __pyx_t_9 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_10, 0+__pyx_t_10);
-        __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-        if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 76, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_9);
-        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      }
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    if (unlikely(__pyx_v_self->vl_all == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 70, __pyx_L1_error)
     }
+    __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_self->vl_all, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 70, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_clear); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_5 = NULL;
+    __pyx_t_6 = 0;
+    #if CYTHON_UNPACK_METHODS
+    if (likely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    #endif
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
+      __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "opendbc/can/parser_pyx.pyx":81
- *     cdef unordered_set[uint32_t] updated_addrs
+    /* "opendbc/can/parser_pyx.pyx":69
+ * 
+ *   def update_strings(self, strings, sendcan=False):
+ *     for address in self.addresses:             # <<<<<<<<<<<<<<
+ *       self.vl_all[address].clear()
+ * 
+ */
+  }
+
+  /* "opendbc/can/parser_pyx.pyx":73
+ * 
+ *     cdef vector[SignalValue] new_vals
+ *     cur_address = -1             # <<<<<<<<<<<<<<
+ *     vl = {}
+ *     vl_all = {}
+ */
+  __pyx_v_cur_address = -1L;
+
+  /* "opendbc/can/parser_pyx.pyx":74
+ *     cdef vector[SignalValue] new_vals
+ *     cur_address = -1
+ *     vl = {}             # <<<<<<<<<<<<<<
+ *     vl_all = {}
+ *     ts_nanos = {}
+ */
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_v_vl = __pyx_t_3;
+  __pyx_t_3 = 0;
+
+  /* "opendbc/can/parser_pyx.pyx":75
+ *     cur_address = -1
+ *     vl = {}
+ *     vl_all = {}             # <<<<<<<<<<<<<<
+ *     ts_nanos = {}
+ *     updated_addrs = set()
+ */
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_v_vl_all = __pyx_t_3;
+  __pyx_t_3 = 0;
+
+  /* "opendbc/can/parser_pyx.pyx":76
+ *     vl = {}
+ *     vl_all = {}
+ *     ts_nanos = {}             # <<<<<<<<<<<<<<
+ *     updated_addrs = set()
+ * 
+ */
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_v_ts_nanos = __pyx_t_3;
+  __pyx_t_3 = 0;
+
+  /* "opendbc/can/parser_pyx.pyx":77
+ *     vl_all = {}
+ *     ts_nanos = {}
+ *     updated_addrs = set()             # <<<<<<<<<<<<<<
+ * 
+ *     self.can.update_strings(strings, new_vals, sendcan)
+ */
+  __pyx_t_3 = PySet_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_v_updated_addrs = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
+
+  /* "opendbc/can/parser_pyx.pyx":79
+ *     updated_addrs = set()
  * 
  *     self.can.update_strings(strings, new_vals, sendcan)             # <<<<<<<<<<<<<<
  *     cdef vector[SignalValue].iterator it = new_vals.begin()
  *     cdef SignalValue* cv
  */
-  __pyx_t_13 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_v_strings); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
-  __pyx_t_14 = __Pyx_PyObject_IsTrue(__pyx_v_sendcan); if (unlikely((__pyx_t_14 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_7 = __pyx_convert_vector_from_py_std_3a__3a_string(__pyx_v_strings); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_sendcan); if (unlikely((__pyx_t_8 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
   try {
-    __pyx_v_self->can->update_strings(__pyx_t_13, __pyx_v_new_vals, __pyx_t_14);
+    __pyx_v_self->can->update_strings(__pyx_t_7, __pyx_v_new_vals, __pyx_t_8);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 81, __pyx_L1_error)
+    __PYX_ERR(0, 79, __pyx_L1_error)
   }
 
-  /* "opendbc/can/parser_pyx.pyx":82
+  /* "opendbc/can/parser_pyx.pyx":80
  * 
  *     self.can.update_strings(strings, new_vals, sendcan)
  *     cdef vector[SignalValue].iterator it = new_vals.begin()             # <<<<<<<<<<<<<<
@@ -4884,124 +4878,178 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_4update_strings(
  */
   __pyx_v_it = __pyx_v_new_vals.begin();
 
-  /* "opendbc/can/parser_pyx.pyx":84
+  /* "opendbc/can/parser_pyx.pyx":82
  *     cdef vector[SignalValue].iterator it = new_vals.begin()
  *     cdef SignalValue* cv
  *     while it != new_vals.end():             # <<<<<<<<<<<<<<
  *       cv = &deref(it)
- *       # Cast char * directly to unicode
+ * 
  */
   while (1) {
-    __pyx_t_15 = (__pyx_v_it != __pyx_v_new_vals.end());
-    if (!__pyx_t_15) break;
+    __pyx_t_9 = (__pyx_v_it != __pyx_v_new_vals.end());
+    if (!__pyx_t_9) break;
 
-    /* "opendbc/can/parser_pyx.pyx":85
+    /* "opendbc/can/parser_pyx.pyx":83
  *     cdef SignalValue* cv
  *     while it != new_vals.end():
  *       cv = &deref(it)             # <<<<<<<<<<<<<<
- *       # Cast char * directly to unicode
- *       cv_name = <unicode>cv.name
+ * 
+ *       # Check if the address has changed
  */
     __pyx_v_cv = (&(*__pyx_v_it));
 
-    /* "opendbc/can/parser_pyx.pyx":87
- *       cv = &deref(it)
+    /* "opendbc/can/parser_pyx.pyx":86
+ * 
+ *       # Check if the address has changed
+ *       if cv.address != cur_address:             # <<<<<<<<<<<<<<
+ *         cur_address = cv.address
+ *         vl = self.vl[cur_address]
+ */
+    __pyx_t_9 = (__pyx_v_cv->address != __pyx_v_cur_address);
+    if (__pyx_t_9) {
+
+      /* "opendbc/can/parser_pyx.pyx":87
+ *       # Check if the address has changed
+ *       if cv.address != cur_address:
+ *         cur_address = cv.address             # <<<<<<<<<<<<<<
+ *         vl = self.vl[cur_address]
+ *         vl_all = self.vl_all[cur_address]
+ */
+      __pyx_t_2 = __pyx_v_cv->address;
+      __pyx_v_cur_address = __pyx_t_2;
+
+      /* "opendbc/can/parser_pyx.pyx":88
+ *       if cv.address != cur_address:
+ *         cur_address = cv.address
+ *         vl = self.vl[cur_address]             # <<<<<<<<<<<<<<
+ *         vl_all = self.vl_all[cur_address]
+ *         ts_nanos = self.ts_nanos[cur_address]
+ */
+      if (unlikely(__pyx_v_self->vl == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+        __PYX_ERR(0, 88, __pyx_L1_error)
+      }
+      __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_cur_address); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_4 = __Pyx_PyDict_GetItem(__pyx_v_self->vl, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF_SET(__pyx_v_vl, __pyx_t_4);
+      __pyx_t_4 = 0;
+
+      /* "opendbc/can/parser_pyx.pyx":89
+ *         cur_address = cv.address
+ *         vl = self.vl[cur_address]
+ *         vl_all = self.vl_all[cur_address]             # <<<<<<<<<<<<<<
+ *         ts_nanos = self.ts_nanos[cur_address]
+ *         updated_addrs.add(cur_address)
+ */
+      if (unlikely(__pyx_v_self->vl_all == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+        __PYX_ERR(0, 89, __pyx_L1_error)
+      }
+      __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_cur_address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 89, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_self->vl_all, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF_SET(__pyx_v_vl_all, __pyx_t_3);
+      __pyx_t_3 = 0;
+
+      /* "opendbc/can/parser_pyx.pyx":90
+ *         vl = self.vl[cur_address]
+ *         vl_all = self.vl_all[cur_address]
+ *         ts_nanos = self.ts_nanos[cur_address]             # <<<<<<<<<<<<<<
+ *         updated_addrs.add(cur_address)
+ * 
+ */
+      if (unlikely(__pyx_v_self->ts_nanos == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+        __PYX_ERR(0, 90, __pyx_L1_error)
+      }
+      __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_cur_address); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_4 = __Pyx_PyDict_GetItem(__pyx_v_self->ts_nanos, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF_SET(__pyx_v_ts_nanos, __pyx_t_4);
+      __pyx_t_4 = 0;
+
+      /* "opendbc/can/parser_pyx.pyx":91
+ *         vl_all = self.vl_all[cur_address]
+ *         ts_nanos = self.ts_nanos[cur_address]
+ *         updated_addrs.add(cur_address)             # <<<<<<<<<<<<<<
+ * 
+ *       # Cast char * directly to unicode
+ */
+      __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_cur_address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 91, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_10 = PySet_Add(__pyx_v_updated_addrs, __pyx_t_4); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 91, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+      /* "opendbc/can/parser_pyx.pyx":86
+ * 
+ *       # Check if the address has changed
+ *       if cv.address != cur_address:             # <<<<<<<<<<<<<<
+ *         cur_address = cv.address
+ *         vl = self.vl[cur_address]
+ */
+    }
+
+    /* "opendbc/can/parser_pyx.pyx":94
+ * 
  *       # Cast char * directly to unicode
  *       cv_name = <unicode>cv.name             # <<<<<<<<<<<<<<
- *       self.vl[cv.address][cv_name] = cv.value
- *       self.vl_all[cv.address][cv_name] = cv.all_values
+ *       vl[cv_name] = cv.value
+ *       vl_all[cv_name] = cv.all_values
  */
-    __pyx_t_1 = __pyx_convert_PyUnicode_string_to_py_std__in_string(__pyx_v_cv->name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __pyx_t_1;
-    __Pyx_INCREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_XDECREF_SET(__pyx_v_cv_name, ((PyObject*)__pyx_t_5));
-    __pyx_t_5 = 0;
+    __pyx_t_4 = __pyx_convert_PyUnicode_string_to_py_std__in_string(__pyx_v_cv->name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = __pyx_t_4;
+    __Pyx_INCREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_cv_name, ((PyObject*)__pyx_t_3));
+    __pyx_t_3 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":88
+    /* "opendbc/can/parser_pyx.pyx":95
  *       # Cast char * directly to unicode
  *       cv_name = <unicode>cv.name
- *       self.vl[cv.address][cv_name] = cv.value             # <<<<<<<<<<<<<<
- *       self.vl_all[cv.address][cv_name] = cv.all_values
- *       self.ts_nanos[cv.address][cv_name] = cv.ts_nanos
+ *       vl[cv_name] = cv.value             # <<<<<<<<<<<<<<
+ *       vl_all[cv_name] = cv.all_values
+ *       ts_nanos[cv_name] = cv.ts_nanos
  */
-    __pyx_t_5 = PyFloat_FromDouble(__pyx_v_cv->value); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 88, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    if (unlikely(__pyx_v_self->vl == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 88, __pyx_L1_error)
-    }
-    __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_v_cv->address); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyDict_GetItem(__pyx_v_self->vl, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely((PyObject_SetItem(__pyx_t_9, __pyx_v_cv_name, __pyx_t_5) < 0))) __PYX_ERR(0, 88, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_cv->value); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    if (unlikely((PyObject_SetItem(__pyx_v_vl, __pyx_v_cv_name, __pyx_t_3) < 0))) __PYX_ERR(0, 95, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":89
+    /* "opendbc/can/parser_pyx.pyx":96
  *       cv_name = <unicode>cv.name
- *       self.vl[cv.address][cv_name] = cv.value
- *       self.vl_all[cv.address][cv_name] = cv.all_values             # <<<<<<<<<<<<<<
- *       self.ts_nanos[cv.address][cv_name] = cv.ts_nanos
- *       updated_addrs.insert(cv.address)
- */
-    __pyx_t_5 = __pyx_convert_vector_to_py_double(__pyx_v_cv->all_values); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 89, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    if (unlikely(__pyx_v_self->vl_all == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 89, __pyx_L1_error)
-    }
-    __pyx_t_9 = __Pyx_PyInt_From_uint32_t(__pyx_v_cv->address); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_self->vl_all, __pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    if (unlikely((PyObject_SetItem(__pyx_t_1, __pyx_v_cv_name, __pyx_t_5) < 0))) __PYX_ERR(0, 89, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-    /* "opendbc/can/parser_pyx.pyx":90
- *       self.vl[cv.address][cv_name] = cv.value
- *       self.vl_all[cv.address][cv_name] = cv.all_values
- *       self.ts_nanos[cv.address][cv_name] = cv.ts_nanos             # <<<<<<<<<<<<<<
- *       updated_addrs.insert(cv.address)
+ *       vl[cv_name] = cv.value
+ *       vl_all[cv_name] = cv.all_values             # <<<<<<<<<<<<<<
+ *       ts_nanos[cv_name] = cv.ts_nanos
  *       preinc(it)
  */
-    __pyx_t_5 = __Pyx_PyInt_From_uint64_t(__pyx_v_cv->ts_nanos); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 90, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    if (unlikely(__pyx_v_self->ts_nanos == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 90, __pyx_L1_error)
-    }
-    __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_v_cv->address); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyDict_GetItem(__pyx_v_self->ts_nanos, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 90, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely((PyObject_SetItem(__pyx_t_9, __pyx_v_cv_name, __pyx_t_5) < 0))) __PYX_ERR(0, 90, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_3 = __pyx_convert_vector_to_py_double(__pyx_v_cv->all_values); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    if (unlikely((PyObject_SetItem(__pyx_v_vl_all, __pyx_v_cv_name, __pyx_t_3) < 0))) __PYX_ERR(0, 96, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":91
- *       self.vl_all[cv.address][cv_name] = cv.all_values
- *       self.ts_nanos[cv.address][cv_name] = cv.ts_nanos
- *       updated_addrs.insert(cv.address)             # <<<<<<<<<<<<<<
+    /* "opendbc/can/parser_pyx.pyx":97
+ *       vl[cv_name] = cv.value
+ *       vl_all[cv_name] = cv.all_values
+ *       ts_nanos[cv_name] = cv.ts_nanos             # <<<<<<<<<<<<<<
  *       preinc(it)
  * 
  */
-    try {
-      __pyx_v_updated_addrs.insert(__pyx_v_cv->address);
-    } catch(...) {
-      __Pyx_CppExn2PyErr();
-      __PYX_ERR(0, 91, __pyx_L1_error)
-    }
+    __pyx_t_3 = __Pyx_PyInt_From_uint64_t(__pyx_v_cv->ts_nanos); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    if (unlikely((PyObject_SetItem(__pyx_v_ts_nanos, __pyx_v_cv_name, __pyx_t_3) < 0))) __PYX_ERR(0, 97, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":92
- *       self.ts_nanos[cv.address][cv_name] = cv.ts_nanos
- *       updated_addrs.insert(cv.address)
+    /* "opendbc/can/parser_pyx.pyx":98
+ *       vl_all[cv_name] = cv.all_values
+ *       ts_nanos[cv_name] = cv.ts_nanos
  *       preinc(it)             # <<<<<<<<<<<<<<
  * 
  *     return updated_addrs
@@ -5009,7 +5057,7 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_4update_strings(
     (void)((++__pyx_v_it));
   }
 
-  /* "opendbc/can/parser_pyx.pyx":94
+  /* "opendbc/can/parser_pyx.pyx":100
  *       preinc(it)
  * 
  *     return updated_addrs             # <<<<<<<<<<<<<<
@@ -5017,39 +5065,37 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_4update_strings(
  *   @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __pyx_convert_unordered_set_to_py_uint32_t(__pyx_v_updated_addrs); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 94, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_r = __pyx_t_5;
-  __pyx_t_5 = 0;
+  __Pyx_INCREF(__pyx_v_updated_addrs);
+  __pyx_r = __pyx_v_updated_addrs;
   goto __pyx_L0;
 
-  /* "opendbc/can/parser_pyx.pyx":73
+  /* "opendbc/can/parser_pyx.pyx":68
  *       del self.can
  * 
  *   def update_strings(self, strings, sendcan=False):             # <<<<<<<<<<<<<<
- *     for v in self.vl_all.values():
- *       for l in v.values():  # no-cython-lint
+ *     for address in self.addresses:
+ *       self.vl_all[address].clear()
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12);
   __Pyx_AddTraceback("opendbc.can.parser_pyx.CANParser.update_strings", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_v);
-  __Pyx_XDECREF(__pyx_v_l);
+  __Pyx_XDECREF(__pyx_v_vl);
+  __Pyx_XDECREF(__pyx_v_vl_all);
+  __Pyx_XDECREF(__pyx_v_ts_nanos);
+  __Pyx_XDECREF(__pyx_v_updated_addrs);
   __Pyx_XDECREF(__pyx_v_cv_name);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "opendbc/can/parser_pyx.pyx":96
+/* "opendbc/can/parser_pyx.pyx":102
  *     return updated_addrs
  * 
  *   @property             # <<<<<<<<<<<<<<
@@ -5081,7 +5127,7 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_9can_valid___get
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 1);
 
-  /* "opendbc/can/parser_pyx.pyx":98
+  /* "opendbc/can/parser_pyx.pyx":104
  *   @property
  *   def can_valid(self):
  *     return self.can.can_valid             # <<<<<<<<<<<<<<
@@ -5089,13 +5135,13 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_9can_valid___get
  *   @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->can->can_valid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->can->can_valid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "opendbc/can/parser_pyx.pyx":96
+  /* "opendbc/can/parser_pyx.pyx":102
  *     return updated_addrs
  * 
  *   @property             # <<<<<<<<<<<<<<
@@ -5114,7 +5160,7 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_9can_valid___get
   return __pyx_r;
 }
 
-/* "opendbc/can/parser_pyx.pyx":100
+/* "opendbc/can/parser_pyx.pyx":106
  *     return self.can.can_valid
  * 
  *   @property             # <<<<<<<<<<<<<<
@@ -5146,7 +5192,7 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_11bus_timeout___
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 1);
 
-  /* "opendbc/can/parser_pyx.pyx":102
+  /* "opendbc/can/parser_pyx.pyx":108
  *   @property
  *   def bus_timeout(self):
  *     return self.can.bus_timeout             # <<<<<<<<<<<<<<
@@ -5154,13 +5200,13 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_11bus_timeout___
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->can->bus_timeout); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->can->bus_timeout); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "opendbc/can/parser_pyx.pyx":100
+  /* "opendbc/can/parser_pyx.pyx":106
  *     return self.can.can_valid
  * 
  *   @property             # <<<<<<<<<<<<<<
@@ -5559,7 +5605,7 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANParser_8__setstate_cyth
   return __pyx_r;
 }
 
-/* "opendbc/can/parser_pyx.pyx":113
+/* "opendbc/can/parser_pyx.pyx":119
  *     string dbc_name
  * 
  *   def __init__(self, dbc_name):             # <<<<<<<<<<<<<<
@@ -5603,12 +5649,12 @@ static int __pyx_pw_7opendbc_3can_10parser_pyx_9CANDefine_1__init__(PyObject *__
           (void)__Pyx_Arg_NewRef_VARARGS(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 113, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 119, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -5619,7 +5665,7 @@ static int __pyx_pw_7opendbc_3can_10parser_pyx_9CANDefine_1__init__(PyObject *__
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 113, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 119, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -5647,15 +5693,13 @@ static int __pyx_pw_7opendbc_3can_10parser_pyx_9CANDefine_1__init__(PyObject *__
 }
 
 static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_obj_7opendbc_3can_10parser_pyx_CANDefine *__pyx_v_self, PyObject *__pyx_v_dbc_name) {
-  PyObject *__pyx_v_address_to_msg_name = NULL;
-  std::vector<struct Val> ::size_type __pyx_v_i;
-  struct Msg __pyx_v_msg;
-  PyObject *__pyx_v_name = NULL;
-  uint32_t __pyx_v_address;
   PyObject *__pyx_v_dv = NULL;
+  std::vector<struct Val> ::size_type __pyx_v_i;
   struct Val __pyx_v_val;
   PyObject *__pyx_v_sgname = NULL;
   PyObject *__pyx_v_def_val = NULL;
+  uint32_t __pyx_v_address;
+  struct Msg const *__pyx_v_m;
   PyObject *__pyx_v_msgname = NULL;
   PyObject *__pyx_v_values = NULL;
   PyObject *__pyx_v_defs = NULL;
@@ -5669,47 +5713,51 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
   Py_ssize_t __pyx_t_5;
   Py_UCS4 __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
-  std::vector<struct Msg> ::size_type __pyx_t_8;
-  std::vector<struct Msg> ::size_type __pyx_t_9;
+  PyObject *__pyx_t_8 = NULL;
+  int __pyx_t_9;
   std::vector<struct Val> ::size_type __pyx_t_10;
-  uint32_t __pyx_t_11;
-  PyObject *__pyx_t_12 = NULL;
-  int __pyx_t_13;
-  std::vector<struct Val> ::size_type __pyx_t_14;
-  std::vector<struct Val> ::size_type __pyx_t_15;
-  PyObject *(*__pyx_t_16)(PyObject *);
+  std::vector<struct Val> ::size_type __pyx_t_11;
+  std::vector<struct Val> ::size_type __pyx_t_12;
+  uint32_t __pyx_t_13;
+  PyObject *__pyx_t_14 = NULL;
+  PyObject *__pyx_t_15 = NULL;
+  PyObject *__pyx_t_16 = NULL;
+  __Pyx_FakeReference<struct Msg const *> __pyx_t_17;
+  PyObject *__pyx_t_18 = NULL;
+  PyObject *__pyx_t_19 = NULL;
+  PyObject *(*__pyx_t_20)(PyObject *);
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 1);
 
-  /* "opendbc/can/parser_pyx.pyx":114
+  /* "opendbc/can/parser_pyx.pyx":120
  * 
  *   def __init__(self, dbc_name):
  *     self.dbc_name = dbc_name             # <<<<<<<<<<<<<<
  *     self.dbc = dbc_lookup(dbc_name)
  *     if not self.dbc:
  */
-  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_dbc_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_dbc_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 120, __pyx_L1_error)
   __pyx_v_self->dbc_name = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
 
-  /* "opendbc/can/parser_pyx.pyx":115
+  /* "opendbc/can/parser_pyx.pyx":121
  *   def __init__(self, dbc_name):
  *     self.dbc_name = dbc_name
  *     self.dbc = dbc_lookup(dbc_name)             # <<<<<<<<<<<<<<
  *     if not self.dbc:
  *       raise RuntimeError(f"Can't find DBC: '{dbc_name}'")
  */
-  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_dbc_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_dbc_name); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 121, __pyx_L1_error)
   try {
     __pyx_t_2 = dbc_lookup(__PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 115, __pyx_L1_error)
+    __PYX_ERR(0, 121, __pyx_L1_error)
   }
   __pyx_v_self->dbc = __pyx_t_2;
 
-  /* "opendbc/can/parser_pyx.pyx":116
+  /* "opendbc/can/parser_pyx.pyx":122
  *     self.dbc_name = dbc_name
  *     self.dbc = dbc_lookup(dbc_name)
  *     if not self.dbc:             # <<<<<<<<<<<<<<
@@ -5719,14 +5767,14 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
   __pyx_t_3 = (!(__pyx_v_self->dbc != 0));
   if (unlikely(__pyx_t_3)) {
 
-    /* "opendbc/can/parser_pyx.pyx":117
+    /* "opendbc/can/parser_pyx.pyx":123
  *     self.dbc = dbc_lookup(dbc_name)
  *     if not self.dbc:
  *       raise RuntimeError(f"Can't find DBC: '{dbc_name}'")             # <<<<<<<<<<<<<<
  * 
- *     address_to_msg_name = {}
+ *     dv = defaultdict(dict)
  */
-    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = 0;
     __pyx_t_6 = 127;
@@ -5734,7 +5782,7 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
     __pyx_t_5 += 17;
     __Pyx_GIVEREF(__pyx_kp_u_Can_t_find_DBC_2);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_kp_u_Can_t_find_DBC_2);
-    __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_dbc_name, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 117, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_v_dbc_name, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 123, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_6;
     __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_7);
@@ -5745,17 +5793,17 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
     __pyx_t_5 += 1;
     __Pyx_GIVEREF(__pyx_kp_u_);
     PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_kp_u_);
-    __pyx_t_7 = __Pyx_PyUnicode_Join(__pyx_t_4, 3, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 117, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyUnicode_Join(__pyx_t_4, 3, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 123, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_RuntimeError, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_RuntimeError, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 117, __pyx_L1_error)
+    __PYX_ERR(0, 123, __pyx_L1_error)
 
-    /* "opendbc/can/parser_pyx.pyx":116
+    /* "opendbc/can/parser_pyx.pyx":122
  *     self.dbc_name = dbc_name
  *     self.dbc = dbc_lookup(dbc_name)
  *     if not self.dbc:             # <<<<<<<<<<<<<<
@@ -5764,109 +5812,41 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
  */
   }
 
-  /* "opendbc/can/parser_pyx.pyx":119
+  /* "opendbc/can/parser_pyx.pyx":125
  *       raise RuntimeError(f"Can't find DBC: '{dbc_name}'")
- * 
- *     address_to_msg_name = {}             # <<<<<<<<<<<<<<
- * 
- *     for i in range(self.dbc[0].msgs.size()):
- */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_v_address_to_msg_name = ((PyObject*)__pyx_t_4);
-  __pyx_t_4 = 0;
-
-  /* "opendbc/can/parser_pyx.pyx":121
- *     address_to_msg_name = {}
- * 
- *     for i in range(self.dbc[0].msgs.size()):             # <<<<<<<<<<<<<<
- *       msg = self.dbc[0].msgs[i]
- *       name = msg.name.decode("utf8")
- */
-  __pyx_t_8 = (__pyx_v_self->dbc[0]).msgs.size();
-  __pyx_t_9 = __pyx_t_8;
-  for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-    __pyx_v_i = __pyx_t_10;
-
-    /* "opendbc/can/parser_pyx.pyx":122
- * 
- *     for i in range(self.dbc[0].msgs.size()):
- *       msg = self.dbc[0].msgs[i]             # <<<<<<<<<<<<<<
- *       name = msg.name.decode("utf8")
- *       address = msg.address
- */
-    __pyx_v_msg = ((__pyx_v_self->dbc[0]).msgs[__pyx_v_i]);
-
-    /* "opendbc/can/parser_pyx.pyx":123
- *     for i in range(self.dbc[0].msgs.size()):
- *       msg = self.dbc[0].msgs[i]
- *       name = msg.name.decode("utf8")             # <<<<<<<<<<<<<<
- *       address = msg.address
- *       address_to_msg_name[address] = name
- */
-    __pyx_t_4 = __Pyx_decode_cpp_string(__pyx_v_msg.name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_4);
-    __pyx_t_4 = 0;
-
-    /* "opendbc/can/parser_pyx.pyx":124
- *       msg = self.dbc[0].msgs[i]
- *       name = msg.name.decode("utf8")
- *       address = msg.address             # <<<<<<<<<<<<<<
- *       address_to_msg_name[address] = name
- * 
- */
-    __pyx_t_11 = __pyx_v_msg.address;
-    __pyx_v_address = __pyx_t_11;
-
-    /* "opendbc/can/parser_pyx.pyx":125
- *       name = msg.name.decode("utf8")
- *       address = msg.address
- *       address_to_msg_name[address] = name             # <<<<<<<<<<<<<<
- * 
- *     dv = defaultdict(dict)
- */
-    __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely((PyDict_SetItem(__pyx_v_address_to_msg_name, __pyx_t_4, __pyx_v_name) < 0))) __PYX_ERR(0, 125, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  }
-
-  /* "opendbc/can/parser_pyx.pyx":127
- *       address_to_msg_name[address] = name
  * 
  *     dv = defaultdict(dict)             # <<<<<<<<<<<<<<
  * 
  *     for i in range(self.dbc[0].vals.size()):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_defaultdict); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_defaultdict); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_12 = NULL;
-  __pyx_t_13 = 0;
+  __pyx_t_8 = NULL;
+  __pyx_t_9 = 0;
   #if CYTHON_UNPACK_METHODS
   if (unlikely(PyMethod_Check(__pyx_t_7))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_7);
-    if (likely(__pyx_t_12)) {
+    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
+    if (likely(__pyx_t_8)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-      __Pyx_INCREF(__pyx_t_12);
+      __Pyx_INCREF(__pyx_t_8);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_7, function);
-      __pyx_t_13 = 1;
+      __pyx_t_9 = 1;
     }
   }
   #endif
   {
-    PyObject *__pyx_callargs[2] = {__pyx_t_12, ((PyObject *)(&PyDict_Type))};
-    __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_13, 1+__pyx_t_13);
-    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)
+    PyObject *__pyx_callargs[2] = {__pyx_t_8, ((PyObject *)(&PyDict_Type))};
+    __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_9, 1+__pyx_t_9);
+    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
   __pyx_v_dv = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "opendbc/can/parser_pyx.pyx":129
+  /* "opendbc/can/parser_pyx.pyx":127
  *     dv = defaultdict(dict)
  * 
  *     for i in range(self.dbc[0].vals.size()):             # <<<<<<<<<<<<<<
@@ -5874,11 +5854,11 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
  * 
  */
   __pyx_t_10 = (__pyx_v_self->dbc[0]).vals.size();
-  __pyx_t_14 = __pyx_t_10;
-  for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_14; __pyx_t_15+=1) {
-    __pyx_v_i = __pyx_t_15;
+  __pyx_t_11 = __pyx_t_10;
+  for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
+    __pyx_v_i = __pyx_t_12;
 
-    /* "opendbc/can/parser_pyx.pyx":130
+    /* "opendbc/can/parser_pyx.pyx":128
  * 
  *     for i in range(self.dbc[0].vals.size()):
  *       val = self.dbc[0].vals[i]             # <<<<<<<<<<<<<<
@@ -5887,90 +5867,184 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
  */
     __pyx_v_val = ((__pyx_v_self->dbc[0]).vals[__pyx_v_i]);
 
-    /* "opendbc/can/parser_pyx.pyx":132
+    /* "opendbc/can/parser_pyx.pyx":130
  *       val = self.dbc[0].vals[i]
  * 
  *       sgname = val.name.decode("utf8")             # <<<<<<<<<<<<<<
  *       def_val = val.def_val.decode("utf8")
  *       address = val.address
  */
-    __pyx_t_4 = __Pyx_decode_cpp_string(__pyx_v_val.name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_decode_cpp_string(__pyx_v_val.name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 130, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_XDECREF_SET(__pyx_v_sgname, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":133
+    /* "opendbc/can/parser_pyx.pyx":131
  * 
  *       sgname = val.name.decode("utf8")
  *       def_val = val.def_val.decode("utf8")             # <<<<<<<<<<<<<<
  *       address = val.address
- *       msgname = address_to_msg_name[address]
+ *       try:
  */
-    __pyx_t_4 = __Pyx_decode_cpp_string(__pyx_v_val.def_val, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_decode_cpp_string(__pyx_v_val.def_val, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_XDECREF_SET(__pyx_v_def_val, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":134
+    /* "opendbc/can/parser_pyx.pyx":132
  *       sgname = val.name.decode("utf8")
  *       def_val = val.def_val.decode("utf8")
  *       address = val.address             # <<<<<<<<<<<<<<
- *       msgname = address_to_msg_name[address]
- * 
+ *       try:
+ *         m = self.dbc.addr_to_msg.at(address)
  */
-    __pyx_t_11 = __pyx_v_val.address;
-    __pyx_v_address = __pyx_t_11;
+    __pyx_t_13 = __pyx_v_val.address;
+    __pyx_v_address = __pyx_t_13;
 
-    /* "opendbc/can/parser_pyx.pyx":135
+    /* "opendbc/can/parser_pyx.pyx":133
  *       def_val = val.def_val.decode("utf8")
  *       address = val.address
- *       msgname = address_to_msg_name[address]             # <<<<<<<<<<<<<<
+ *       try:             # <<<<<<<<<<<<<<
+ *         m = self.dbc.addr_to_msg.at(address)
+ *       except IndexError:
+ */
+    {
+      __Pyx_PyThreadState_declare
+      __Pyx_PyThreadState_assign
+      __Pyx_ExceptionSave(&__pyx_t_14, &__pyx_t_15, &__pyx_t_16);
+      __Pyx_XGOTREF(__pyx_t_14);
+      __Pyx_XGOTREF(__pyx_t_15);
+      __Pyx_XGOTREF(__pyx_t_16);
+      /*try:*/ {
+
+        /* "opendbc/can/parser_pyx.pyx":134
+ *       address = val.address
+ *       try:
+ *         m = self.dbc.addr_to_msg.at(address)             # <<<<<<<<<<<<<<
+ *       except IndexError:
+ *         raise KeyError(address)
+ */
+        try {
+          __pyx_t_17 = __pyx_v_self->dbc->addr_to_msg.at(__pyx_v_address);
+        } catch(...) {
+          __Pyx_CppExn2PyErr();
+          __PYX_ERR(0, 134, __pyx_L6_error)
+        }
+        __pyx_v_m = __pyx_t_17;
+
+        /* "opendbc/can/parser_pyx.pyx":133
+ *       def_val = val.def_val.decode("utf8")
+ *       address = val.address
+ *       try:             # <<<<<<<<<<<<<<
+ *         m = self.dbc.addr_to_msg.at(address)
+ *       except IndexError:
+ */
+      }
+      __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
+      __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
+      __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
+      goto __pyx_L13_try_end;
+      __pyx_L6_error:;
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+      /* "opendbc/can/parser_pyx.pyx":135
+ *       try:
+ *         m = self.dbc.addr_to_msg.at(address)
+ *       except IndexError:             # <<<<<<<<<<<<<<
+ *         raise KeyError(address)
+ *       msgname = m.name.decode("utf-8")
+ */
+      __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_IndexError);
+      if (__pyx_t_9) {
+        __Pyx_AddTraceback("opendbc.can.parser_pyx.CANDefine.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+        if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 135, __pyx_L8_except_error)
+        __Pyx_XGOTREF(__pyx_t_4);
+        __Pyx_XGOTREF(__pyx_t_7);
+        __Pyx_XGOTREF(__pyx_t_8);
+
+        /* "opendbc/can/parser_pyx.pyx":136
+ *         m = self.dbc.addr_to_msg.at(address)
+ *       except IndexError:
+ *         raise KeyError(address)             # <<<<<<<<<<<<<<
+ *       msgname = m.name.decode("utf-8")
+ * 
+ */
+        __pyx_t_18 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 136, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_18);
+        __pyx_t_19 = __Pyx_PyObject_CallOneArg(__pyx_builtin_KeyError, __pyx_t_18); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 136, __pyx_L8_except_error)
+        __Pyx_GOTREF(__pyx_t_19);
+        __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+        __Pyx_Raise(__pyx_t_19, 0, 0, 0);
+        __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
+        __PYX_ERR(0, 136, __pyx_L8_except_error)
+      }
+      goto __pyx_L8_except_error;
+
+      /* "opendbc/can/parser_pyx.pyx":133
+ *       def_val = val.def_val.decode("utf8")
+ *       address = val.address
+ *       try:             # <<<<<<<<<<<<<<
+ *         m = self.dbc.addr_to_msg.at(address)
+ *       except IndexError:
+ */
+      __pyx_L8_except_error:;
+      __Pyx_XGIVEREF(__pyx_t_14);
+      __Pyx_XGIVEREF(__pyx_t_15);
+      __Pyx_XGIVEREF(__pyx_t_16);
+      __Pyx_ExceptionReset(__pyx_t_14, __pyx_t_15, __pyx_t_16);
+      goto __pyx_L1_error;
+      __pyx_L13_try_end:;
+    }
+
+    /* "opendbc/can/parser_pyx.pyx":137
+ *       except IndexError:
+ *         raise KeyError(address)
+ *       msgname = m.name.decode("utf-8")             # <<<<<<<<<<<<<<
  * 
  *       # separate definition/value pairs
  */
-    __pyx_t_4 = __Pyx_PyInt_From_uint32_t(__pyx_v_address); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = __Pyx_PyDict_GetItem(__pyx_v_address_to_msg_name, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 135, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_XDECREF_SET(__pyx_v_msgname, __pyx_t_7);
-    __pyx_t_7 = 0;
+    __pyx_t_8 = __Pyx_decode_cpp_string(__pyx_v_m->name, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 137, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_XDECREF_SET(__pyx_v_msgname, __pyx_t_8);
+    __pyx_t_8 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":138
+    /* "opendbc/can/parser_pyx.pyx":140
  * 
  *       # separate definition/value pairs
  *       def_val = def_val.split()             # <<<<<<<<<<<<<<
  *       values = [int(v) for v in def_val[::2]]
  *       defs = def_val[1::2]
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_def_val, __pyx_n_s_split); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 138, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_12 = NULL;
-    __pyx_t_13 = 0;
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_def_val, __pyx_n_s_split); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_4 = NULL;
+    __pyx_t_9 = 0;
     #if CYTHON_UNPACK_METHODS
-    if (likely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_4);
-      if (likely(__pyx_t_12)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-        __Pyx_INCREF(__pyx_t_12);
+    if (likely(PyMethod_Check(__pyx_t_7))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_7);
+      if (likely(__pyx_t_4)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+        __Pyx_INCREF(__pyx_t_4);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_4, function);
-        __pyx_t_13 = 1;
+        __Pyx_DECREF_SET(__pyx_t_7, function);
+        __pyx_t_9 = 1;
       }
     }
     #endif
     {
-      PyObject *__pyx_callargs[2] = {__pyx_t_12, NULL};
-      __pyx_t_7 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_13, 0+__pyx_t_13);
-      __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-      if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 138, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
+      __pyx_t_8 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_9, 0+__pyx_t_9);
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 140, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
-    __Pyx_DECREF_SET(__pyx_v_def_val, __pyx_t_7);
-    __pyx_t_7 = 0;
+    __Pyx_DECREF_SET(__pyx_v_def_val, __pyx_t_8);
+    __pyx_t_8 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":139
+    /* "opendbc/can/parser_pyx.pyx":141
  *       # separate definition/value pairs
  *       def_val = def_val.split()
  *       values = [int(v) for v in def_val[::2]]             # <<<<<<<<<<<<<<
@@ -5978,153 +6052,153 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
  * 
  */
     { /* enter inner scope */
-      __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 139, __pyx_L10_error)
+      __pyx_t_8 = PyList_New(0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 141, __pyx_L18_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      __pyx_t_7 = __Pyx_PyObject_GetItem(__pyx_v_def_val, __pyx_slice__2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 141, __pyx_L18_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_def_val, __pyx_slice__2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 139, __pyx_L10_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
-        __pyx_t_12 = __pyx_t_4; __Pyx_INCREF(__pyx_t_12);
+      if (likely(PyList_CheckExact(__pyx_t_7)) || PyTuple_CheckExact(__pyx_t_7)) {
+        __pyx_t_4 = __pyx_t_7; __Pyx_INCREF(__pyx_t_4);
         __pyx_t_5 = 0;
-        __pyx_t_16 = NULL;
+        __pyx_t_20 = NULL;
       } else {
-        __pyx_t_5 = -1; __pyx_t_12 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 139, __pyx_L10_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_16 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_12); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 139, __pyx_L10_error)
+        __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L18_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        __pyx_t_20 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_4); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 141, __pyx_L18_error)
       }
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       for (;;) {
-        if (likely(!__pyx_t_16)) {
-          if (likely(PyList_CheckExact(__pyx_t_12))) {
+        if (likely(!__pyx_t_20)) {
+          if (likely(PyList_CheckExact(__pyx_t_4))) {
             {
-              Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_12);
+              Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_4);
               #if !CYTHON_ASSUME_SAFE_MACROS
-              if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 139, __pyx_L10_error)
+              if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 141, __pyx_L18_error)
               #endif
               if (__pyx_t_5 >= __pyx_temp) break;
             }
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_4 = PyList_GET_ITEM(__pyx_t_12, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 139, __pyx_L10_error)
+            __pyx_t_7 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_7); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 141, __pyx_L18_error)
             #else
-            __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_12, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 139, __pyx_L10_error)
-            __Pyx_GOTREF(__pyx_t_4);
+            __pyx_t_7 = __Pyx_PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 141, __pyx_L18_error)
+            __Pyx_GOTREF(__pyx_t_7);
             #endif
           } else {
             {
-              Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_12);
+              Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_4);
               #if !CYTHON_ASSUME_SAFE_MACROS
-              if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 139, __pyx_L10_error)
+              if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 141, __pyx_L18_error)
               #endif
               if (__pyx_t_5 >= __pyx_temp) break;
             }
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_12, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 139, __pyx_L10_error)
+            __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_7); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 141, __pyx_L18_error)
             #else
-            __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_12, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 139, __pyx_L10_error)
-            __Pyx_GOTREF(__pyx_t_4);
+            __pyx_t_7 = __Pyx_PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 141, __pyx_L18_error)
+            __Pyx_GOTREF(__pyx_t_7);
             #endif
           }
         } else {
-          __pyx_t_4 = __pyx_t_16(__pyx_t_12);
-          if (unlikely(!__pyx_t_4)) {
+          __pyx_t_7 = __pyx_t_20(__pyx_t_4);
+          if (unlikely(!__pyx_t_7)) {
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 139, __pyx_L10_error)
+              else __PYX_ERR(0, 141, __pyx_L18_error)
             }
             break;
           }
-          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_GOTREF(__pyx_t_7);
         }
-        __Pyx_XDECREF_SET(__pyx_7genexpr__pyx_v_v, __pyx_t_4);
-        __pyx_t_4 = 0;
-        __pyx_t_4 = __Pyx_PyNumber_Int(__pyx_7genexpr__pyx_v_v); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 139, __pyx_L10_error)
-        __Pyx_GOTREF(__pyx_t_4);
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_7, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 139, __pyx_L10_error)
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __Pyx_XDECREF_SET(__pyx_7genexpr__pyx_v_v, __pyx_t_7);
+        __pyx_t_7 = 0;
+        __pyx_t_7 = __Pyx_PyNumber_Int(__pyx_7genexpr__pyx_v_v); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 141, __pyx_L18_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_8, (PyObject*)__pyx_t_7))) __PYX_ERR(0, 141, __pyx_L18_error)
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_XDECREF(__pyx_7genexpr__pyx_v_v); __pyx_7genexpr__pyx_v_v = 0;
-      goto __pyx_L14_exit_scope;
-      __pyx_L10_error:;
+      goto __pyx_L22_exit_scope;
+      __pyx_L18_error:;
       __Pyx_XDECREF(__pyx_7genexpr__pyx_v_v); __pyx_7genexpr__pyx_v_v = 0;
       goto __pyx_L1_error;
-      __pyx_L14_exit_scope:;
+      __pyx_L22_exit_scope:;
     } /* exit inner scope */
-    __Pyx_XDECREF_SET(__pyx_v_values, ((PyObject*)__pyx_t_7));
-    __pyx_t_7 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_values, ((PyObject*)__pyx_t_8));
+    __pyx_t_8 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":140
+    /* "opendbc/can/parser_pyx.pyx":142
  *       def_val = def_val.split()
  *       values = [int(v) for v in def_val[::2]]
  *       defs = def_val[1::2]             # <<<<<<<<<<<<<<
  * 
  *       # two ways to lookup: address or msg name
  */
-    __pyx_t_7 = __Pyx_PyObject_GetItem(__pyx_v_def_val, __pyx_slice__3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 140, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_XDECREF_SET(__pyx_v_defs, __pyx_t_7);
-    __pyx_t_7 = 0;
+    __pyx_t_8 = __Pyx_PyObject_GetItem(__pyx_v_def_val, __pyx_slice__3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 142, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_XDECREF_SET(__pyx_v_defs, __pyx_t_8);
+    __pyx_t_8 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":143
+    /* "opendbc/can/parser_pyx.pyx":145
  * 
  *       # two ways to lookup: address or msg name
  *       dv[address][sgname] = dict(zip(values, defs))             # <<<<<<<<<<<<<<
  *       dv[msgname][sgname] = dv[address][sgname]
  * 
  */
-    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 143, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 145, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
     __Pyx_INCREF(__pyx_v_values);
     __Pyx_GIVEREF(__pyx_v_values);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_v_values)) __PYX_ERR(0, 143, __pyx_L1_error);
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_v_values)) __PYX_ERR(0, 145, __pyx_L1_error);
     __Pyx_INCREF(__pyx_v_defs);
     __Pyx_GIVEREF(__pyx_v_defs);
-    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_v_defs)) __PYX_ERR(0, 143, __pyx_L1_error);
-    __pyx_t_12 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_7, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 143, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_12 = __Pyx_GetItemInt(__pyx_v_dv, __pyx_v_address, uint32_t, 0, __Pyx_PyInt_From_uint32_t, 0, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    if (unlikely((PyObject_SetItem(__pyx_t_12, __pyx_v_sgname, __pyx_t_7) < 0))) __PYX_ERR(0, 143, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    if (__Pyx_PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_v_defs)) __PYX_ERR(0, 145, __pyx_L1_error);
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_8, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 145, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_dv, __pyx_v_address, uint32_t, 0, __Pyx_PyInt_From_uint32_t, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    if (unlikely((PyObject_SetItem(__pyx_t_4, __pyx_v_sgname, __pyx_t_8) < 0))) __PYX_ERR(0, 145, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "opendbc/can/parser_pyx.pyx":144
+    /* "opendbc/can/parser_pyx.pyx":146
  *       # two ways to lookup: address or msg name
  *       dv[address][sgname] = dict(zip(values, defs))
  *       dv[msgname][sgname] = dv[address][sgname]             # <<<<<<<<<<<<<<
  * 
  *     self.dv = dict(dv)
  */
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_dv, __pyx_v_address, uint32_t, 0, __Pyx_PyInt_From_uint32_t, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 144, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_t_7, __pyx_v_sgname); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 144, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyObject_GetItem(__pyx_v_dv, __pyx_v_msgname); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 144, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    if (unlikely((PyObject_SetItem(__pyx_t_7, __pyx_v_sgname, __pyx_t_12) < 0))) __PYX_ERR(0, 144, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __pyx_t_8 = __Pyx_GetItemInt(__pyx_v_dv, __pyx_v_address, uint32_t, 0, __Pyx_PyInt_From_uint32_t, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 146, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_t_8, __pyx_v_sgname); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 146, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __pyx_t_8 = __Pyx_PyObject_GetItem(__pyx_v_dv, __pyx_v_msgname); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 146, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    if (unlikely((PyObject_SetItem(__pyx_t_8, __pyx_v_sgname, __pyx_t_4) < 0))) __PYX_ERR(0, 146, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
 
-  /* "opendbc/can/parser_pyx.pyx":146
+  /* "opendbc/can/parser_pyx.pyx":148
  *       dv[msgname][sgname] = dv[address][sgname]
  * 
  *     self.dv = dict(dv)             # <<<<<<<<<<<<<<
  */
-  __pyx_t_12 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_v_dv); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 146, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_GIVEREF(__pyx_t_12);
+  __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_v_dv); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF(__pyx_v_self->dv);
   __Pyx_DECREF(__pyx_v_self->dv);
-  __pyx_v_self->dv = ((PyObject*)__pyx_t_12);
-  __pyx_t_12 = 0;
+  __pyx_v_self->dv = ((PyObject*)__pyx_t_4);
+  __pyx_t_4 = 0;
 
-  /* "opendbc/can/parser_pyx.pyx":113
+  /* "opendbc/can/parser_pyx.pyx":119
  *     string dbc_name
  * 
  *   def __init__(self, dbc_name):             # <<<<<<<<<<<<<<
@@ -6138,12 +6212,12 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_18);
+  __Pyx_XDECREF(__pyx_t_19);
   __Pyx_AddTraceback("opendbc.can.parser_pyx.CANDefine.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_address_to_msg_name);
-  __Pyx_XDECREF(__pyx_v_name);
   __Pyx_XDECREF(__pyx_v_dv);
   __Pyx_XDECREF(__pyx_v_sgname);
   __Pyx_XDECREF(__pyx_v_def_val);
@@ -6155,7 +6229,7 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine___init__(struct __pyx_
   return __pyx_r;
 }
 
-/* "opendbc/can/parser_pyx.pyx":110
+/* "opendbc/can/parser_pyx.pyx":116
  * 
  *   cdef public:
  *     dict dv             # <<<<<<<<<<<<<<
@@ -6217,7 +6291,7 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine_2dv_2__set__(struct __
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 1);
-  if (!(likely(PyDict_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None) || __Pyx_RaiseUnexpectedTypeError("dict", __pyx_v_value))) __PYX_ERR(0, 110, __pyx_L1_error)
+  if (!(likely(PyDict_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None) || __Pyx_RaiseUnexpectedTypeError("dict", __pyx_v_value))) __PYX_ERR(0, 116, __pyx_L1_error)
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -6269,7 +6343,7 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine_2dv_4__del__(struct __
   return __pyx_r;
 }
 
-/* "opendbc/can/parser_pyx.pyx":111
+/* "opendbc/can/parser_pyx.pyx":117
  *   cdef public:
  *     dict dv
  *     string dbc_name             # <<<<<<<<<<<<<<
@@ -6301,7 +6375,7 @@ static PyObject *__pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine_8dbc_name___get_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->dbc_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_PyBytes_string_to_py_std__in_string(__pyx_v_self->dbc_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6339,7 +6413,7 @@ static int __pyx_pf_7opendbc_3can_10parser_pyx_9CANDefine_8dbc_name_2__set__(str
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_value); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_string_from_py_std__in_string(__pyx_v_value); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L1_error)
   __pyx_v_self->dbc_name = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
 
   /* function exit code */
@@ -6582,6 +6656,7 @@ static PyObject *__pyx_tp_new_7opendbc_3can_10parser_pyx_CANParser(PyTypeObject 
   #endif
   p = ((struct __pyx_obj_7opendbc_3can_10parser_pyx_CANParser *)o);
   new((void*)&(p->can_values)) std::vector<struct SignalValue> ();
+  new((void*)&(p->addresses)) std::vector<uint32_t> ();
   new((void*)&(p->dbc_name)) std::string();
   p->vl = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->vl_all = ((PyObject*)Py_None); Py_INCREF(Py_None);
@@ -6608,6 +6683,7 @@ static void __pyx_tp_dealloc_7opendbc_3can_10parser_pyx_CANParser(PyObject *o) {
     PyErr_Restore(etype, eval, etb);
   }
   __Pyx_call_destructor(p->can_values);
+  __Pyx_call_destructor(p->addresses);
   __Pyx_call_destructor(p->dbc_name);
   Py_CLEAR(p->vl);
   Py_CLEAR(p->vl_all);
@@ -7020,6 +7096,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_CANParser_update_strings, __pyx_k_CANParser_update_strings, sizeof(__pyx_k_CANParser_update_strings), 0, 0, 1, 1},
     {&__pyx_kp_u_Can_t_find_DBC, __pyx_k_Can_t_find_DBC, sizeof(__pyx_k_Can_t_find_DBC), 0, 1, 0, 0},
     {&__pyx_kp_u_Can_t_find_DBC_2, __pyx_k_Can_t_find_DBC_2, sizeof(__pyx_k_Can_t_find_DBC_2), 0, 1, 0, 0},
+    {&__pyx_n_s_IndexError, __pyx_k_IndexError, sizeof(__pyx_k_IndexError), 0, 0, 1, 1},
+    {&__pyx_n_s_KeyError, __pyx_k_KeyError, sizeof(__pyx_k_KeyError), 0, 0, 1, 1},
     {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
     {&__pyx_n_s_Number, __pyx_k_Number, sizeof(__pyx_k_Number), 0, 0, 1, 1},
     {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
@@ -7027,6 +7105,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s__15, __pyx_k__15, sizeof(__pyx_k__15), 0, 0, 1, 1},
     {&__pyx_n_s__4, __pyx_k__4, sizeof(__pyx_k__4), 0, 0, 1, 1},
     {&__pyx_kp_u__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 1, 0, 0},
+    {&__pyx_n_s_address, __pyx_k_address, sizeof(__pyx_k_address), 0, 0, 1, 1},
     {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
     {&__pyx_n_s_bus, __pyx_k_bus, sizeof(__pyx_k_bus), 0, 0, 1, 1},
     {&__pyx_n_s_class_getitem, __pyx_k_class_getitem, sizeof(__pyx_k_class_getitem), 0, 0, 1, 1},
@@ -7034,6 +7113,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
     {&__pyx_n_s_collections, __pyx_k_collections, sizeof(__pyx_k_collections), 0, 0, 1, 1},
     {&__pyx_kp_u_could_not_find_message, __pyx_k_could_not_find_message, sizeof(__pyx_k_could_not_find_message), 0, 1, 0, 0},
+    {&__pyx_n_s_cur_address, __pyx_k_cur_address, sizeof(__pyx_k_cur_address), 0, 0, 1, 1},
     {&__pyx_n_s_cv, __pyx_k_cv, sizeof(__pyx_k_cv), 0, 0, 1, 1},
     {&__pyx_n_s_cv_name, __pyx_k_cv_name, sizeof(__pyx_k_cv_name), 0, 0, 1, 1},
     {&__pyx_n_s_dbc_name, __pyx_k_dbc_name, sizeof(__pyx_k_dbc_name), 0, 0, 1, 1},
@@ -7041,7 +7121,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_u_disable, __pyx_k_disable, sizeof(__pyx_k_disable), 0, 1, 0, 0},
     {&__pyx_kp_u_enable, __pyx_k_enable, sizeof(__pyx_k_enable), 0, 1, 0, 0},
     {&__pyx_kp_u_gc, __pyx_k_gc, sizeof(__pyx_k_gc), 0, 1, 0, 0},
-    {&__pyx_n_s_get, __pyx_k_get, sizeof(__pyx_k_get), 0, 0, 1, 1},
     {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
     {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
     {&__pyx_kp_u_in_DBC, __pyx_k_in_DBC, sizeof(__pyx_k_in_DBC), 0, 1, 0, 0},
@@ -7049,7 +7128,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_is_coroutine, __pyx_k_is_coroutine, sizeof(__pyx_k_is_coroutine), 0, 0, 1, 1},
     {&__pyx_kp_u_isenabled, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
     {&__pyx_n_s_it, __pyx_k_it, sizeof(__pyx_k_it), 0, 0, 1, 1},
-    {&__pyx_n_s_l, __pyx_k_l, sizeof(__pyx_k_l), 0, 0, 1, 1},
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
     {&__pyx_n_s_messages, __pyx_k_messages, sizeof(__pyx_k_messages), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
@@ -7073,10 +7151,11 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_strings, __pyx_k_strings, sizeof(__pyx_k_strings), 0, 0, 1, 1},
     {&__pyx_kp_s_stringsource, __pyx_k_stringsource, sizeof(__pyx_k_stringsource), 0, 0, 1, 0},
     {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+    {&__pyx_n_s_ts_nanos, __pyx_k_ts_nanos, sizeof(__pyx_k_ts_nanos), 0, 0, 1, 1},
     {&__pyx_n_s_update_strings, __pyx_k_update_strings, sizeof(__pyx_k_update_strings), 0, 0, 1, 1},
     {&__pyx_n_s_updated_addrs, __pyx_k_updated_addrs, sizeof(__pyx_k_updated_addrs), 0, 0, 1, 1},
-    {&__pyx_n_s_v, __pyx_k_v, sizeof(__pyx_k_v), 0, 0, 1, 1},
-    {&__pyx_n_s_values, __pyx_k_values, sizeof(__pyx_k_values), 0, 0, 1, 1},
+    {&__pyx_n_s_vl, __pyx_k_vl, sizeof(__pyx_k_vl), 0, 0, 1, 1},
+    {&__pyx_n_s_vl_all, __pyx_k_vl_all, sizeof(__pyx_k_vl_all), 0, 0, 1, 1},
     {&__pyx_n_s_zip, __pyx_k_zip, sizeof(__pyx_k_zip), 0, 0, 1, 1},
     {0, 0, 0, 0, 0, 0, 0}
   };
@@ -7086,8 +7165,10 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 34, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 46, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 145, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 68, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -7099,40 +7180,40 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "opendbc/can/parser_pyx.pyx":139
+  /* "opendbc/can/parser_pyx.pyx":141
  *       # separate definition/value pairs
  *       def_val = def_val.split()
  *       values = [int(v) for v in def_val[::2]]             # <<<<<<<<<<<<<<
  *       defs = def_val[1::2]
  * 
  */
-  __pyx_slice__2 = PySlice_New(Py_None, Py_None, __pyx_int_2); if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_slice__2 = PySlice_New(Py_None, Py_None, __pyx_int_2); if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__2);
   __Pyx_GIVEREF(__pyx_slice__2);
 
-  /* "opendbc/can/parser_pyx.pyx":140
+  /* "opendbc/can/parser_pyx.pyx":142
  *       def_val = def_val.split()
  *       values = [int(v) for v in def_val[::2]]
  *       defs = def_val[1::2]             # <<<<<<<<<<<<<<
  * 
  *       # two ways to lookup: address or msg name
  */
-  __pyx_slice__3 = PySlice_New(__pyx_int_1, Py_None, __pyx_int_2); if (unlikely(!__pyx_slice__3)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_slice__3 = PySlice_New(__pyx_int_1, Py_None, __pyx_int_2); if (unlikely(!__pyx_slice__3)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__3);
   __Pyx_GIVEREF(__pyx_slice__3);
 
-  /* "opendbc/can/parser_pyx.pyx":73
+  /* "opendbc/can/parser_pyx.pyx":68
  *       del self.can
  * 
  *   def update_strings(self, strings, sendcan=False):             # <<<<<<<<<<<<<<
- *     for v in self.vl_all.values():
- *       for l in v.values():  # no-cython-lint
+ *     for address in self.addresses:
+ *       self.vl_all[address].clear()
  */
-  __pyx_tuple__6 = PyTuple_Pack(10, __pyx_n_s_self, __pyx_n_s_strings, __pyx_n_s_sendcan, __pyx_n_s_v, __pyx_n_s_l, __pyx_n_s_new_vals, __pyx_n_s_updated_addrs, __pyx_n_s_it, __pyx_n_s_cv, __pyx_n_s_cv_name); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(13, __pyx_n_s_self, __pyx_n_s_strings, __pyx_n_s_sendcan, __pyx_n_s_address, __pyx_n_s_new_vals, __pyx_n_s_cur_address, __pyx_n_s_vl, __pyx_n_s_vl_all, __pyx_n_s_ts_nanos, __pyx_n_s_updated_addrs, __pyx_n_s_it, __pyx_n_s_cv, __pyx_n_s_cv_name); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
-  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_opendbc_can_parser_pyx_pyx, __pyx_n_s_update_strings, 73, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 73, __pyx_L1_error)
-  __pyx_tuple__8 = PyTuple_Pack(1, Py_False); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 13, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_opendbc_can_parser_pyx_pyx, __pyx_n_s_update_strings, 68, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, Py_False); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
@@ -7180,8 +7261,6 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 /* #### Code section: init_constants ### */
 
 static CYTHON_SMALL_CODE int __Pyx_InitConstants(void) {
-  __pyx_umethod_PyDict_Type_get.type = (PyObject*)&PyDict_Type;
-  __pyx_umethod_PyDict_Type_get.method_name = &__pyx_n_s_get;
   if (__Pyx_CreateStringTabAndInitStrings() < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -7237,15 +7316,15 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_7opendbc_3can_10parser_pyx_CANParser_spec, NULL); if (unlikely(!__pyx_ptype_7opendbc_3can_10parser_pyx_CANParser)) __PYX_ERR(0, 18, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_7opendbc_3can_10parser_pyx_CANParser_spec, __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_7opendbc_3can_10parser_pyx_CANParser_spec, NULL); if (unlikely(!__pyx_ptype_7opendbc_3can_10parser_pyx_CANParser)) __PYX_ERR(0, 17, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_7opendbc_3can_10parser_pyx_CANParser_spec, __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   #else
   __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser = &__pyx_type_7opendbc_3can_10parser_pyx_CANParser;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_7opendbc_3can_10parser_pyx_CANParser) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_7opendbc_3can_10parser_pyx_CANParser) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser->tp_print = 0;
@@ -7255,20 +7334,20 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_CANParser, (PyObject *) __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_CANParser, (PyObject *) __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_7opendbc_3can_10parser_pyx_CANParser) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   #endif
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_7opendbc_3can_10parser_pyx_CANDefine_spec, NULL); if (unlikely(!__pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine)) __PYX_ERR(0, 105, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_7opendbc_3can_10parser_pyx_CANDefine_spec, __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_7opendbc_3can_10parser_pyx_CANDefine_spec, NULL); if (unlikely(!__pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine)) __PYX_ERR(0, 111, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_7opendbc_3can_10parser_pyx_CANDefine_spec, __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine) < 0) __PYX_ERR(0, 111, __pyx_L1_error)
   #else
   __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine = &__pyx_type_7opendbc_3can_10parser_pyx_CANDefine;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine) < 0) __PYX_ERR(0, 111, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine->tp_print = 0;
@@ -7278,9 +7357,9 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_CANDefine, (PyObject *) __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_CANDefine, (PyObject *) __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine) < 0) __PYX_ERR(0, 111, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_7opendbc_3can_10parser_pyx_CANDefine) < 0) __PYX_ERR(0, 111, __pyx_L1_error)
   #endif
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -7592,50 +7671,50 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "opendbc/can/parser_pyx.pyx":14
+  /* "opendbc/can/parser_pyx.pyx":13
  * from .common cimport dbc_lookup, SignalValue, DBC
  * 
  * import numbers             # <<<<<<<<<<<<<<
  * from collections import defaultdict
  * 
  */
-  __pyx_t_2 = __Pyx_ImportDottedModule(__pyx_n_s_numbers, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ImportDottedModule(__pyx_n_s_numbers, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_numbers, __pyx_t_2) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_numbers, __pyx_t_2) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "opendbc/can/parser_pyx.pyx":15
+  /* "opendbc/can/parser_pyx.pyx":14
  * 
  * import numbers
  * from collections import defaultdict             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_defaultdict);
   __Pyx_GIVEREF(__pyx_n_s_defaultdict);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_defaultdict)) __PYX_ERR(0, 15, __pyx_L1_error);
-  __pyx_t_3 = __Pyx_Import(__pyx_n_s_collections, __pyx_t_2, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 15, __pyx_L1_error)
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_defaultdict)) __PYX_ERR(0, 14, __pyx_L1_error);
+  __pyx_t_3 = __Pyx_Import(__pyx_n_s_collections, __pyx_t_2, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_3, __pyx_n_s_defaultdict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_3, __pyx_n_s_defaultdict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_defaultdict, __pyx_t_2) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_defaultdict, __pyx_t_2) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "opendbc/can/parser_pyx.pyx":73
+  /* "opendbc/can/parser_pyx.pyx":68
  *       del self.can
  * 
  *   def update_strings(self, strings, sendcan=False):             # <<<<<<<<<<<<<<
- *     for v in self.vl_all.values():
- *       for l in v.values():  # no-cython-lint
+ *     for address in self.addresses:
+ *       self.vl_all[address].clear()
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7opendbc_3can_10parser_pyx_9CANParser_5update_strings, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_CANParser_update_strings, NULL, __pyx_n_s_opendbc_can_parser_pyx, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_7opendbc_3can_10parser_pyx_9CANParser_5update_strings, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_CANParser_update_strings, NULL, __pyx_n_s_opendbc_can_parser_pyx, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_3, __pyx_tuple__8);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7opendbc_3can_10parser_pyx_CANParser, __pyx_n_s_update_strings, __pyx_t_3) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_7opendbc_3can_10parser_pyx_CANParser, __pyx_n_s_update_strings, __pyx_t_3) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_7opendbc_3can_10parser_pyx_CANParser);
 
@@ -8796,33 +8875,6 @@ bad:
 }
 #endif
 
-/* decode_c_bytes */
-static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
-         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
-    if (unlikely((start < 0) | (stop < 0))) {
-        if (start < 0) {
-            start += length;
-            if (start < 0)
-                start = 0;
-        }
-        if (stop < 0)
-            stop += length;
-    }
-    if (stop > length)
-        stop = length;
-    if (unlikely(stop <= start))
-        return __Pyx_NewRef(__pyx_empty_unicode);
-    length = stop - start;
-    cstring += start;
-    if (decode_func) {
-        return decode_func(cstring, length, errors);
-    } else {
-        return PyUnicode_Decode(cstring, length, encoding, errors);
-    }
-}
-
 /* GetItemInt */
 static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
     PyObject *r;
@@ -8987,204 +9039,181 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
     return __Pyx_GetBuiltinName(name);
 }
 
-/* UnpackUnboundCMethod */
-static PyObject *__Pyx_SelflessCall(PyObject *method, PyObject *args, PyObject *kwargs) {
-    PyObject *result;
-    PyObject *selfless_args = PyTuple_GetSlice(args, 1, PyTuple_Size(args));
-    if (unlikely(!selfless_args)) return NULL;
-    result = PyObject_Call(method, selfless_args, kwargs);
-    Py_DECREF(selfless_args);
-    return result;
+/* GetTopmostException */
+#if CYTHON_USE_EXC_INFO_STACK && CYTHON_FAST_THREAD_STATE
+static _PyErr_StackItem *
+__Pyx_PyErr_GetTopmostException(PyThreadState *tstate)
+{
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    while ((exc_info->exc_value == NULL || exc_info->exc_value == Py_None) &&
+           exc_info->previous_item != NULL)
+    {
+        exc_info = exc_info->previous_item;
+    }
+    return exc_info;
 }
-static PyMethodDef __Pyx_UnboundCMethod_Def = {
-     "CythonUnboundCMethod",
-     __PYX_REINTERPRET_FUNCION(PyCFunction, __Pyx_SelflessCall),
-     METH_VARARGS | METH_KEYWORDS,
-     NULL
-};
-static int __Pyx_TryUnpackUnboundCMethod(__Pyx_CachedCFunction* target) {
-    PyObject *method;
-    method = __Pyx_PyObject_GetAttrStr(target->type, *target->method_name);
-    if (unlikely(!method))
-        return -1;
-    target->method = method;
-#if CYTHON_COMPILING_IN_CPYTHON
-    #if PY_MAJOR_VERSION >= 3
-    if (likely(__Pyx_TypeCheck(method, &PyMethodDescr_Type)))
+#endif
+
+/* SaveResetException */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+  #if CYTHON_USE_EXC_INFO_STACK && PY_VERSION_HEX >= 0x030B00a4
+    _PyErr_StackItem *exc_info = __Pyx_PyErr_GetTopmostException(tstate);
+    PyObject *exc_value = exc_info->exc_value;
+    if (exc_value == NULL || exc_value == Py_None) {
+        *value = NULL;
+        *type = NULL;
+        *tb = NULL;
+    } else {
+        *value = exc_value;
+        Py_INCREF(*value);
+        *type = (PyObject*) Py_TYPE(exc_value);
+        Py_INCREF(*type);
+        *tb = PyException_GetTraceback(exc_value);
+    }
+  #elif CYTHON_USE_EXC_INFO_STACK
+    _PyErr_StackItem *exc_info = __Pyx_PyErr_GetTopmostException(tstate);
+    *type = exc_info->exc_type;
+    *value = exc_info->exc_value;
+    *tb = exc_info->exc_traceback;
+    Py_XINCREF(*type);
+    Py_XINCREF(*value);
+    Py_XINCREF(*tb);
+  #else
+    *type = tstate->exc_type;
+    *value = tstate->exc_value;
+    *tb = tstate->exc_traceback;
+    Py_XINCREF(*type);
+    Py_XINCREF(*value);
+    Py_XINCREF(*tb);
+  #endif
+}
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+  #if CYTHON_USE_EXC_INFO_STACK && PY_VERSION_HEX >= 0x030B00a4
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    PyObject *tmp_value = exc_info->exc_value;
+    exc_info->exc_value = value;
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(type);
+    Py_XDECREF(tb);
+  #else
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    #if CYTHON_USE_EXC_INFO_STACK
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    tmp_type = exc_info->exc_type;
+    tmp_value = exc_info->exc_value;
+    tmp_tb = exc_info->exc_traceback;
+    exc_info->exc_type = type;
+    exc_info->exc_value = value;
+    exc_info->exc_traceback = tb;
     #else
-    if (likely(!__Pyx_CyOrPyCFunction_Check(method)))
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = type;
+    tstate->exc_value = value;
+    tstate->exc_traceback = tb;
     #endif
-    {
-        PyMethodDescrObject *descr = (PyMethodDescrObject*) method;
-        target->func = descr->d_method->ml_meth;
-        target->flag = descr->d_method->ml_flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_STACKLESS);
-    } else
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+  #endif
+}
 #endif
-#if CYTHON_COMPILING_IN_PYPY
+
+/* GetException */
+#if CYTHON_FAST_THREAD_STATE
+static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb)
 #else
-    if (PyCFunction_Check(method))
+static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb)
 #endif
-    {
-        PyObject *self;
-        int self_found;
-#if CYTHON_COMPILING_IN_LIMITED_API || CYTHON_COMPILING_IN_PYPY
-        self = PyObject_GetAttrString(method, "__self__");
-        if (!self) {
-            PyErr_Clear();
-        }
-#else
-        self = PyCFunction_GET_SELF(method);
-#endif
-        self_found = (self && self != Py_None);
-#if CYTHON_COMPILING_IN_LIMITED_API || CYTHON_COMPILING_IN_PYPY
-        Py_XDECREF(self);
-#endif
-        if (self_found) {
-            PyObject *unbound_method = PyCFunction_New(&__Pyx_UnboundCMethod_Def, method);
-            if (unlikely(!unbound_method)) return -1;
-            Py_DECREF(method);
-            target->method = unbound_method;
-        }
+{
+    PyObject *local_type = NULL, *local_value, *local_tb = NULL;
+#if CYTHON_FAST_THREAD_STATE
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+  #if PY_VERSION_HEX >= 0x030C00A6
+    local_value = tstate->current_exception;
+    tstate->current_exception = 0;
+    if (likely(local_value)) {
+        local_type = (PyObject*) Py_TYPE(local_value);
+        Py_INCREF(local_type);
+        local_tb = PyException_GetTraceback(local_value);
     }
+  #else
+    local_type = tstate->curexc_type;
+    local_value = tstate->curexc_value;
+    local_tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+  #endif
+#else
+    PyErr_Fetch(&local_type, &local_value, &local_tb);
+#endif
+    PyErr_NormalizeException(&local_type, &local_value, &local_tb);
+#if CYTHON_FAST_THREAD_STATE && PY_VERSION_HEX >= 0x030C00A6
+    if (unlikely(tstate->current_exception))
+#elif CYTHON_FAST_THREAD_STATE
+    if (unlikely(tstate->curexc_type))
+#else
+    if (unlikely(PyErr_Occurred()))
+#endif
+        goto bad;
+    #if PY_MAJOR_VERSION >= 3
+    if (local_tb) {
+        if (unlikely(PyException_SetTraceback(local_value, local_tb) < 0))
+            goto bad;
+    }
+    #endif
+    Py_XINCREF(local_tb);
+    Py_XINCREF(local_type);
+    Py_XINCREF(local_value);
+    *type = local_type;
+    *value = local_value;
+    *tb = local_tb;
+#if CYTHON_FAST_THREAD_STATE
+    #if CYTHON_USE_EXC_INFO_STACK
+    {
+        _PyErr_StackItem *exc_info = tstate->exc_info;
+      #if PY_VERSION_HEX >= 0x030B00a4
+        tmp_value = exc_info->exc_value;
+        exc_info->exc_value = local_value;
+        tmp_type = NULL;
+        tmp_tb = NULL;
+        Py_XDECREF(local_type);
+        Py_XDECREF(local_tb);
+      #else
+        tmp_type = exc_info->exc_type;
+        tmp_value = exc_info->exc_value;
+        tmp_tb = exc_info->exc_traceback;
+        exc_info->exc_type = local_type;
+        exc_info->exc_value = local_value;
+        exc_info->exc_traceback = local_tb;
+      #endif
+    }
+    #else
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = local_type;
+    tstate->exc_value = local_value;
+    tstate->exc_traceback = local_tb;
+    #endif
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+#else
+    PyErr_SetExcInfo(local_type, local_value, local_tb);
+#endif
     return 0;
-}
-
-/* CallUnboundCMethod1 */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg) {
-    if (likely(cfunc->func)) {
-        int flag = cfunc->flag;
-        if (flag == METH_O) {
-            return (*(cfunc->func))(self, arg);
-        } else if ((PY_VERSION_HEX >= 0x030600B1) && flag == METH_FASTCALL) {
-            #if PY_VERSION_HEX >= 0x030700A0
-                return (*(__Pyx_PyCFunctionFast)(void*)(PyCFunction)cfunc->func)(self, &arg, 1);
-            #else
-                return (*(__Pyx_PyCFunctionFastWithKeywords)(void*)(PyCFunction)cfunc->func)(self, &arg, 1, NULL);
-            #endif
-        } else if ((PY_VERSION_HEX >= 0x030700A0) && flag == (METH_FASTCALL | METH_KEYWORDS)) {
-            return (*(__Pyx_PyCFunctionFastWithKeywords)(void*)(PyCFunction)cfunc->func)(self, &arg, 1, NULL);
-        }
-    }
-    return __Pyx__CallUnboundCMethod1(cfunc, self, arg);
-}
-#endif
-static PyObject* __Pyx__CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg){
-    PyObject *args, *result = NULL;
-    if (unlikely(!cfunc->func && !cfunc->method) && unlikely(__Pyx_TryUnpackUnboundCMethod(cfunc) < 0)) return NULL;
-#if CYTHON_COMPILING_IN_CPYTHON
-    if (cfunc->func && (cfunc->flag & METH_VARARGS)) {
-        args = PyTuple_New(1);
-        if (unlikely(!args)) goto bad;
-        Py_INCREF(arg);
-        PyTuple_SET_ITEM(args, 0, arg);
-        if (cfunc->flag & METH_KEYWORDS)
-            result = (*(PyCFunctionWithKeywords)(void*)(PyCFunction)cfunc->func)(self, args, NULL);
-        else
-            result = (*cfunc->func)(self, args);
-    } else {
-        args = PyTuple_New(2);
-        if (unlikely(!args)) goto bad;
-        Py_INCREF(self);
-        PyTuple_SET_ITEM(args, 0, self);
-        Py_INCREF(arg);
-        PyTuple_SET_ITEM(args, 1, arg);
-        result = __Pyx_PyObject_Call(cfunc->method, args, NULL);
-    }
-#else
-    args = PyTuple_Pack(2, self, arg);
-    if (unlikely(!args)) goto bad;
-    result = __Pyx_PyObject_Call(cfunc->method, args, NULL);
-#endif
 bad:
-    Py_XDECREF(args);
-    return result;
-}
-
-/* CallUnboundCMethod2 */
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030600B1
-static CYTHON_INLINE PyObject *__Pyx_CallUnboundCMethod2(__Pyx_CachedCFunction *cfunc, PyObject *self, PyObject *arg1, PyObject *arg2) {
-    if (likely(cfunc->func)) {
-        PyObject *args[2] = {arg1, arg2};
-        if (cfunc->flag == METH_FASTCALL) {
-            #if PY_VERSION_HEX >= 0x030700A0
-            return (*(__Pyx_PyCFunctionFast)(void*)(PyCFunction)cfunc->func)(self, args, 2);
-            #else
-            return (*(__Pyx_PyCFunctionFastWithKeywords)(void*)(PyCFunction)cfunc->func)(self, args, 2, NULL);
-            #endif
-        }
-        #if PY_VERSION_HEX >= 0x030700A0
-        if (cfunc->flag == (METH_FASTCALL | METH_KEYWORDS))
-            return (*(__Pyx_PyCFunctionFastWithKeywords)(void*)(PyCFunction)cfunc->func)(self, args, 2, NULL);
-        #endif
-    }
-    return __Pyx__CallUnboundCMethod2(cfunc, self, arg1, arg2);
-}
-#endif
-static PyObject* __Pyx__CallUnboundCMethod2(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg1, PyObject* arg2){
-    PyObject *args, *result = NULL;
-    if (unlikely(!cfunc->func && !cfunc->method) && unlikely(__Pyx_TryUnpackUnboundCMethod(cfunc) < 0)) return NULL;
-#if CYTHON_COMPILING_IN_CPYTHON
-    if (cfunc->func && (cfunc->flag & METH_VARARGS)) {
-        args = PyTuple_New(2);
-        if (unlikely(!args)) goto bad;
-        Py_INCREF(arg1);
-        PyTuple_SET_ITEM(args, 0, arg1);
-        Py_INCREF(arg2);
-        PyTuple_SET_ITEM(args, 1, arg2);
-        if (cfunc->flag & METH_KEYWORDS)
-            result = (*(PyCFunctionWithKeywords)(void*)(PyCFunction)cfunc->func)(self, args, NULL);
-        else
-            result = (*cfunc->func)(self, args);
-    } else {
-        args = PyTuple_New(3);
-        if (unlikely(!args)) goto bad;
-        Py_INCREF(self);
-        PyTuple_SET_ITEM(args, 0, self);
-        Py_INCREF(arg1);
-        PyTuple_SET_ITEM(args, 1, arg1);
-        Py_INCREF(arg2);
-        PyTuple_SET_ITEM(args, 2, arg2);
-        result = __Pyx_PyObject_Call(cfunc->method, args, NULL);
-    }
-#else
-    args = PyTuple_Pack(3, self, arg1, arg2);
-    if (unlikely(!args)) goto bad;
-    result = __Pyx_PyObject_Call(cfunc->method, args, NULL);
-#endif
-bad:
-    Py_XDECREF(args);
-    return result;
-}
-
-/* dict_getitem_default */
-static PyObject* __Pyx_PyDict_GetItemDefault(PyObject* d, PyObject* key, PyObject* default_value) {
-    PyObject* value;
-#if PY_MAJOR_VERSION >= 3 && (!CYTHON_COMPILING_IN_PYPY || PYPY_VERSION_NUM >= 0x07020000)
-    value = PyDict_GetItemWithError(d, key);
-    if (unlikely(!value)) {
-        if (unlikely(PyErr_Occurred()))
-            return NULL;
-        value = default_value;
-    }
-    Py_INCREF(value);
-    if ((1));
-#else
-    if (PyString_CheckExact(key) || PyUnicode_CheckExact(key) || PyInt_CheckExact(key)) {
-        value = PyDict_GetItem(d, key);
-        if (unlikely(!value)) {
-            value = default_value;
-        }
-        Py_INCREF(value);
-    }
-#endif
-    else {
-        if (default_value == Py_None)
-            value = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PyDict_Type_get, d, key);
-        else
-            value = __Pyx_CallUnboundCMethod2(&__pyx_umethod_PyDict_Type_get, d, key, default_value);
-    }
-    return value;
+    *type = 0;
+    *value = 0;
+    *tb = 0;
+    Py_XDECREF(local_type);
+    Py_XDECREF(local_value);
+    Py_XDECREF(local_tb);
+    return -1;
 }
 
 /* JoinPyUnicode */
@@ -9256,6 +9285,33 @@ bad:
 #endif
 }
 
+/* decode_c_bytes */
+static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
+         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
+         const char* encoding, const char* errors,
+         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
+    if (unlikely((start < 0) | (stop < 0))) {
+        if (start < 0) {
+            start += length;
+            if (start < 0)
+                start = 0;
+        }
+        if (stop < 0)
+            stop += length;
+    }
+    if (stop > length)
+        stop = length;
+    if (unlikely(stop <= start))
+        return __Pyx_NewRef(__pyx_empty_unicode);
+    length = stop - start;
+    cstring += start;
+    if (decode_func) {
+        return decode_func(cstring, length, errors);
+    } else {
+        return PyUnicode_Decode(cstring, length, encoding, errors);
+    }
+}
+
 /* DictGetItem */
 #if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
 static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
@@ -9279,313 +9335,6 @@ static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
     return value;
 }
 #endif
-
-/* PyObjectCallNoArg */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
-    PyObject *arg[2] = {NULL, NULL};
-    return __Pyx_PyObject_FastCall(func, arg + 1, 0 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
-}
-
-/* PyObjectGetMethod */
-static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method) {
-    PyObject *attr;
-#if CYTHON_UNPACK_METHODS && CYTHON_COMPILING_IN_CPYTHON && CYTHON_USE_PYTYPE_LOOKUP
-    __Pyx_TypeName type_name;
-    PyTypeObject *tp = Py_TYPE(obj);
-    PyObject *descr;
-    descrgetfunc f = NULL;
-    PyObject **dictptr, *dict;
-    int meth_found = 0;
-    assert (*method == NULL);
-    if (unlikely(tp->tp_getattro != PyObject_GenericGetAttr)) {
-        attr = __Pyx_PyObject_GetAttrStr(obj, name);
-        goto try_unpack;
-    }
-    if (unlikely(tp->tp_dict == NULL) && unlikely(PyType_Ready(tp) < 0)) {
-        return 0;
-    }
-    descr = _PyType_Lookup(tp, name);
-    if (likely(descr != NULL)) {
-        Py_INCREF(descr);
-#if defined(Py_TPFLAGS_METHOD_DESCRIPTOR) && Py_TPFLAGS_METHOD_DESCRIPTOR
-        if (__Pyx_PyType_HasFeature(Py_TYPE(descr), Py_TPFLAGS_METHOD_DESCRIPTOR))
-#elif PY_MAJOR_VERSION >= 3
-        #ifdef __Pyx_CyFunction_USED
-        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type) || __Pyx_CyFunction_Check(descr)))
-        #else
-        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type)))
-        #endif
-#else
-        #ifdef __Pyx_CyFunction_USED
-        if (likely(PyFunction_Check(descr) || __Pyx_CyFunction_Check(descr)))
-        #else
-        if (likely(PyFunction_Check(descr)))
-        #endif
-#endif
-        {
-            meth_found = 1;
-        } else {
-            f = Py_TYPE(descr)->tp_descr_get;
-            if (f != NULL && PyDescr_IsData(descr)) {
-                attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
-                Py_DECREF(descr);
-                goto try_unpack;
-            }
-        }
-    }
-    dictptr = _PyObject_GetDictPtr(obj);
-    if (dictptr != NULL && (dict = *dictptr) != NULL) {
-        Py_INCREF(dict);
-        attr = __Pyx_PyDict_GetItemStr(dict, name);
-        if (attr != NULL) {
-            Py_INCREF(attr);
-            Py_DECREF(dict);
-            Py_XDECREF(descr);
-            goto try_unpack;
-        }
-        Py_DECREF(dict);
-    }
-    if (meth_found) {
-        *method = descr;
-        return 1;
-    }
-    if (f != NULL) {
-        attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
-        Py_DECREF(descr);
-        goto try_unpack;
-    }
-    if (likely(descr != NULL)) {
-        *method = descr;
-        return 0;
-    }
-    type_name = __Pyx_PyType_GetName(tp);
-    PyErr_Format(PyExc_AttributeError,
-#if PY_MAJOR_VERSION >= 3
-                 "'" __Pyx_FMT_TYPENAME "' object has no attribute '%U'",
-                 type_name, name);
-#else
-                 "'" __Pyx_FMT_TYPENAME "' object has no attribute '%.400s'",
-                 type_name, PyString_AS_STRING(name));
-#endif
-    __Pyx_DECREF_TypeName(type_name);
-    return 0;
-#else
-    attr = __Pyx_PyObject_GetAttrStr(obj, name);
-    goto try_unpack;
-#endif
-try_unpack:
-#if CYTHON_UNPACK_METHODS
-    if (likely(attr) && PyMethod_Check(attr) && likely(PyMethod_GET_SELF(attr) == obj)) {
-        PyObject *function = PyMethod_GET_FUNCTION(attr);
-        Py_INCREF(function);
-        Py_DECREF(attr);
-        *method = function;
-        return 1;
-    }
-#endif
-    *method = attr;
-    return 0;
-}
-
-/* PyObjectCallMethod0 */
-static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name) {
-    PyObject *method = NULL, *result = NULL;
-    int is_method = __Pyx_PyObject_GetMethod(obj, method_name, &method);
-    if (likely(is_method)) {
-        result = __Pyx_PyObject_CallOneArg(method, obj);
-        Py_DECREF(method);
-        return result;
-    }
-    if (unlikely(!method)) goto bad;
-    result = __Pyx_PyObject_CallNoArg(method);
-    Py_DECREF(method);
-bad:
-    return result;
-}
-
-/* RaiseNoneIterError */
-static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-}
-
-/* UnpackTupleError */
-static void __Pyx_UnpackTupleError(PyObject *t, Py_ssize_t index) {
-    if (t == Py_None) {
-      __Pyx_RaiseNoneNotIterableError();
-    } else if (PyTuple_GET_SIZE(t) < index) {
-      __Pyx_RaiseNeedMoreValuesError(PyTuple_GET_SIZE(t));
-    } else {
-      __Pyx_RaiseTooManyValuesError(index);
-    }
-}
-
-/* UnpackTuple2 */
-static CYTHON_INLINE int __Pyx_unpack_tuple2_exact(
-        PyObject* tuple, PyObject** pvalue1, PyObject** pvalue2, int decref_tuple) {
-    PyObject *value1 = NULL, *value2 = NULL;
-#if CYTHON_COMPILING_IN_PYPY
-    value1 = PySequence_ITEM(tuple, 0);  if (unlikely(!value1)) goto bad;
-    value2 = PySequence_ITEM(tuple, 1);  if (unlikely(!value2)) goto bad;
-#else
-    value1 = PyTuple_GET_ITEM(tuple, 0);  Py_INCREF(value1);
-    value2 = PyTuple_GET_ITEM(tuple, 1);  Py_INCREF(value2);
-#endif
-    if (decref_tuple) {
-        Py_DECREF(tuple);
-    }
-    *pvalue1 = value1;
-    *pvalue2 = value2;
-    return 0;
-#if CYTHON_COMPILING_IN_PYPY
-bad:
-    Py_XDECREF(value1);
-    Py_XDECREF(value2);
-    if (decref_tuple) { Py_XDECREF(tuple); }
-    return -1;
-#endif
-}
-static int __Pyx_unpack_tuple2_generic(PyObject* tuple, PyObject** pvalue1, PyObject** pvalue2,
-                                       int has_known_size, int decref_tuple) {
-    Py_ssize_t index;
-    PyObject *value1 = NULL, *value2 = NULL, *iter = NULL;
-    iternextfunc iternext;
-    iter = PyObject_GetIter(tuple);
-    if (unlikely(!iter)) goto bad;
-    if (decref_tuple) { Py_DECREF(tuple); tuple = NULL; }
-    iternext = __Pyx_PyObject_GetIterNextFunc(iter);
-    value1 = iternext(iter); if (unlikely(!value1)) { index = 0; goto unpacking_failed; }
-    value2 = iternext(iter); if (unlikely(!value2)) { index = 1; goto unpacking_failed; }
-    if (!has_known_size && unlikely(__Pyx_IternextUnpackEndCheck(iternext(iter), 2))) goto bad;
-    Py_DECREF(iter);
-    *pvalue1 = value1;
-    *pvalue2 = value2;
-    return 0;
-unpacking_failed:
-    if (!has_known_size && __Pyx_IterFinish() == 0)
-        __Pyx_RaiseNeedMoreValuesError(index);
-bad:
-    Py_XDECREF(iter);
-    Py_XDECREF(value1);
-    Py_XDECREF(value2);
-    if (decref_tuple) { Py_XDECREF(tuple); }
-    return -1;
-}
-
-/* dict_iter */
-#if CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
-#include <string.h>
-#endif
-static CYTHON_INLINE PyObject* __Pyx_dict_iterator(PyObject* iterable, int is_dict, PyObject* method_name,
-                                                   Py_ssize_t* p_orig_length, int* p_source_is_dict) {
-    is_dict = is_dict || likely(PyDict_CheckExact(iterable));
-    *p_source_is_dict = is_dict;
-    if (is_dict) {
-#if !CYTHON_COMPILING_IN_PYPY
-        *p_orig_length = PyDict_Size(iterable);
-        Py_INCREF(iterable);
-        return iterable;
-#elif PY_MAJOR_VERSION >= 3
-        static PyObject *py_items = NULL, *py_keys = NULL, *py_values = NULL;
-        PyObject **pp = NULL;
-        if (method_name) {
-            const char *name = PyUnicode_AsUTF8(method_name);
-            if (strcmp(name, "iteritems") == 0) pp = &py_items;
-            else if (strcmp(name, "iterkeys") == 0) pp = &py_keys;
-            else if (strcmp(name, "itervalues") == 0) pp = &py_values;
-            if (pp) {
-                if (!*pp) {
-                    *pp = PyUnicode_FromString(name + 4);
-                    if (!*pp)
-                        return NULL;
-                }
-                method_name = *pp;
-            }
-        }
-#endif
-    }
-    *p_orig_length = 0;
-    if (method_name) {
-        PyObject* iter;
-        iterable = __Pyx_PyObject_CallMethod0(iterable, method_name);
-        if (!iterable)
-            return NULL;
-#if !CYTHON_COMPILING_IN_PYPY
-        if (PyTuple_CheckExact(iterable) || PyList_CheckExact(iterable))
-            return iterable;
-#endif
-        iter = PyObject_GetIter(iterable);
-        Py_DECREF(iterable);
-        return iter;
-    }
-    return PyObject_GetIter(iterable);
-}
-static CYTHON_INLINE int __Pyx_dict_iter_next(
-        PyObject* iter_obj, CYTHON_NCP_UNUSED Py_ssize_t orig_length, CYTHON_NCP_UNUSED Py_ssize_t* ppos,
-        PyObject** pkey, PyObject** pvalue, PyObject** pitem, int source_is_dict) {
-    PyObject* next_item;
-#if !CYTHON_COMPILING_IN_PYPY
-    if (source_is_dict) {
-        PyObject *key, *value;
-        if (unlikely(orig_length != PyDict_Size(iter_obj))) {
-            PyErr_SetString(PyExc_RuntimeError, "dictionary changed size during iteration");
-            return -1;
-        }
-        if (unlikely(!PyDict_Next(iter_obj, ppos, &key, &value))) {
-            return 0;
-        }
-        if (pitem) {
-            PyObject* tuple = PyTuple_New(2);
-            if (unlikely(!tuple)) {
-                return -1;
-            }
-            Py_INCREF(key);
-            Py_INCREF(value);
-            PyTuple_SET_ITEM(tuple, 0, key);
-            PyTuple_SET_ITEM(tuple, 1, value);
-            *pitem = tuple;
-        } else {
-            if (pkey) {
-                Py_INCREF(key);
-                *pkey = key;
-            }
-            if (pvalue) {
-                Py_INCREF(value);
-                *pvalue = value;
-            }
-        }
-        return 1;
-    } else if (PyTuple_CheckExact(iter_obj)) {
-        Py_ssize_t pos = *ppos;
-        if (unlikely(pos >= PyTuple_GET_SIZE(iter_obj))) return 0;
-        *ppos = pos + 1;
-        next_item = PyTuple_GET_ITEM(iter_obj, pos);
-        Py_INCREF(next_item);
-    } else if (PyList_CheckExact(iter_obj)) {
-        Py_ssize_t pos = *ppos;
-        if (unlikely(pos >= PyList_GET_SIZE(iter_obj))) return 0;
-        *ppos = pos + 1;
-        next_item = PyList_GET_ITEM(iter_obj, pos);
-        Py_INCREF(next_item);
-    } else
-#endif
-    {
-        next_item = PyIter_Next(iter_obj);
-        if (unlikely(!next_item)) {
-            return __Pyx_IterFinish();
-        }
-    }
-    if (pitem) {
-        *pitem = next_item;
-    } else if (pkey && pvalue) {
-        if (__Pyx_unpack_tuple2(next_item, pkey, pvalue, source_is_dict, source_is_dict, 1))
-            return -1;
-    } else if (pkey) {
-        *pkey = next_item;
-    } else {
-        *pvalue = next_item;
-    }
-    return 1;
-}
 
 /* KeywordStringCheck */
 static int __Pyx_CheckKeywordStrings(
@@ -9794,6 +9543,129 @@ static int __Pyx_fix_up_extension_type_from_spec(PyType_Spec *spec, PyTypeObject
     return 0;
 }
 #endif
+
+/* PyObjectCallNoArg */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
+    PyObject *arg[2] = {NULL, NULL};
+    return __Pyx_PyObject_FastCall(func, arg + 1, 0 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
+}
+
+/* PyObjectGetMethod */
+static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method) {
+    PyObject *attr;
+#if CYTHON_UNPACK_METHODS && CYTHON_COMPILING_IN_CPYTHON && CYTHON_USE_PYTYPE_LOOKUP
+    __Pyx_TypeName type_name;
+    PyTypeObject *tp = Py_TYPE(obj);
+    PyObject *descr;
+    descrgetfunc f = NULL;
+    PyObject **dictptr, *dict;
+    int meth_found = 0;
+    assert (*method == NULL);
+    if (unlikely(tp->tp_getattro != PyObject_GenericGetAttr)) {
+        attr = __Pyx_PyObject_GetAttrStr(obj, name);
+        goto try_unpack;
+    }
+    if (unlikely(tp->tp_dict == NULL) && unlikely(PyType_Ready(tp) < 0)) {
+        return 0;
+    }
+    descr = _PyType_Lookup(tp, name);
+    if (likely(descr != NULL)) {
+        Py_INCREF(descr);
+#if defined(Py_TPFLAGS_METHOD_DESCRIPTOR) && Py_TPFLAGS_METHOD_DESCRIPTOR
+        if (__Pyx_PyType_HasFeature(Py_TYPE(descr), Py_TPFLAGS_METHOD_DESCRIPTOR))
+#elif PY_MAJOR_VERSION >= 3
+        #ifdef __Pyx_CyFunction_USED
+        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type) || __Pyx_CyFunction_Check(descr)))
+        #else
+        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type)))
+        #endif
+#else
+        #ifdef __Pyx_CyFunction_USED
+        if (likely(PyFunction_Check(descr) || __Pyx_CyFunction_Check(descr)))
+        #else
+        if (likely(PyFunction_Check(descr)))
+        #endif
+#endif
+        {
+            meth_found = 1;
+        } else {
+            f = Py_TYPE(descr)->tp_descr_get;
+            if (f != NULL && PyDescr_IsData(descr)) {
+                attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
+                Py_DECREF(descr);
+                goto try_unpack;
+            }
+        }
+    }
+    dictptr = _PyObject_GetDictPtr(obj);
+    if (dictptr != NULL && (dict = *dictptr) != NULL) {
+        Py_INCREF(dict);
+        attr = __Pyx_PyDict_GetItemStr(dict, name);
+        if (attr != NULL) {
+            Py_INCREF(attr);
+            Py_DECREF(dict);
+            Py_XDECREF(descr);
+            goto try_unpack;
+        }
+        Py_DECREF(dict);
+    }
+    if (meth_found) {
+        *method = descr;
+        return 1;
+    }
+    if (f != NULL) {
+        attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
+        Py_DECREF(descr);
+        goto try_unpack;
+    }
+    if (likely(descr != NULL)) {
+        *method = descr;
+        return 0;
+    }
+    type_name = __Pyx_PyType_GetName(tp);
+    PyErr_Format(PyExc_AttributeError,
+#if PY_MAJOR_VERSION >= 3
+                 "'" __Pyx_FMT_TYPENAME "' object has no attribute '%U'",
+                 type_name, name);
+#else
+                 "'" __Pyx_FMT_TYPENAME "' object has no attribute '%.400s'",
+                 type_name, PyString_AS_STRING(name));
+#endif
+    __Pyx_DECREF_TypeName(type_name);
+    return 0;
+#else
+    attr = __Pyx_PyObject_GetAttrStr(obj, name);
+    goto try_unpack;
+#endif
+try_unpack:
+#if CYTHON_UNPACK_METHODS
+    if (likely(attr) && PyMethod_Check(attr) && likely(PyMethod_GET_SELF(attr) == obj)) {
+        PyObject *function = PyMethod_GET_FUNCTION(attr);
+        Py_INCREF(function);
+        Py_DECREF(attr);
+        *method = function;
+        return 1;
+    }
+#endif
+    *method = attr;
+    return 0;
+}
+
+/* PyObjectCallMethod0 */
+static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name) {
+    PyObject *method = NULL, *result = NULL;
+    int is_method = __Pyx_PyObject_GetMethod(obj, method_name, &method);
+    if (likely(is_method)) {
+        result = __Pyx_PyObject_CallOneArg(method, obj);
+        Py_DECREF(method);
+        return result;
+    }
+    if (unlikely(!method)) goto bad;
+    result = __Pyx_PyObject_CallNoArg(method);
+    Py_DECREF(method);
+bad:
+    return result;
+}
 
 /* ValidateBasesTuple */
 #if CYTHON_COMPILING_IN_CPYTHON || CYTHON_COMPILING_IN_LIMITED_API || CYTHON_USE_TYPE_SPECS
@@ -11870,343 +11742,6 @@ bad:
         return (target_type) value;\
     }
 
-/* CIntFromPy */
-static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if ((sizeof(size_t) < sizeof(long))) {
-            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (size_t) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            if (unlikely(__Pyx_PyLong_IsNeg(x))) {
-                goto raise_neg_overflow;
-            } else if (__Pyx_PyLong_IsCompact(x)) {
-                __PYX_VERIFY_RETURN_INT(size_t, __Pyx_compact_upylong, __Pyx_PyLong_CompactValueUnsigned(x))
-            } else {
-                const digit* digits = __Pyx_PyLong_Digits(x);
-                assert(__Pyx_PyLong_DigitCount(x) > 1);
-                switch (__Pyx_PyLong_DigitCount(x)) {
-                    case 2:
-                        if ((8 * sizeof(size_t) > 1 * PyLong_SHIFT)) {
-                            if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
-                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                            } else if ((8 * sizeof(size_t) >= 2 * PyLong_SHIFT)) {
-                                return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                            }
-                        }
-                        break;
-                    case 3:
-                        if ((8 * sizeof(size_t) > 2 * PyLong_SHIFT)) {
-                            if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
-                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                            } else if ((8 * sizeof(size_t) >= 3 * PyLong_SHIFT)) {
-                                return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                            }
-                        }
-                        break;
-                    case 4:
-                        if ((8 * sizeof(size_t) > 3 * PyLong_SHIFT)) {
-                            if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
-                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                            } else if ((8 * sizeof(size_t) >= 4 * PyLong_SHIFT)) {
-                                return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                            }
-                        }
-                        break;
-                }
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX < 0x030C00A7
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (size_t) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if ((sizeof(size_t) <= sizeof(unsigned long))) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if ((sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG))) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            if (__Pyx_PyLong_IsCompact(x)) {
-                __PYX_VERIFY_RETURN_INT(size_t, __Pyx_compact_pylong, __Pyx_PyLong_CompactValue(x))
-            } else {
-                const digit* digits = __Pyx_PyLong_Digits(x);
-                assert(__Pyx_PyLong_DigitCount(x) > 1);
-                switch (__Pyx_PyLong_SignedDigitCount(x)) {
-                    case -2:
-                        if ((8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT)) {
-                            if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
-                                __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                            } else if ((8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT)) {
-                                return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                            }
-                        }
-                        break;
-                    case 2:
-                        if ((8 * sizeof(size_t) > 1 * PyLong_SHIFT)) {
-                            if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
-                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                            } else if ((8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT)) {
-                                return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                            }
-                        }
-                        break;
-                    case -3:
-                        if ((8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT)) {
-                            if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
-                                __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                            } else if ((8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT)) {
-                                return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                            }
-                        }
-                        break;
-                    case 3:
-                        if ((8 * sizeof(size_t) > 2 * PyLong_SHIFT)) {
-                            if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
-                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                            } else if ((8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT)) {
-                                return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                            }
-                        }
-                        break;
-                    case -4:
-                        if ((8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT)) {
-                            if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
-                                __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                            } else if ((8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT)) {
-                                return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                            }
-                        }
-                        break;
-                    case 4:
-                        if ((8 * sizeof(size_t) > 3 * PyLong_SHIFT)) {
-                            if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
-                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                            } else if ((8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT)) {
-                                return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                            }
-                        }
-                        break;
-                }
-            }
-#endif
-            if ((sizeof(size_t) <= sizeof(long))) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if ((sizeof(size_t) <= sizeof(PY_LONG_LONG))) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-            size_t val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
-#if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
-#endif
-            if (likely(v)) {
-                int ret = -1;
-#if PY_VERSION_HEX < 0x030d0000 && !(CYTHON_COMPILING_IN_PYPY || CYTHON_COMPILING_IN_LIMITED_API) || defined(_PyLong_AsByteArray)
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                           bytes, sizeof(val),
-                                           is_little, !is_unsigned);
-#else
-                PyObject *stepval = NULL, *mask = NULL, *shift = NULL;
-                int bits, remaining_bits, is_negative = 0;
-                long idigit;
-                int chunk_size = (sizeof(long) < 8) ? 30 : 62;
-                if (unlikely(!PyLong_CheckExact(v))) {
-                    PyObject *tmp = v;
-                    v = PyNumber_Long(v);
-                    assert(PyLong_CheckExact(v));
-                    Py_DECREF(tmp);
-                    if (unlikely(!v)) return (size_t) -1;
-                }
-#if CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030B0000
-                if (Py_SIZE(x) == 0)
-                    return (size_t) 0;
-                is_negative = Py_SIZE(x) < 0;
-#else
-                {
-                    int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                    if (unlikely(result < 0))
-                        return (size_t) -1;
-                    is_negative = result == 1;
-                }
-#endif
-                if (is_unsigned && unlikely(is_negative)) {
-                    goto raise_neg_overflow;
-                } else if (is_negative) {
-                    stepval = PyNumber_Invert(v);
-                    if (unlikely(!stepval))
-                        return (size_t) -1;
-                } else {
-                    stepval = __Pyx_NewRef(v);
-                }
-                val = (size_t) 0;
-                mask = PyLong_FromLong((1L << chunk_size) - 1); if (unlikely(!mask)) goto done;
-                shift = PyLong_FromLong(chunk_size); if (unlikely(!shift)) goto done;
-                for (bits = 0; bits < (int) sizeof(size_t) * 8 - chunk_size; bits += chunk_size) {
-                    PyObject *tmp, *digit;
-                    digit = PyNumber_And(stepval, mask);
-                    if (unlikely(!digit)) goto done;
-                    idigit = PyLong_AsLong(digit);
-                    Py_DECREF(digit);
-                    if (unlikely(idigit < 0)) goto done;
-                    tmp = PyNumber_Rshift(stepval, shift);
-                    if (unlikely(!tmp)) goto done;
-                    Py_DECREF(stepval); stepval = tmp;
-                    val |= ((size_t) idigit) << bits;
-                    #if CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030B0000
-                    if (Py_SIZE(stepval) == 0)
-                        goto unpacking_done;
-                    #endif
-                }
-                idigit = PyLong_AsLong(stepval);
-                if (unlikely(idigit < 0)) goto done;
-                remaining_bits = ((int) sizeof(size_t) * 8) - bits - (is_unsigned ? 0 : 1);
-                if (unlikely(idigit >= (1L << remaining_bits)))
-                    goto raise_overflow;
-                val |= ((size_t) idigit) << bits;
-            #if CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030B0000
-            unpacking_done:
-            #endif
-                if (!is_unsigned) {
-                    if (unlikely(val & (((size_t) 1) << (sizeof(size_t) * 8 - 1))))
-                        goto raise_overflow;
-                    if (is_negative)
-                        val = ~val;
-                }
-                ret = 0;
-            done:
-                Py_XDECREF(shift);
-                Py_XDECREF(mask);
-                Py_XDECREF(stepval);
-#endif
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-            return (size_t) -1;
-        }
-    } else {
-        size_t val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (size_t) -1;
-        val = __Pyx_PyInt_As_size_t(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to size_t");
-    return (size_t) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to size_t");
-    return (size_t) -1;
-}
-
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const uint32_t neg_one = (uint32_t) -1, const_zero = (uint32_t) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(uint32_t) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(uint32_t) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(uint32_t) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-#if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
-        return _PyLong_FromByteArray(bytes, sizeof(uint32_t),
-                                     little, !is_unsigned);
-#else
-        PyObject *from_bytes, *result = NULL;
-        PyObject *py_bytes = NULL, *arg_tuple = NULL, *kwds = NULL, *order_str = NULL;
-        from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
-        if (!from_bytes) return NULL;
-        py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(uint32_t));
-        if (!py_bytes) goto limited_bad;
-        order_str = PyUnicode_FromString(little ? "little" : "big");
-        if (!order_str) goto limited_bad;
-        arg_tuple = PyTuple_Pack(2, py_bytes, order_str);
-        if (!arg_tuple) goto limited_bad;
-        if (!is_unsigned) {
-            kwds = PyDict_New();
-            if (!kwds) goto limited_bad;
-            if (PyDict_SetItemString(kwds, "signed", __Pyx_NewRef(Py_True))) goto limited_bad;
-        }
-        result = PyObject_Call(from_bytes, arg_tuple, kwds);
-        limited_bad:
-        Py_XDECREF(kwds);
-        Py_XDECREF(arg_tuple);
-        Py_XDECREF(order_str);
-        Py_XDECREF(py_bytes);
-        Py_XDECREF(from_bytes);
-        return result;
-#endif
-    }
-}
-
 /* CIntToPy */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
@@ -12544,6 +12079,70 @@ raise_neg_overflow:
     return (uint32_t) -1;
 }
 
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const uint32_t neg_one = (uint32_t) -1, const_zero = (uint32_t) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(uint32_t) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(uint32_t) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(uint32_t) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+#if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
+        return _PyLong_FromByteArray(bytes, sizeof(uint32_t),
+                                     little, !is_unsigned);
+#else
+        PyObject *from_bytes, *result = NULL;
+        PyObject *py_bytes = NULL, *arg_tuple = NULL, *kwds = NULL, *order_str = NULL;
+        from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
+        if (!from_bytes) return NULL;
+        py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(uint32_t));
+        if (!py_bytes) goto limited_bad;
+        order_str = PyUnicode_FromString(little ? "little" : "big");
+        if (!order_str) goto limited_bad;
+        arg_tuple = PyTuple_Pack(2, py_bytes, order_str);
+        if (!arg_tuple) goto limited_bad;
+        if (!is_unsigned) {
+            kwds = PyDict_New();
+            if (!kwds) goto limited_bad;
+            if (PyDict_SetItemString(kwds, "signed", __Pyx_NewRef(Py_True))) goto limited_bad;
+        }
+        result = PyObject_Call(from_bytes, arg_tuple, kwds);
+        limited_bad:
+        Py_XDECREF(kwds);
+        Py_XDECREF(arg_tuple);
+        Py_XDECREF(order_str);
+        Py_XDECREF(py_bytes);
+        Py_XDECREF(from_bytes);
+        return result;
+#endif
+    }
+}
+
 /* CIntFromPy */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
@@ -12879,6 +12478,279 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint64_t(uint64_t value) {
         return result;
 #endif
     }
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if ((sizeof(size_t) < sizeof(long))) {
+            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (size_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            if (unlikely(__Pyx_PyLong_IsNeg(x))) {
+                goto raise_neg_overflow;
+            } else if (__Pyx_PyLong_IsCompact(x)) {
+                __PYX_VERIFY_RETURN_INT(size_t, __Pyx_compact_upylong, __Pyx_PyLong_CompactValueUnsigned(x))
+            } else {
+                const digit* digits = __Pyx_PyLong_Digits(x);
+                assert(__Pyx_PyLong_DigitCount(x) > 1);
+                switch (__Pyx_PyLong_DigitCount(x)) {
+                    case 2:
+                        if ((8 * sizeof(size_t) > 1 * PyLong_SHIFT)) {
+                            if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
+                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                            } else if ((8 * sizeof(size_t) >= 2 * PyLong_SHIFT)) {
+                                return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                            }
+                        }
+                        break;
+                    case 3:
+                        if ((8 * sizeof(size_t) > 2 * PyLong_SHIFT)) {
+                            if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
+                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                            } else if ((8 * sizeof(size_t) >= 3 * PyLong_SHIFT)) {
+                                return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                            }
+                        }
+                        break;
+                    case 4:
+                        if ((8 * sizeof(size_t) > 3 * PyLong_SHIFT)) {
+                            if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
+                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                            } else if ((8 * sizeof(size_t) >= 4 * PyLong_SHIFT)) {
+                                return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                            }
+                        }
+                        break;
+                }
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX < 0x030C00A7
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (size_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if ((sizeof(size_t) <= sizeof(unsigned long))) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if ((sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG))) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            if (__Pyx_PyLong_IsCompact(x)) {
+                __PYX_VERIFY_RETURN_INT(size_t, __Pyx_compact_pylong, __Pyx_PyLong_CompactValue(x))
+            } else {
+                const digit* digits = __Pyx_PyLong_Digits(x);
+                assert(__Pyx_PyLong_DigitCount(x) > 1);
+                switch (__Pyx_PyLong_SignedDigitCount(x)) {
+                    case -2:
+                        if ((8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT)) {
+                            if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
+                                __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                            } else if ((8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT)) {
+                                return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                            }
+                        }
+                        break;
+                    case 2:
+                        if ((8 * sizeof(size_t) > 1 * PyLong_SHIFT)) {
+                            if ((8 * sizeof(unsigned long) > 2 * PyLong_SHIFT)) {
+                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                            } else if ((8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT)) {
+                                return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                            }
+                        }
+                        break;
+                    case -3:
+                        if ((8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT)) {
+                            if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
+                                __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                            } else if ((8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT)) {
+                                return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                            }
+                        }
+                        break;
+                    case 3:
+                        if ((8 * sizeof(size_t) > 2 * PyLong_SHIFT)) {
+                            if ((8 * sizeof(unsigned long) > 3 * PyLong_SHIFT)) {
+                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                            } else if ((8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT)) {
+                                return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                            }
+                        }
+                        break;
+                    case -4:
+                        if ((8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT)) {
+                            if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
+                                __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                            } else if ((8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT)) {
+                                return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                            }
+                        }
+                        break;
+                    case 4:
+                        if ((8 * sizeof(size_t) > 3 * PyLong_SHIFT)) {
+                            if ((8 * sizeof(unsigned long) > 4 * PyLong_SHIFT)) {
+                                __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                            } else if ((8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT)) {
+                                return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                            }
+                        }
+                        break;
+                }
+            }
+#endif
+            if ((sizeof(size_t) <= sizeof(long))) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if ((sizeof(size_t) <= sizeof(PY_LONG_LONG))) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+            size_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+#if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+#endif
+            if (likely(v)) {
+                int ret = -1;
+#if PY_VERSION_HEX < 0x030d0000 && !(CYTHON_COMPILING_IN_PYPY || CYTHON_COMPILING_IN_LIMITED_API) || defined(_PyLong_AsByteArray)
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                           bytes, sizeof(val),
+                                           is_little, !is_unsigned);
+#else
+                PyObject *stepval = NULL, *mask = NULL, *shift = NULL;
+                int bits, remaining_bits, is_negative = 0;
+                long idigit;
+                int chunk_size = (sizeof(long) < 8) ? 30 : 62;
+                if (unlikely(!PyLong_CheckExact(v))) {
+                    PyObject *tmp = v;
+                    v = PyNumber_Long(v);
+                    assert(PyLong_CheckExact(v));
+                    Py_DECREF(tmp);
+                    if (unlikely(!v)) return (size_t) -1;
+                }
+#if CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030B0000
+                if (Py_SIZE(x) == 0)
+                    return (size_t) 0;
+                is_negative = Py_SIZE(x) < 0;
+#else
+                {
+                    int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                    if (unlikely(result < 0))
+                        return (size_t) -1;
+                    is_negative = result == 1;
+                }
+#endif
+                if (is_unsigned && unlikely(is_negative)) {
+                    goto raise_neg_overflow;
+                } else if (is_negative) {
+                    stepval = PyNumber_Invert(v);
+                    if (unlikely(!stepval))
+                        return (size_t) -1;
+                } else {
+                    stepval = __Pyx_NewRef(v);
+                }
+                val = (size_t) 0;
+                mask = PyLong_FromLong((1L << chunk_size) - 1); if (unlikely(!mask)) goto done;
+                shift = PyLong_FromLong(chunk_size); if (unlikely(!shift)) goto done;
+                for (bits = 0; bits < (int) sizeof(size_t) * 8 - chunk_size; bits += chunk_size) {
+                    PyObject *tmp, *digit;
+                    digit = PyNumber_And(stepval, mask);
+                    if (unlikely(!digit)) goto done;
+                    idigit = PyLong_AsLong(digit);
+                    Py_DECREF(digit);
+                    if (unlikely(idigit < 0)) goto done;
+                    tmp = PyNumber_Rshift(stepval, shift);
+                    if (unlikely(!tmp)) goto done;
+                    Py_DECREF(stepval); stepval = tmp;
+                    val |= ((size_t) idigit) << bits;
+                    #if CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030B0000
+                    if (Py_SIZE(stepval) == 0)
+                        goto unpacking_done;
+                    #endif
+                }
+                idigit = PyLong_AsLong(stepval);
+                if (unlikely(idigit < 0)) goto done;
+                remaining_bits = ((int) sizeof(size_t) * 8) - bits - (is_unsigned ? 0 : 1);
+                if (unlikely(idigit >= (1L << remaining_bits)))
+                    goto raise_overflow;
+                val |= ((size_t) idigit) << bits;
+            #if CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030B0000
+            unpacking_done:
+            #endif
+                if (!is_unsigned) {
+                    if (unlikely(val & (((size_t) 1) << (sizeof(size_t) * 8 - 1))))
+                        goto raise_overflow;
+                    if (is_negative)
+                        val = ~val;
+                }
+                ret = 0;
+            done:
+                Py_XDECREF(shift);
+                Py_XDECREF(mask);
+                Py_XDECREF(stepval);
+#endif
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+            return (size_t) -1;
+        }
+    } else {
+        size_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (size_t) -1;
+        val = __Pyx_PyInt_As_size_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to size_t");
+    return (size_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to size_t");
+    return (size_t) -1;
 }
 
 /* FormatTypeName */
