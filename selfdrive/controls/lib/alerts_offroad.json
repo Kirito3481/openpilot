@@ -1,60 +1,60 @@
 {
   "Offroad_TemperatureTooHigh": {
-    "text": "Device temperature too high. System cooling down before starting. Current internal component temperature: %1",
+    "text": "장치 온도가 너무 높습니다. 시작하기 전에 시스템을 냉각합니다. 현재 내부 부품 온도: %1",
     "severity": 0
   },
   "Offroad_ConnectivityNeededPrompt": {
-    "text": "Immediately connect to the internet to check for updates. If you do not connect to the internet, openpilot won't engage in %1",
+    "text": "즉시 인터넷에 연결하여 업데이트를 확인하세요. 인터넷에 연결하지 않으면 openpilot은 %1일 이후에 시작되지 않습니다.",
     "severity": 0,
     "_comment": "Set extra field to number of days"
   },
   "Offroad_ConnectivityNeeded": {
-    "text": "Connect to internet to check for updates. openpilot won't automatically start until it connects to internet to check for updates.",
+    "text": "업데이트를 확인하려면 인터넷에 연결하세요. openpilot은 업데이트를 확인하기 위해 인터넷에 연결될 때까지 자동으로 시작되지 않습니다.",
     "severity": 1
   },
   "Offroad_UpdateFailed": {
-    "text": "Unable to download updates\n%1",
+    "text": "업데이트를 다운로드할 수 없습니다.\n%1",
     "severity": 1,
     "_comment": "Set extra field to the failed reason."
   },
   "Offroad_IsTakingSnapshot": {
-    "text": "Taking camera snapshots. System won't start until finished.",
+    "text": "카메라 스냅샷을 찍고 있습니다. 완료될 때까지 시스템이 시작되지 않습니다.",
     "severity": 0
   },
   "Offroad_NeosUpdate": {
-    "text": "An update to your device's operating system is downloading in the background. You will be prompted to update when it's ready to install.",
+    "text": "장치 운영 체제 업데이트가 백그라운드에서 다운로드 중입니다. 설치할 준비가 되면 업데이트하라는 메시지가 표시됩니다.",
     "severity": 0
   },
   "Offroad_UnofficialHardware": {
-    "text": "Device failed to register. It will not connect to or upload to comma.ai servers, and receives no support from comma.ai. If this is an official device, visit https://comma.ai/support.",
+    "text": "장치를 등록하지 못했습니다. comma.ai 서버에 연결하거나 업로드하지 않으며 comma.ai로부터 지원을 받지 못합니다. 정식 기기인 경우 https://comma.ai/support를 방문하세요.",
     "severity": 1
   },
   "Offroad_StorageMissing": {
-    "text": "NVMe drive not mounted.",
+    "text": "NVMe 드라이브가 마운트되지 않았습니다.",
     "severity": 1
   },
   "Offroad_BadNvme": {
-    "text": "Unsupported NVMe drive detected. Device may draw significantly more power and overheat due to the unsupported NVMe.",
+    "text": "지원되지 않는 NVMe 드라이브가 감지되었습니다. 지원되지 않는 NVMe로 인해 장치가 훨씬 더 많은 전력을 소모하고 과열될 수 있습니다.",
     "severity": 1
   },
   "Offroad_CarUnrecognized": {
-    "text": "openpilot was unable to identify your car. Your car is either unsupported or its ECUs are not recognized. Please submit a pull request to add the firmware versions to the proper vehicle. Need help? Join discord.comma.ai.",
+    "text": "openpilot이 차량을 식별할 수 없습니다. 이 자동차는 지원되지 않거나 ECU가 인식되지 않습니다. 적절한 차량에 펌웨어 버전을 추가하려면 풀 요청을 제출하십시오. 도움이 필요하면 discord.comma.ai에 가입하세요.",
     "severity": 0
   },
   "Offroad_NoFirmware": {
-    "text": "openpilot was unable to identify your car. Check integrity of cables and ensure all connections are secure, particularly that the comma power is fully inserted in the OBD-II port of the vehicle. Need help? Join discord.comma.ai.",
+    "text": "openpilot이 차량을 식별할 수 없습니다. 케이블의 무결성을 확인하고 모든 연결이 안전한지 확인하십시오. 특히 comma power가 차량의 OBD-II 포트에 완전히 삽입되었는지 확인하십시오. 도움이 필요하면 discord.comma.ai에 가입하세요.",
     "severity": 0
   },
   "Offroad_Recalibration": {
-    "text": "openpilot detected a change in the device's mounting position. Ensure the device is fully seated in the mount and the mount is firmly secured to the windshield.",
+    "text": "openpilot이 장치의 장착 위치가 변경된 것을 감지했습니다. 장치가 마운트에 완전히 장착되었는지, 마운트가 전면 유리에 단단히 고정되었는지 확인하세요.",
     "severity": 0
   },
   "Offroad_OSMUpdateRequired": {
-    "text": "OpenStreetMap database is out of date. New maps must be downloaded if you wish to continue using OpenStreetMap data for Enhanced Speed Control and road name display.\n\n%1",
+    "text": "OpenStreetMap 데이터베이스가 오래되었습니다. 향상된 속도 제어 및 도로 이름 표시를 위해 OpenStreetMap 데이터를 계속 사용하려면 새 지도를 다운로드해야 합니다.\n\n%1",
     "severity": 0
   },
   "Offroad_ForceStatus": {
-    "text": "sunnypilot is now in Forced Offroad mode. sunnypilot won't start until Forced Offroad mode is disabled. Go to \"Settings\" -> \"Device\" -> \"Unforce Offroad\" to exit Force Offroad mode.",
+    "text": "sunnypilot은 이제 강제 오프로드 모드에 있습니다. sunnypilot은 강제 오프로드 모드가 비활성화될 때까지 시작되지 않습니다. 강제 오프로드 모드를 종료하려면 \"설정\" -> \"장치\" -> \"강제 오프로드 해제\"로 이동하세요.",
     "severity": 1
   }
 }

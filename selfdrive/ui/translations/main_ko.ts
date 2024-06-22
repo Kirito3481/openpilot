@@ -88,15 +88,15 @@
     </message>
     <message>
         <source>Retain hotspot/tethering state</source>
-        <translation type="unfinished"></translation>
+        <translation>핫스팟/테더링 상태 유지</translation>
     </message>
     <message>
         <source>Enabling this toggle will retain the hotspot/tethering toggle state across reboots.</source>
-        <translation type="unfinished"></translation>
+        <translation>이 토글을 활성화하면 재부팅 후에도 핫스팟/테더링 토글 상태가 유지됩니다.</translation>
     </message>
     <message>
         <source>Ngrok Service</source>
-        <translation type="unfinished"></translation>
+        <translation>Ngrok 서비스</translation>
     </message>
 </context>
 <context>
@@ -126,7 +126,7 @@
     <name>AutoLaneChangeTimer</name>
     <message>
         <source>s</source>
-        <translation type="unfinished"></translation>
+        <translation>초</translation>
     </message>
     <message>
         <source>Nudge</source>
@@ -138,58 +138,59 @@
     </message>
     <message>
         <source>Auto Lane Change by Blinker</source>
-        <translation type="unfinished"></translation>
+        <translation>방향지시등을 이용한 자동 차로 변경</translation>
     </message>
     <message>
         <source>Off</source>
-        <translation type="unfinished"></translation>
+        <translation>끄기</translation>
     </message>
     <message>
         <source>Set a timer to delay the auto lane change operation when the blinker is used. No nudge on the steering wheel is required to auto lane change if a timer is set. Default is Nudge.
 Please use caution when using this feature. Only use the blinker when traffic and road conditions permit.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">방향지시등 사용 시 자동 차로 변경 동작이 지연되도록 타이머를 설정하세요. 타이머가 설정된 경우 자동 차로 변경을 위해 운전대를 움직일 필요가 없습니다. 기본값은 Nudge입니다.
+이 기능을 사용할 때는 주의하시기 바랍니다. 교통 상황과 도로 상황이 허락하는 경우에만 방향지시등을 사용하십시오.</translation>
     </message>
 </context>
 <context>
     <name>BackupSettings</name>
     <message>
         <source>Settings backed up for sunnylink Device ID:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sunnylink 장치 ID에 대해 백업된 설정:</translation>
     </message>
     <message>
         <source>Settings updated successfully, but no additional data was returned by the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>설정이 성공적으로 업데이트되었지만 서버에서 추가 데이터가 반환되지 않았습니다.</translation>
     </message>
     <message>
         <source>OOPS! We made a booboo.</source>
-        <translation type="unfinished"></translation>
+        <translation>이런! 우리가 실수한 것 같습니다.</translation>
     </message>
     <message>
         <source>Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>나중에 다시 시도 해주십시오.</translation>
     </message>
     <message>
         <source>Settings restored. Confirm to restart the interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>설정이 복원되었습니다. 인터페이스를 다시 시작합니다.</translation>
     </message>
     <message>
         <source>No settings found to restore.</source>
-        <translation type="unfinished"></translation>
+        <translation>복원할 설정을 찾을 수 없습니다.</translation>
     </message>
 </context>
 <context>
     <name>BrightnessControl</name>
     <message>
         <source>Brightness</source>
-        <translation type="unfinished"></translation>
+        <translation>밝기</translation>
     </message>
     <message>
         <source>Manually adjusts the global brightness of the screen.</source>
-        <translation type="unfinished"></translation>
+        <translation>화면 밝기를 수동으로 조정합니다.</translation>
     </message>
     <message>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>자동</translation>
     </message>
 </context>
 <context>
@@ -200,11 +201,11 @@ Please use caution when using this feature. Only use the blinker when traffic an
     </message>
     <message>
         <source>Hack to trick vehicle to be left or right biased in its lane. Decreasing the value will make the car keep more left, increasing will make it keep more right. Changes take effect immediately. Default: +4 cm</source>
-        <translation type="unfinished"></translation>
+        <translation>차량이 차로에서 왼쪽이나 오른쪽으로 편향되도록 속이는 해킹입니다. 값을 낮추면 자동차가 왼쪽으로 더 가까이 달리고, 값을 높이면 오른쪽으로 더 가까이 달리게 됩니다. 변경 사항은 즉시 적용됩니다. 기본값: +4 cm</translation>
     </message>
     <message>
         <source> cm</source>
-        <translation type="unfinished"></translation>
+        <translation> cm</translation>
     </message>
 </context>
 <context>
@@ -222,7 +223,7 @@ Please use caution when using this feature. Only use the blinker when traffic an
     <name>CustomOffsetsSettings</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished">뒤로</translation>
+        <translation>뒤로</translation>
     </message>
 </context>
 <context>
@@ -241,7 +242,7 @@ Please use caution when using this feature. Only use the blinker when traffic an
     </message>
     <message>
         <source>You must accept the Terms and Conditions in order to use sunnypilot.</source>
-        <translation type="unfinished"></translation>
+        <translation>sunnypilot을 사용하려면 이용약관에 동의해야 합니다.</translation>
     </message>
 </context>
 <context>
@@ -427,47 +428,47 @@ Please use caution when using this feature. Only use the blinker when traffic an
     </message>
     <message>
         <source>Turn Off</source>
-        <translation type="unfinished"></translation>
+        <translation>끄기</translation>
     </message>
     <message>
         <source>Error Troubleshoot</source>
-        <translation type="unfinished"></translation>
+        <translation>오류 문제 해결</translation>
     </message>
     <message>
         <source>Display error from the tmux session when an error has occurred from a system process.</source>
-        <translation type="unfinished"></translation>
+        <translation>시스템 프로세스에서 오류가 발생한 경우 tmux 세션에서 오류를 표시합니다.</translation>
     </message>
     <message>
         <source>Reset Access Tokens for Map Services</source>
-        <translation type="unfinished"></translation>
+        <translation>지도 서비스에 대한 액세스 토큰 초기화</translation>
     </message>
     <message>
         <source>Reset self-service access tokens for Mapbox, Amap, and Google Maps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mapbox, Amap 및 Google Maps에 대한 셀프 서비스 액세스 토큰을 초기화합니다.</translation>
     </message>
     <message>
         <source>Are you sure you want to reset access tokens for all map services?</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 지도 서비스에 대한 액세스 토큰을 초기화하시겠습니까?</translation>
     </message>
     <message>
         <source>Reset sunnypilot Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>sunnypilot 설정 초기화</translation>
     </message>
     <message>
         <source>Are you sure you want to reset all sunnypilot settings?</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 sunnypilot 설정을 초기화하시겠습니까?</translation>
     </message>
     <message>
         <source>Review the rules, features, and limitations of sunnypilot</source>
-        <translation type="unfinished"></translation>
+        <translation>sunnypilot의 규칙, 기능 및 제한 사항을 확인합니다</translation>
     </message>
     <message>
         <source>OFF</source>
-        <translation type="unfinished"></translation>
+        <translation>끄기</translation>
     </message>
     <message>
         <source>sunnypilot requires the device to be mounted within 4° left or right and within 5° up or 9° down. sunnypilot is continuously calibrating, resetting is rarely required.</source>
-        <translation type="unfinished"></translation>
+        <translation>sunnypilot에서는 장치를 왼쪽이나 오른쪽으로 4 이내, 위쪽으로 5 또는 아래쪽으로 9 이내로 장착해야 합니다. Sunnypilot은 지속적으로 보정을 수행하므로 재설정이 거의 필요하지 않습니다.</translation>
     </message>
     <message>
         <source>Fleet Manager PIN:</source>
@@ -602,23 +603,23 @@ Please use caution when using this feature. Only use the blinker when traffic an
     <name>LaneChangeSettings</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished">뒤로</translation>
+        <translation>뒤로</translation>
     </message>
     <message>
         <source>Auto Lane Change: Delay with Blind Spot</source>
-        <translation type="unfinished"></translation>
+        <translation>자동 차로 변경: 사각지대에 차가 있으면 지연</translation>
     </message>
     <message>
         <source>Toggle to enable a delay timer for seamless lane changes when blind spot monitoring (BSM) detects a obstructing vehicle, ensuring safe maneuvering.</source>
-        <translation type="unfinished"></translation>
+        <translation>사각지대 모니터링(BSM)이 방해하는 차량을 감지하면 원활한 차로 변경을 위해 지연 타이머를 활성화하여 안전한 차로 변경을 보장합니다.</translation>
     </message>
     <message>
         <source>Block Lane Change: Road Edge Detection</source>
-        <translation type="unfinished"></translation>
+        <translation>차로 변경 차단: 도로 가장자리 감지</translation>
     </message>
     <message>
         <source>Enable this toggle to block lane change when road edge is detected on the stalk actuated side.</source>
-        <translation type="unfinished"></translation>
+        <translation>레버가 작동되는 쪽에서 도로 가장자리가 감지될 때 차로 변경을 차단하려면 이 토글을 활성화합니다.</translation>
     </message>
     <message>
         <source>Pause Lateral Below Speed with Blinker</source>
