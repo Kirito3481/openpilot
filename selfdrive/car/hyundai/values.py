@@ -375,7 +375,7 @@ class CAR(Platforms):
   KIA_K8_HEV_1ST_GEN = HyundaiCanFDPlatformConfig(
     [HyundaiCarDocs("Kia K8 Hybrid (with HDA II) 2023", "Highway Driving Assist II", car_parts=CarParts.common([CarHarness.hyundai_q]))],
     # mass: https://carprices.ae/brands/kia/2023/k8/1.6-turbo-hybrid, steerRatio: from liveParameters
-    CarSpecs(mass=1630, wheelbase=2.895, steerRatio=14.9, tireStiffnessFactor=1)
+    CarSpecs(mass=1630, wheelbase=2.895, steerRatio=13.27, tireStiffnessFactor=1)
   )
   KIA_NIRO_EV = HyundaiPlatformConfig(
     [
