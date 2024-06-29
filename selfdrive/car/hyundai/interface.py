@@ -88,6 +88,8 @@ class CarInterface(CarInterfaceBase):
 
     if candidate == CAR.KIA_OPTIMA_G4_FL:
       ret.steerActuatorDelay = 0.2
+    elif candidate == CAR.HYUNDAI_SONATA_2024:
+      ret.steerActuatorDelay = 0.1
 
     # *** longitudinal control ***
     if candidate in CANFD_CAR:

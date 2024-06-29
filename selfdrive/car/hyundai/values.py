@@ -292,7 +292,7 @@ class CAR(Platforms):
   )
   HYUNDAI_SONATA_2024 = HyundaiCanFDPlatformConfig(
     [HyundaiCarDocs("Hyundai Sonata 2024", "All", car_parts=CarParts.common([CarHarness.hyundai_a]))],
-    CarSpecs(mass=3305 * CV.LB_TO_KG, wheelbase=2.84, steerRatio=13.27, tireStiffnessFactor=1),  # from https://www.hyundainews.com/assets/documents/original/57218-2024SonataSpecs092123.pdf
+    CarSpecs(mass=1513, wheelbase=2.84, steerRatio=13.27, tireStiffnessFactor=0.65),  # from https://www.hyundainews.com/assets/documents/original/57218-2024SonataSpecs092123.pdf
   )
   HYUNDAI_STARIA_4TH_GEN = HyundaiCanFDPlatformConfig(
     [HyundaiCarDocs("Hyundai Staria 2023", "All", car_parts=CarParts.common([CarHarness.hyundai_k]))],
